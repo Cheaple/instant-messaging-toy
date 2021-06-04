@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="nickNameStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:color">#FFFFFFFF</item>
+    </style>
+
+    <style name="textStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:color">#FF4081</item>
+        <item name="android:alpha">0.9</item>
+    </style>
+
+</resources>
