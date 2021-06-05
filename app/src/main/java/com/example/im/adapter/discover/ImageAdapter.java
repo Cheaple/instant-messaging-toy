@@ -38,8 +38,8 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public UploadImageViewHolder(@NonNull View itemView) { super(itemView); }
         public UploadImageViewHolder(View itemView, ImageAdapter adapter) {
             super(itemView);
-            imageView = (ImageView)itemView.findViewById(R.id.img_upload);
             this.mAdapter =  adapter;
+            imageView = (ImageView)itemView.findViewById(R.id.img_upload);
         }
     }
 
@@ -62,10 +62,10 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         switch (viewType) {
             case IMAGE_TYPE_UPLOAD:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_img_user, parent, false);
-                return new UploadImageViewHolder(mItemView);
+                return new UploadImageViewHolder(mItemView, this);
             case IMAGE_TYPE_USER:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_img_upload, parent, false);
-                return new UserImageViewHolder(mItemView);
+                return new UserImageViewHolder(mItemView, this);
             default:
                 return null;
         }

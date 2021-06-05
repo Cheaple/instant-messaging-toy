@@ -21,10 +21,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.chats.ChattingActivity" />
+        <activity android:name=".activity.chats.GroupInfoActivity" />
         <activity android:name=".activity.contacts.ContactInfoActivity" />
         <activity android:name=".activity.contacts.ContactSearchActivity" />
         <activity android:name=".activity.discover.PostActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity android:name=".activity.contacts.GroupCreatingActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

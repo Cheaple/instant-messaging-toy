@@ -15,6 +15,8 @@ public class Chat {
         this.lastSpeakTime = lastSpeakTime;
     }
 
+    public int getType() { return type; }
+
     public int getAvatarIcon() {
         return avatarIcon;
     }

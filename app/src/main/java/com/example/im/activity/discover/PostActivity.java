@@ -48,12 +48,14 @@ public class PostActivity extends AppCompatActivity {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(PostActivity.this, "Post", Toast.LENGTH_SHORT).show();
                 // TODO：发布动态
             }
         });
     }
 
     public void uploadPhotos() {
+        Toast.makeText(this, "Upload Photos 2", Toast.LENGTH_SHORT).show();
         MultiImageSelector selector = MultiImageSelector.create(this);
         selector.showCamera(true);
         selector.multi();

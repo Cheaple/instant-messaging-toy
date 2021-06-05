@@ -19,7 +19,7 @@ import java.util.LinkedList;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
     private Context context;
-    private LinkedList<Message> data;
+    private LinkedList<Message> msgList;
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         private MessageAdapter mAdapter;
@@ -42,8 +42,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             this.rightTextView = (TextView)itemView.findViewById(R.id.msg_text_right);
         }
     }
-    public MessageAdapter(LinkedList<Message> data, Context context) {
-        this.data = data;
+    public MessageAdapter(LinkedList<Message> msgList, Context context) {
+        this.msgList = msgList;
         this.context = context;
     }
 
@@ -59,7 +59,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         //Toast.makeText(context, "btn2", Toast.LENGTH_SHORT).show();
 
-        Message msg = data.get(position);
+        Message msg = msgList.get(position);
         if(msg.getSpeaker() == 0) {  // 接受消息
             holder.rightLayout.setVisibility(View.VISIBLE);
             holder.leftLayout.setVisibility(View.GONE);
@@ -73,6 +73,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return msgList.size();
     }
 }

@@ -33,7 +33,7 @@ public class ChatsFragment extends Fragment {
 
     Context context;
     private ChatAdapter chatAdapter;
-    private LinkedList<Chat> data;
+    private LinkedList<Chat> chatList;
     private ListView listView;
 
     public ChatsFragment() {
@@ -57,17 +57,18 @@ public class ChatsFragment extends Fragment {
         context = getActivity();
 
         // 向ListView 添加数据，新建ChatAdapter，并向listView绑定该Adapter
-        data = new LinkedList<>();
-        data.add(new Chat(getString(R.string.nickname1), R.drawable.avatar1, getString(R.string.sentence1), "2021/01/01", CHAT_TYPE_SINGLE));
-        data.add(new Chat(getString(R.string.nickname2), R.drawable.avatar2, getString(R.string.sentence2), "2021/01/01", CHAT_TYPE_GROUP));
+        chatList = new LinkedList<>();
+        chatList.add(new Chat(getString(R.string.nickname1), R.drawable.avatar1, getString(R.string.sentence1), "2021/01/01", CHAT_TYPE_SINGLE));
+        chatList.add(new Chat(getString(R.string.nickname2), R.drawable.avatar2, getString(R.string.sentence2), "2021/01/01", CHAT_TYPE_GROUP));
 
-        chatAdapter = new ChatAdapter(data, context);
+        chatAdapter = new ChatAdapter(chatList, context);
         listView.setAdapter(chatAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // 设置对话的点击事件：跳转至对话页面
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(context, ChattingActivity.class);
+                intent.putExtra("Chat Type", chatList.get(position).getType());
                 startActivityForResult(intent, TEXT_REQUEST);
             }
         });

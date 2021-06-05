@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.im.activity.chats.ChattingActivity">
+    <item
+        android:id="@+id/menu_info"
+        android:orderInCategory="0"
+        android:icon="@drawable/ic_menu"
+        android:title="Info"
+        app:showAsAction="ifRoom" />
+</menu>
