@@ -36,7 +36,6 @@ import java.util.LinkedList;
  * create an instance of this fragment.
  */
 public class ContactsFragment extends Fragment {
-    public static final String EXTRA_MESSAGE = "extra_message";
     public static final int TEXT_REQUEST = 1;
     private static final int CONTACT_TYPE_LIST = 0x00001;  // 列表中的联系人
 
@@ -68,14 +67,14 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Context context = getActivity();
-        recyclerView = view.findViewById(R.id.contacts_recylerview);
+        recyclerView = view.findViewById(R.id.recycle_view_contacts);
 
         // 添加数据，为recyclerView绑定Adapter、LayoutManager
         contacts = new LinkedList<Contact>();
         contacts.add(new Contact(getString(R.string.nickname1), R.drawable.avatar1));
         contacts.add(new Contact(getString(R.string.nickname2), R.drawable.avatar2));
 
-        contactAdapter = new ContactAdapter(contacts, context);
+        contactAdapter = new ContactAdapter(contacts, context, false);
         contactAdapter.setOnItemClickListener(new OnItemClickListener() {
             // 每个联系人的点击事件：跳转至联系人信息界面
             @Override

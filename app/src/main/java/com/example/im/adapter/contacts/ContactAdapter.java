@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +27,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     private Context context;
     private OnItemClickListener mClickListener;
     private LinkedList<Contact> contactList;
+    private boolean ifDisplayCheckBox = true;
+    private LinkedList<Contact> selectedContactList = new LinkedList<>();
 
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -32,6 +37,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         private View contactItemView;
         private ImageView avatarImageView;
         private TextView nameTextView;
+        private CheckBox checkBox;  // 复选框，用于在创建群聊时选择联系人
 
 
         public ContactViewHolder(@NonNull View itemView) {
@@ -42,8 +48,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             this.mAdapter = adapter;
             this.mListener = listener;
             this.contactItemView = itemView.findViewById(R.id.contact);
-            this.avatarImageView = itemView.findViewById(R.id.avatar_icon);
-            this.nameTextView = itemView.findViewById(R.id.nickname_text);
+            this.avatarImageView = itemView.findViewById(R.id.img_contact_avatar);
+            this.nameTextView = itemView.findViewById(R.id.text_contact_nickname);
+            this.checkBox = itemView.findViewById(R.id.checkbox_contact);
             itemView.setOnClickListener(this);  // 为ItemView添加点击事件
         }
 
@@ -53,9 +60,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         }
     }
 
-    public ContactAdapter(LinkedList<Contact> contactList, Context context) {
+    public ContactAdapter(LinkedList<Contact> contactList, Context context, boolean ifDisplayCheckBox) {
         this.contactList = contactList;
         this.context = context;
+        this.ifDisplayCheckBox = ifDisplayCheckBox;
     }
 
     @NonNull
@@ -72,6 +80,19 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         // Add the data to the view
         holder.avatarImageView.setImageResource(contact.getAvatarIcon());  // 设置联系人头像
         holder.nameTextView.setText(contact.getNickname());  // 设置联系人昵称
+        if (!ifDisplayCheckBox) holder.checkBox.setVisibility(View.GONE);  // 隐藏复选框
+        else {
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        selectedContactList.add(contact);
+                        Toast.makeText(context, selectedContactList.getLast().getNickname(),Toast.LENGTH_SHORT).show();
+                    } else {
+                    }
+                }
+            });
+        }
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -82,4 +103,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public int getItemCount() {
         return contactList.size();
     }
+
+    public LinkedList<Contact> getSelectedContacts() {
+        return selectedContactList;
+    }
+
 }
