@@ -11,11 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 
 import com.example.im.R;
+import com.example.im.activity.contacts.ContactSearchActivity;
+import com.example.im.activity.contacts.GroupCreatingActivity;
 import com.example.im.activity.discover.PostActivity;
 import com.example.im.adapter.discover.DiscoverAdapter;
 import com.example.im.bean.discover.Discover;
@@ -33,7 +38,6 @@ public class DiscoverFragment extends Fragment {
     private DiscoverAdapter discoverAdapter;
     private LinkedList<Discover> moments;
     private RecyclerView recyclerView;
-    private View postView;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -54,15 +58,6 @@ public class DiscoverFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.discover_recyclerview);
         Context context = getActivity();
-
-        postView = view.findViewById(R.id.new_moment);
-        // 点击事件：跳转至动态发布界面
-        postView.setOnClickListener(new  View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PostActivity.class);
-                startActivityForResult(intent, TEXT_REQUEST);
-            }
-        });
 
         moments = new LinkedList<Discover>();
         ArrayList<String> likes0 = new ArrayList<String>();
@@ -91,6 +86,7 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -99,5 +95,21 @@ public class DiscoverFragment extends Fragment {
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_discover, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem item = menu.add("New Moment");
+        item.setIcon(R.drawable.ic_new_discover);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // 点击事件：跳转至动态发布界面
+        Intent intent = new Intent(getActivity(), PostActivity.class);
+        startActivityForResult(intent, TEXT_REQUEST);
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -40,8 +43,6 @@ public class ContactsFragment extends Fragment {
     private ContactAdapter contactAdapter;
     private LinkedList<Contact> contacts;
     private RecyclerView recyclerView;
-    private LinearLayout searchLayout;
-    private LinearLayout groupLayout;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -61,31 +62,13 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Context context = getActivity();
         recyclerView = view.findViewById(R.id.contacts_recylerview);
-        searchLayout = view.findViewById(R.id.layout_new_contact);
-        groupLayout = view.findViewById(R.id.layout_new_group);
-
-        // 点击事件：跳转至联系人搜索界面
-        searchLayout.setOnClickListener(new  View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ContactSearchActivity.class);
-                startActivityForResult(intent, TEXT_REQUEST);
-            }
-        });
-
-        // 点击事件：跳转至创建界面
-        groupLayout.setOnClickListener(new  View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(context, GroupCreatingActivity.class);
-                startActivityForResult(intent, TEXT_REQUEST);
-            }
-        });
 
         // 添加数据，为recyclerView绑定Adapter、LayoutManager
         contacts = new LinkedList<Contact>();
@@ -113,5 +96,29 @@ public class ContactsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_contacts, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.add(Menu.NONE, 0, Menu.NONE,"New Contact");
+        menu.add(Menu.NONE, 1, Menu.NONE, "New Group Chat");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case 0:
+            // 点击事件：跳转至联系人搜索界面
+            Intent intent = new Intent(getActivity(), ContactSearchActivity.class);
+            startActivityForResult(intent, TEXT_REQUEST);
+            break;
+        case 1:
+            // 点击事件：跳转至群聊创建界面
+            Intent intent2 = new Intent(getActivity(), GroupCreatingActivity.class);
+            startActivityForResult(intent2, TEXT_REQUEST);
+            break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

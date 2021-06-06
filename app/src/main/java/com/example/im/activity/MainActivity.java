@@ -11,6 +11,7 @@ import com.example.im.fragment.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,4 +58,5 @@ public class MainActivity extends AppCompatActivity {
     private void setCurrentFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, fragment).commit();
     }
+
 }
