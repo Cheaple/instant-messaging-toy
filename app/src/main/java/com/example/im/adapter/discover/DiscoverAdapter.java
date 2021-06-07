@@ -33,11 +33,13 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         private View discoverItemView;
         private ImageView likeImageView;
         private ImageView commentImageView;
+        private TextView likesTextView;
 
         public LinkedList<Comment> commentList = new LinkedList<Comment>();
         public CommentAdapter commentAdapter;
 
         public int imageCount;
+        public boolean ifLiked = false;
 
         public DiscoverViewHolder(@NonNull View itemView, int imageCount) {
             super(itemView);
@@ -68,6 +70,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
 
             this.likeImageView = itemView.findViewById(R.id.img_like);
             this.commentImageView = itemView.findViewById(R.id.img_comment);
+            this.likesTextView = itemView.findViewById(R.id.text_likes);
         }
     }
     public DiscoverAdapter(LinkedList<Discover> discoverList, Context context) {
@@ -151,14 +154,13 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         }
 
         // 点赞列表
-        textView = holder.discoverItemView.findViewById(R.id.likes);
         ArrayList<String> likes = moment.getLikes();
-        String likes_list = new String();
+        String likes_string = new String();
         for (int i = 0; i < likes.size(); ++i) {
-            if (i != 0) likes_list += ", ";
-            likes_list = likes_list + likes.get(i);
+            if (i != 0) likes_string += ", ";
+            likes_string = likes_string + likes.get(i);
         }
-        textView.setText(likes_list);
+        holder.likesTextView.setText(likes_string);
 
         // 评论列表
         RecyclerView recyclerView = holder.discoverItemView.findViewById(R.id.comments_recyclerview);
@@ -185,7 +187,14 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             @Override
             public void onClick(View v) {
                 // TODO: 点赞
-                ((ImageView)v).setImageResource(R.drawable.ic_like_2);
+                if (!holder.ifLiked) {
+                    holder.ifLiked = true;
+                    ((ImageView) v).setImageResource(R.drawable.ic_like_2);
+                }
+                else {
+                    holder.ifLiked = false;
+                    ((ImageView) v).setImageResource(R.drawable.ic_like);
+                }
                 Toast.makeText(context, "btn2", Toast.LENGTH_SHORT).show();
             }
         });

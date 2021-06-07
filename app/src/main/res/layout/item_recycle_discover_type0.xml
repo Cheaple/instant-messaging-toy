@@ -99,7 +99,7 @@
                     android:src="@drawable/ic_heart" />
 
                 <TextView
-                    android:id="@+id/likes"
+                    android:id="@+id/text_likes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="徐金龙，陈宇乐"

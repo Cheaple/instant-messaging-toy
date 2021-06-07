@@ -27,6 +27,7 @@
         <activity android:name=".activity.discover.PostActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity android:name=".activity.contacts.GroupCreatingActivity" />
+        <activity android:name=".activity.SignInActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
