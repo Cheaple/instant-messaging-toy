@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @BindView(R.id.bottomNavigationView)
+    @BindView(R.id.bottomNavigationView_login)
     public BottomNavigationView bottomNavigationView;
 
 
