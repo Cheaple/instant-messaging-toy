@@ -22,9 +22,10 @@ public class ChatsPresenter implements IChatsContract.Presenter {
         this.mView = view;
     }
 
+    @Override
     public void showChatList(){
         chatList = (LinkedList<Chat>) mModel.loadChatList();
-        mView.showChatList(chatList);
+        mView.setChatList(chatList);
     }
 
     @Override

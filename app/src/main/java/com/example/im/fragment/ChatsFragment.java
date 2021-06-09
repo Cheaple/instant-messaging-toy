@@ -17,7 +17,7 @@ import com.example.im.R;
 import com.example.im.activity.chats.ChattingActivity;
 import com.example.im.adapter.chats.ChatAdapter;
 import com.example.im.bean.chats.Chat;
-import com.example.im.bean.contacts.Contact;
+
 import com.example.im.mvp.contract.IChatsContract;
 import com.example.im.mvp.presenter.ChatsPresenter;
 
@@ -56,10 +56,10 @@ public class ChatsFragment extends Fragment implements IChatsContract.View, Adap
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         context = getActivity();
+        mPresenter = new ChatsPresenter(this, context);
+
         listView = getView().findViewById(R.id.listview);
         listView.setOnItemClickListener(this);
-
-        mPresenter = new ChatsPresenter(this, context);
 
         mPresenter.showChatList();
     }
@@ -84,8 +84,13 @@ public class ChatsFragment extends Fragment implements IChatsContract.View, Adap
     }
 
     @Override
-    public void showChatList(List list) {
+    public void setChatList(List list) {
         chatAdapter = new ChatAdapter((LinkedList<Chat>) list, context);
         listView.setAdapter(chatAdapter);
+    }
+
+    @Override
+    public void setChatList() {
+        chatAdapter.notifyDataSetChanged();
     }
 }

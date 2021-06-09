@@ -1,5 +1,6 @@
 package com.example.im.activity.chats;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,18 +17,24 @@ import com.example.im.R;
 import com.example.im.activity.contacts.ContactInfoActivity;
 import com.example.im.adapter.chats.MessageAdapter;
 import com.example.im.bean.chats.Message;
+import com.example.im.bean.contacts.Contact;
+import com.example.im.mvp.contract.IChattingContract;
+import com.example.im.mvp.presenter.ChattingPresenter;
 
 import java.util.LinkedList;
+import java.util.List;
 
-public class ChattingActivity extends AppCompatActivity {
+public class ChattingActivity extends AppCompatActivity implements IChattingContract.View, View.OnClickListener {
     private static final int CHAT_TYPE_SINGLE = 0x00001;  // 对话
     private static final int CHAT_TYPE_GROUP = 0x00002;  // 群聊
+
+    private Context context;
+    private ChattingPresenter mPresenter;
 
     private MessageAdapter messageAdapter;
     private RecyclerView recyclerView;
     private EditText inputText;
     private Button sendButton;
-    private LinkedList<Message> messageList = new LinkedList<Message>();
 
     private int type;
 
@@ -36,32 +43,18 @@ public class ChattingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
         Intent intent = getIntent();
-        int position = intent.getIntExtra("Position", 0);  // 被点击的会话在会话列表中的位置
+        //int position = intent.getIntExtra("Position", 0);  // 被点击的会话在会话列表中的位置
         type = intent.getIntExtra("Chat Type", CHAT_TYPE_SINGLE);
 
-        // TODO: 在messageList中导入历史消息
-        messageList.add(new Message(1, "xixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixi"));  // for test
+        context = getApplicationContext();
+        mPresenter = new ChattingPresenter(this, context);
 
-        messageAdapter = new MessageAdapter(messageList, getApplicationContext());
         recyclerView = (RecyclerView) findViewById(R.id.msg_recycle_view);
-        recyclerView.setAdapter(messageAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
         inputText = (EditText) findViewById(R.id.input_text);
         sendButton = (Button) findViewById(R.id.send);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String content = inputText.getText().toString();
-                if (!"".equals(content)) {  // 如果输入框非空，则发送消息
-                    Message msg = new Message(0, content);
-                    messageList.add(msg);
-                    messageAdapter.notifyDataSetChanged();
-                    //recyclerView.setSelection(messages.size());
-                    inputText.setText("");
-                }
-            }
-        });
+        sendButton.setOnClickListener(this);
+
+        mPresenter.showMsgList();
     }
 
     @Override
@@ -85,4 +78,30 @@ public class ChattingActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    @Override
+    public void onClick(View view) {
+        // 点击事件：发送消息
+        mPresenter.sendMsg();
+    }
+
+    @Override
+    public void setMsgList(List list) {
+        messageAdapter = new MessageAdapter((LinkedList<Message>) list, context);
+        recyclerView.setAdapter(messageAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    @Override
+    public void setMsgList() {
+        messageAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public String getMsg() {
+        return inputText.getText().toString();
+    }
+
+    @Override
+    public void clearMsg() { inputText.setText(""); }
 }

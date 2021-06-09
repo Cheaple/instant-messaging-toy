@@ -1,17 +1,21 @@
 package com.example.im.mvp.contract;
 
-import com.example.im.bean.chats.Chat;
 
 import java.util.List;
 
 public interface IChattingContract {
     interface View {
-        public void showChatList(List list);
+        public void setMsgList(List list);
+        public void setMsgList();
+        public String getMsg();
+        public void clearMsg();
     }
     interface Presenter {
-        
+        public void showMsgList();
+        public void sendMsg();
     }
     interface Model {
-        public List loadChatList();
+        public List loadMsgList();
+        public void uploadMsg();
     }
 }
