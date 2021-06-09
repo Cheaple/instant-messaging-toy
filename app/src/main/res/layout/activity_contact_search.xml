@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/edit_new_friend_id"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_marginLeft="50dp"
@@ -28,12 +28,12 @@
         android:text="Search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText" />
+        app:layout_constraintTop_toTopOf="@+id/edit_new_friend_id" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_contacts_selecting"
-        android:layout_width="354dp"
-        android:layout_height="260dp"
+        android:id="@+id/recycler_view_invitations"
+        android:layout_width="308dp"
+        android:layout_height="267dp"
         android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

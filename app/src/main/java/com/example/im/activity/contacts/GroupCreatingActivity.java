@@ -71,6 +71,7 @@ public class GroupCreatingActivity extends AppCompatActivity implements IGroupCr
 
     @Override
     public void gotoGroupChattingActivity() {
+        // TODO: 跳转至刚创建的群聊界面
         finish();
     }
 }

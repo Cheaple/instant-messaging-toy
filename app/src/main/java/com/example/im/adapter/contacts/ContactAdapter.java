@@ -87,8 +87,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         selectedContactList.add(contact);
-                        Toast.makeText(context, selectedContactList.getLast().getNickname(),Toast.LENGTH_SHORT).show();
                     } else {
+                        selectedContactList.remove(contact);
                     }
                 }
             });
