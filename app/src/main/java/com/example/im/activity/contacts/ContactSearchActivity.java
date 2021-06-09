@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.im.R;
 import com.example.im.adapter.contacts.ContactAdapter;
@@ -48,6 +51,9 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
         searchButton = (Button)findViewById(R.id.button_search);
         recyclerView = (RecyclerView)findViewById(R.id.recycler_view_invitations);
 
+        String digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
+        editText.setKeyListener(DigitsKeyListener.getInstance(digits));
         searchButton.setOnClickListener(this);
 
         mPresenter.showInvitationList();
@@ -73,5 +79,18 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
     @Override
     public String getTargetID() {
         return editText.getText().toString();
+    }
+
+    @Override
+    public void gotoContactInfoActivity(Contact contact) {
+        Intent intent = new Intent(context, ContactInfoActivity.class);
+        intent.putExtra("Type", Contact.CONTACT_TYPE_SEARCH);
+        intent.putExtra("Contact", contact);  // 传递联系人信息
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void searchFailed() {
+        Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
     }
 }

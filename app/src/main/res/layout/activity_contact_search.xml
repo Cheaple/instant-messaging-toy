@@ -13,7 +13,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginTop="152dp"
         android:layout_marginRight="50dp"
-        android:hint="Mobile Number"
+        android:hint="Enter a User ID"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"

@@ -21,6 +21,7 @@ public class ContactSearchModel implements IContactSearchContract.Model{
     @Override
     public Contact searchUser(String id) {
         // TODO: 根据id搜索用户
+        //return new Contact(R.drawable.avatar10, "何金龙", "111111111", "Zhengzhou");
         return null;
     }
 }
