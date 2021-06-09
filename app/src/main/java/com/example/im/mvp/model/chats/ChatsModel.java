@@ -1,4 +1,4 @@
-package com.example.im.mvp.model;
+package com.example.im.mvp.model.chats;
 
 import android.content.Context;
 

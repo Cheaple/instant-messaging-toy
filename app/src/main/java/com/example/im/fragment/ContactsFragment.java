@@ -1,5 +1,6 @@
 package com.example.im.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
@@ -24,23 +24,28 @@ import com.example.im.R;
 import com.example.im.activity.contacts.ContactInfoActivity;
 import com.example.im.activity.contacts.ContactSearchActivity;
 import com.example.im.activity.contacts.GroupCreatingActivity;
+import com.example.im.adapter.chats.ChatAdapter;
 import com.example.im.adapter.contacts.ContactAdapter;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.OnItemClickListener;
+import com.example.im.mvp.contract.contacts.IContactsContract;
+import com.example.im.mvp.presenter.contacts.ContactsPresenter;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ContactsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ContactsFragment extends Fragment {
-    public static final int TEXT_REQUEST = 1;
+public class ContactsFragment extends Fragment implements IContactsContract.View, OnItemClickListener {
     private static final int CONTACT_TYPE_LIST = 0x00001;  // 列表中的联系人
 
+    Activity context;
+    private ContactsPresenter mPresenter;
+
     private ContactAdapter contactAdapter;
-    private LinkedList<Contact> contacts;
     private RecyclerView recyclerView;
 
     public ContactsFragment() {
@@ -66,28 +71,12 @@ public class ContactsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Context context = getActivity();
+        context = getActivity();
+        mPresenter = new ContactsPresenter(this, context);
+
         recyclerView = view.findViewById(R.id.recycle_view_contacts);
 
-        // 添加数据，为recyclerView绑定Adapter、LayoutManager
-        contacts = new LinkedList<Contact>();
-        contacts.add(new Contact(getString(R.string.nickname1), R.drawable.avatar1));
-        contacts.add(new Contact(getString(R.string.nickname2), R.drawable.avatar2));
-
-        contactAdapter = new ContactAdapter(contacts, context, false);
-        contactAdapter.setOnItemClickListener(new OnItemClickListener() {
-            // 每个联系人的点击事件：跳转至联系人信息界面
-            @Override
-            public void onItemClick(View view, int position) {
-                //Toast.makeText(getActivity(), "Position: " + position, 5000).show();
-                Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
-                intent.putExtra("Type", CONTACT_TYPE_LIST);
-                intent.putExtra("Position", position);
-                startActivityForResult(intent, TEXT_REQUEST);
-            }
-        });
-        recyclerView.setAdapter(contactAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mPresenter.showContactList();
     }
 
     @Override
@@ -110,14 +99,36 @@ public class ContactsFragment extends Fragment {
         case 0:
             // 点击事件：跳转至联系人搜索界面
             Intent intent = new Intent(getActivity(), ContactSearchActivity.class);
-            startActivityForResult(intent, TEXT_REQUEST);
+            startActivityForResult(intent, 1);
             break;
         case 1:
             // 点击事件：跳转至群聊创建界面
             Intent intent2 = new Intent(getActivity(), GroupCreatingActivity.class);
-            startActivityForResult(intent2, TEXT_REQUEST);
+            startActivityForResult(intent2, 1);
             break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        // 点击事件：跳转至联系人信息界面
+        Intent intent = new Intent(context, ContactInfoActivity.class);
+        intent.putExtra("Type", CONTACT_TYPE_LIST);
+        intent.putExtra("Position", position);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void setContactList(List list) {
+        contactAdapter = new ContactAdapter((LinkedList<Contact>) list, context, false);
+        contactAdapter.setOnItemClickListener(this);
+        recyclerView.setAdapter(contactAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    @Override
+    public void setChatList() {
+        contactAdapter.notifyDataSetChanged();
     }
 }

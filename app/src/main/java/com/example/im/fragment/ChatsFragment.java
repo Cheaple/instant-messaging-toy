@@ -19,7 +19,7 @@ import com.example.im.adapter.chats.ChatAdapter;
 import com.example.im.bean.chats.Chat;
 
 import com.example.im.mvp.contract.chats.IChatsContract;
-import com.example.im.mvp.presenter.ChatsPresenter;
+import com.example.im.mvp.presenter.chats.ChatsPresenter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,8 +30,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ChatsFragment extends Fragment implements IChatsContract.View, AdapterView.OnItemClickListener {
-    public static final int TEXT_REQUEST = 1;
-
     Context context;
     private ChatsPresenter mPresenter;
 
@@ -77,10 +75,10 @@ public class ChatsFragment extends Fragment implements IChatsContract.View, Adap
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        // 点击事件：跳转至对话界面
+        // 点击事件：跳转至会话界面
         Intent intent = new Intent(context, ChattingActivity.class);
         intent.putExtra("Chat Type", mPresenter.getChat(position).getType());
-        startActivityForResult(intent, TEXT_REQUEST);
+        startActivityForResult(intent, 1);
     }
 
     @Override

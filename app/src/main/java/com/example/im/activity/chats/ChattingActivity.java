@@ -18,7 +18,7 @@ import com.example.im.activity.contacts.ContactInfoActivity;
 import com.example.im.adapter.chats.MessageAdapter;
 import com.example.im.bean.chats.Message;
 import com.example.im.mvp.contract.chats.IChattingContract;
-import com.example.im.mvp.presenter.ChattingPresenter;
+import com.example.im.mvp.presenter.chats.ChattingPresenter;
 
 import java.util.LinkedList;
 import java.util.List;

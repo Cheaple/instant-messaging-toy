@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.im.R;
 import com.example.im.activity.base.MainActivity;
 import com.example.im.mvp.contract.base.ISignInContract;
-import com.example.im.mvp.presenter.SignInPresenter;
+import com.example.im.mvp.presenter.base.SignInPresenter;
 
 public class SignInFragment extends Fragment implements ISignInContract.View, View.OnClickListener {
     private Activity context;

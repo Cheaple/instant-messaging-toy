@@ -1,10 +1,10 @@
-package com.example.im.mvp.presenter;
+package com.example.im.mvp.presenter.chats;
 
 import android.content.Context;
 
 import com.example.im.bean.chats.Chat;
 import com.example.im.mvp.contract.chats.IChatsContract;
-import com.example.im.mvp.model.ChatsModel;
+import com.example.im.mvp.model.chats.ChatsModel;
 
 import java.util.LinkedList;
 

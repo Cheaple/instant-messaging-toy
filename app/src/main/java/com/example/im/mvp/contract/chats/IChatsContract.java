@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IChatsContract {
     interface View {
-        public void setChatList(List list);  // 初始化好友列表
-        public void setChatList();  // 更新好友列表
+        public void setChatList(List list);  // 初始化会话列表
+        public void setChatList();  // 更新会话列表
     }
     interface Presenter {
         public void showChatList();

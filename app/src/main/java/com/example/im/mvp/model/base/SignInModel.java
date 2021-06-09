@@ -1,12 +1,12 @@
-package com.example.im.mvp.model;
+package com.example.im.mvp.model.base;
 
 import com.example.im.listener.OnLoginListener;
-import com.example.im.mvp.contract.base.ISignUpContract;
+import com.example.im.mvp.contract.base.ISignInContract;
 
-public class SignUpModel implements ISignUpContract.Model {
+public class SignInModel implements ISignInContract.Model {
     @Override
     public void login(String id, String password, OnLoginListener listener) {
-        // TODO: 注册
+        // TODO: 登录
         if (true) {
             // listener.loginSuccess();
         }
