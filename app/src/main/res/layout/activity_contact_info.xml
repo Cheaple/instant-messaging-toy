@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.im.activity.MainActivity">
+    tools:context="com.example.im.activity.base.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                     android:textSize="20sp"
                     android:textStyle="normal" />
                 <TextView
-                    android:id="@+id/text_my_region"
+                    android:id="@+id/text_contact_info_region"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -55,38 +55,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/grey"/>
-        <LinearLayout
-            android:id="@+id/contact_info"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="18dp"
-                android:layout_marginTop="7.5dp"
-                android:layout_marginBottom="7.5dp"
-                android:layout_weight="1"
-                android:text="好友信息"
-                android:textSize="20sp"
-                android:textStyle="normal" />
-
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="25dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="7.5dp"
-                android:src="@drawable/ic_goto" />
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/layout_go_chatting"
             android:layout_width="match_parent"
@@ -94,14 +62,13 @@
             android:orientation="vertical">
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="10dp"
                 android:background="@color/grey"/>
             <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:orientation="horizontal">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
@@ -109,7 +76,7 @@
                     android:layout_marginTop="7.5dp"
                     android:layout_marginBottom="7.5dp"
                     android:layout_weight="1"
-                    android:text="发送消息"
+                    android:text="Send Message"
                     android:textSize="20sp"
                     android:textStyle="normal" />
 
@@ -127,13 +94,50 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_contact_delete"
+            android:id="@+id/layout_clear_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
+                android:background="@color/grey"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="7.5dp"
+                    android:layout_marginBottom="7.5dp"
+                    android:layout_weight="1"
+                    android:text="Clear Chat History"
+                    android:textSize="20sp"
+                    android:textStyle="normal" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="7.5dp"
+                    android:src="@drawable/ic_goto" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_contact_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
                 android:background="@color/grey"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,7 +165,7 @@
             android:orientation="vertical">
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="16dp"
                 android:background="@color/grey"/>
             <LinearLayout
                 android:layout_width="match_parent"

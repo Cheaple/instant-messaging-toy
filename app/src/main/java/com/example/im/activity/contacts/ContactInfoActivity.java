@@ -1,6 +1,11 @@
 package com.example.im.activity.contacts;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,15 +16,26 @@ import android.widget.Toast;
 
 import com.example.im.R;
 import com.example.im.bean.chats.Message;
+import com.example.im.bean.contacts.Contact;
+import com.example.im.mvp.contract.contacts.IContactInfoContract;
+import com.example.im.mvp.presenter.contacts.ContactInfoPresenter;
+import com.example.im.mvp.presenter.contacts.ContactsPresenter;
 
-public class ContactInfoActivity extends AppCompatActivity {
+import butterknife.OnClick;
+
+public class ContactInfoActivity extends AppCompatActivity implements IContactInfoContract.View, View.OnClickListener {
     private static final int CONTACT_TYPE_LIST = 0x00001;  // 列表中的联系人
     private static final int CONTACT_TYPE_SEARCH = 0x00002;  // 搜索出的联系人
 
+    private Context context;
+    private ContactInfoPresenter mPresenter;
+
+    private ImageView avatarImageView;
     private TextView nameTextView;
     private TextView idTextView;
-    private ImageView avatarImageView;
+    private TextView regionTextView;
     private LinearLayout chattingLayout;
+    private LinearLayout clearLayout;
     private LinearLayout addLayout;
     private LinearLayout deleteLayout;
 
@@ -29,12 +45,17 @@ public class ContactInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_info);
         Intent intent = getIntent();
         int type = intent.getIntExtra("Type", CONTACT_TYPE_LIST);
-        int position = intent.getIntExtra("Position", 0);  // 被点击的联系人在联系人列表中的位置
+        Contact contact = (Contact) intent.getSerializableExtra("Contact");  // 获取所查看联系人的信息
+
+        this.context = getApplicationContext();
+        this.mPresenter = new ContactInfoPresenter(this, contact);
 
         this.avatarImageView = this.findViewById(R.id.img_contact_info_avatar);
         this.nameTextView = this.findViewById(R.id.text_contact_info_nickname);
         this.idTextView = this.findViewById(R.id.text_contact_info_id);
+        this.regionTextView = this.findViewById(R.id.text_contact_info_region);
         this.chattingLayout = this.findViewById(R.id.layout_go_chatting);
+        this.clearLayout = this.findViewById(R.id.layout_clear_history);
         this.addLayout = this.findViewById(R.id.layout_contact_add);
         this.deleteLayout = this.findViewById(R.id.layout_contact_delete);
 
@@ -42,33 +63,78 @@ public class ContactInfoActivity extends AppCompatActivity {
         if (type == CONTACT_TYPE_LIST) {
             this.deleteLayout.setVisibility(View.VISIBLE);
             this.chattingLayout.setVisibility(View.VISIBLE);
+            this.clearLayout.setVisibility(View.VISIBLE);
             this.addLayout.setVisibility(View.GONE);
-
-            // 点击事件：删除好友
-            deleteLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO: 删除好友
-                    Toast.makeText(ContactInfoActivity.this, "Delete", Toast.LENGTH_SHORT).show();
-                }
-            });
         }
         else if (type == CONTACT_TYPE_SEARCH) {
             this.addLayout.setVisibility(View.VISIBLE);
             this.deleteLayout.setVisibility(View.GONE);
             this.chattingLayout.setVisibility(View.GONE);
-
-            // 点击事件：发送添加好友请求
-            addLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO: 发送添加好友请求
-                    Toast.makeText(ContactInfoActivity.this, "Add", Toast.LENGTH_SHORT).show();
-                }
-            });
+            this.clearLayout.setVisibility(View.GONE);
         }
 
-        // TODO: 展示联系人信息界面
-        this.idTextView.setText("id: 66666");
+        clearLayout.setOnClickListener(this);
+        deleteLayout.setOnClickListener(this);
+        addLayout.setOnClickListener(this);
+
+        mPresenter.showInfo();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.layout_go_chatting:  // 点击事件：发起会话
+                break;
+            case R.id.layout_clear_history:  // 点击事件：清空聊天记录
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Confirm deletion of the chat history");
+                builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.clearChattingHistory();
+                    }
+                });
+                builder.show();
+                break;
+            case R.id.layout_contact_add:  // 点击事件：发送添加好友请求
+                mPresenter.add();
+                break;
+            case R.id.layout_contact_delete:  // 点击事件：删除好友
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                builder2.setMessage("Delete this contact and the chat history with it");
+                builder2.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.delete();
+                    }
+                });
+                builder2.show();
+                break;
+        }
+    }
+
+    @Override
+    public void setAvatar(int avatar) {
+        avatarImageView.setImageResource(avatar);
+    }
+
+    @Override
+    public void setName(String name) {
+        nameTextView.setText(name);
+    }
+
+    @Override
+    public void setID(String id) {
+        idTextView.setText("ID: " + id);
+    }
+
+    @Override
+    public void setRegion(String region) {
+        regionTextView.setText("Region: " + region);
+    }
+
+    @Override
+    public void gotoMainActivity() {
+        finish();
     }
 }

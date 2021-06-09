@@ -20,7 +20,7 @@ public class ContactsModel implements IContactsContract.Model {
     public List loadContactList() {
         LinkedList<Contact> list = new LinkedList<>();
         // TODO: 从服务器加载对话数据
-        Contact contact1 = new Contact(context.getString(R.string.nickname1), R.drawable.avatar1);
+        Contact contact1 = new Contact(R.drawable.avatar1, context.getString(R.string.nickname1), "Daidai", "Chengdu");
         list.add(contact1);
         return list;
     }

@@ -115,7 +115,7 @@ public class ContactsFragment extends Fragment implements IContactsContract.View
         // 点击事件：跳转至联系人信息界面
         Intent intent = new Intent(context, ContactInfoActivity.class);
         intent.putExtra("Type", CONTACT_TYPE_LIST);
-        intent.putExtra("Position", position);
+        intent.putExtra("Contact", mPresenter.getContact(position));
         startActivityForResult(intent, 1);
     }
 

@@ -38,8 +38,8 @@ public class GroupCreatingActivity extends AppCompatActivity {
 
         // 添加数据，为recyclerView绑定Adapter、LayoutManager
         contacts = new LinkedList<Contact>();
-        contacts.add(new Contact(getString(R.string.nickname1), R.drawable.avatar1));
-        contacts.add(new Contact(getString(R.string.nickname2), R.drawable.avatar2));
+        contacts.add(new Contact(R.drawable.avatar1, getString(R.string.nickname1),"Daidai", "Chengdu"));
+        contacts.add(new Contact(R.drawable.avatar2, getString(R.string.nickname2), "Jige", "Wuhan"));
 
         contactAdapter = new ContactAdapter(contacts, context, true);
         contactAdapter.setOnItemClickListener(new OnItemClickListener() {

@@ -22,8 +22,8 @@ public class ChatsModel implements IChatsContract.Model {
     public List loadChatList() {
         LinkedList<Chat> list = new LinkedList<>();
         // TODO: 从服务器加载对话数据
-        Contact contact1 = new Contact(context.getString(R.string.nickname1), R.drawable.avatar1);
-        Contact contact2 = new Contact(context.getString(R.string.nickname2), R.drawable.avatar2);
+        Contact contact1 = new Contact(R.drawable.avatar1, context.getString(R.string.nickname1), "Daidai", "Chengdu");
+        Contact contact2 = new Contact(R.drawable.avatar2, context.getString(R.string.nickname2), "Jige", "Wuhan");
         ArrayList<Contact> contactList = new ArrayList<>();
         contactList.add(contact1);
         contactList.add(contact2);
