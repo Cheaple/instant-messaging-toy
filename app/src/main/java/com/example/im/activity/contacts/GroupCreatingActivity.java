@@ -16,11 +16,16 @@ import com.example.im.activity.discover.PostActivity;
 import com.example.im.adapter.contacts.ContactAdapter;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.OnItemClickListener;
+import com.example.im.mvp.contract.contacts.IGroupCreatingContract;
+import com.example.im.mvp.presenter.contacts.GroupCreatingPresenter;
 
 import java.util.LinkedList;
+import java.util.List;
 
-public class GroupCreatingActivity extends AppCompatActivity {
+public class GroupCreatingActivity extends AppCompatActivity implements IGroupCreatingContract.View, OnItemClickListener, View.OnClickListener {
     private Context context;
+    private GroupCreatingPresenter mPresenter;
+
     private ContactAdapter contactAdapter;
     private LinkedList<Contact> contacts;
     private RecyclerView recyclerView;
@@ -33,39 +38,39 @@ public class GroupCreatingActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         context = getApplicationContext();
+        mPresenter = new GroupCreatingPresenter(this, context);
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_contacts_selecting);
         createButton = (Button) findViewById(R.id.button_create);
+        createButton.setOnClickListener(this);
 
-        // 添加数据，为recyclerView绑定Adapter、LayoutManager
-        contacts = new LinkedList<Contact>();
-        contacts.add(new Contact(R.drawable.avatar1, getString(R.string.nickname1),"Daidai", "Chengdu"));
-        contacts.add(new Contact(R.drawable.avatar2, getString(R.string.nickname2), "Jige", "Wuhan"));
-
-        contactAdapter = new ContactAdapter(contacts, context, true);
-        contactAdapter.setOnItemClickListener(new OnItemClickListener() {
-            // 每个联系人的点击事件：跳转至联系人信息界面
-            @Override
-            public void onItemClick(View view, int position) {
-                //Toast.makeText(getActivity(), "Position: " + position, 5000).show();
-                Intent intent = new Intent(getApplicationContext(), ContactInfoActivity.class);
-                intent.putExtra("Position", position);
-                startActivityForResult(intent, 1);
-            }
-        });
-        recyclerView.setAdapter(contactAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-        // 设置点击事件
-        createGroup();
+        mPresenter.showContactList();
     }
 
-    private void createGroup() {
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO：创建群聊
-                LinkedList<Contact> memberList = contactAdapter.getSelectedContacts();  // 获取用户勾选的联系人
-            }
-        });
+    @Override
+    public void onItemClick(View view, int position) {}
+
+    @Override
+    public void onClick(View view) {
+        // 点击事件：创建群聊
+        mPresenter.createGroup();
+    }
+
+    @Override
+    public LinkedList<Contact> getSelectedContacts() {
+        return contactAdapter.getSelectedContacts();
+    }
+
+    @Override
+    public void setContactList(List list) {
+        contactAdapter = new ContactAdapter((LinkedList<Contact>) list, context, true);
+        contactAdapter.setOnItemClickListener(this);
+        recyclerView.setAdapter(contactAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    @Override
+    public void gotoGroupChattingActivity() {
+        finish();
     }
 }

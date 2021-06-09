@@ -8,7 +8,7 @@ import java.util.List;
 public interface IContactsContract {
     public interface View {
         public void setContactList(List list);  // 初始化好友列表
-        public void setChatList();  // 更新好友列表
+        public void setContactList();  // 更新好友列表
     }
     public interface Presenter {
         public void showContactList();

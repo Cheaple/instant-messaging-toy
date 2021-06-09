@@ -126,7 +126,7 @@ public class ContactsFragment extends Fragment implements IContactsContract.View
     }
 
     @Override
-    public void setChatList() {
+    public void setContactList() {
         contactAdapter.notifyDataSetChanged();
     }
 }
