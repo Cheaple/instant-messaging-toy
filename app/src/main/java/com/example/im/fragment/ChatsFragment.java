@@ -17,23 +17,25 @@ import com.example.im.R;
 import com.example.im.activity.chats.ChattingActivity;
 import com.example.im.adapter.chats.ChatAdapter;
 import com.example.im.bean.chats.Chat;
-
+import com.example.im.bean.contacts.Contact;
+import com.example.im.mvp.contract.IChatsContract;
+import com.example.im.mvp.presenter.ChatsPresenter;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ChatsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ChatsFragment extends Fragment {
+public class ChatsFragment extends Fragment implements IChatsContract.View, AdapterView.OnItemClickListener {
     public static final int TEXT_REQUEST = 1;
-    private static final int CHAT_TYPE_SINGLE = 0x00001;  // 对话
-    private static final int CHAT_TYPE_GROUP = 0x00002;  // 群聊
 
     Context context;
+    private ChatsPresenter mPresenter;
+
     private ChatAdapter chatAdapter;
-    private LinkedList<Chat> chatList;
     private ListView listView;
 
     public ChatsFragment() {
@@ -53,25 +55,13 @@ public class ChatsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        listView = getView().findViewById(R.id.listview);
         context = getActivity();
+        listView = getView().findViewById(R.id.listview);
+        listView.setOnItemClickListener(this);
 
-        // 向ListView 添加数据，新建ChatAdapter，并向listView绑定该Adapter
-        chatList = new LinkedList<>();
-        chatList.add(new Chat(getString(R.string.nickname1), R.drawable.avatar1, getString(R.string.sentence1), "2021/01/01", CHAT_TYPE_SINGLE));
-        chatList.add(new Chat(getString(R.string.nickname2), R.drawable.avatar2, getString(R.string.sentence2), "2021/01/01", CHAT_TYPE_GROUP));
+        mPresenter = new ChatsPresenter(this, context);
 
-        chatAdapter = new ChatAdapter(chatList, context);
-        listView.setAdapter(chatAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // 设置对话的点击事件：跳转至对话页面
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(context, ChattingActivity.class);
-                intent.putExtra("Chat Type", chatList.get(position).getType());
-                startActivityForResult(intent, TEXT_REQUEST);
-            }
-        });
+        mPresenter.showChatList();
     }
 
     @Override
@@ -82,7 +72,20 @@ public class ChatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chats, container, false);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // 点击事件：跳转至对话界面
+        Intent intent = new Intent(context, ChattingActivity.class);
+        intent.putExtra("Chat Type", mPresenter.getChat(position).getType());
+        startActivityForResult(intent, TEXT_REQUEST);
+    }
+
+    @Override
+    public void showChatList(List list) {
+        chatAdapter = new ChatAdapter((LinkedList<Chat>) list, context);
+        listView.setAdapter(chatAdapter);
     }
 }

@@ -18,15 +18,14 @@ public class SplashActivity extends AppCompatActivity {
         if (AccountInfo.getInstance().ifLoggedIn(this)) {
             // 已登录：跳转至主界面
             Toast.makeText(this, "To Main", Toast.LENGTH_SHORT).show();
-            /*Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish();*/
         } else {
             // 未登录：跳转至登录界面
             Toast.makeText(this, "To Login", Toast.LENGTH_SHORT).show();
-            Intent intent2 = new Intent(SplashActivity.this, LoginActivity.class);
+            Intent intent2 = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent2);
-            finish();
         }
+        finish();
     }
 }
