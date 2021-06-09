@@ -40,8 +40,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ContactsFragment extends Fragment implements IContactsContract.View, OnItemClickListener {
-    private static final int CONTACT_TYPE_LIST = 0x00001;  // 列表中的联系人
-
     Activity context;
     private ContactsPresenter mPresenter;
 
@@ -114,8 +112,8 @@ public class ContactsFragment extends Fragment implements IContactsContract.View
     public void onItemClick(View view, int position) {
         // 点击事件：跳转至联系人信息界面
         Intent intent = new Intent(context, ContactInfoActivity.class);
-        intent.putExtra("Type", CONTACT_TYPE_LIST);
-        intent.putExtra("Contact", mPresenter.getContact(position));
+        intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
+        intent.putExtra("Contact", mPresenter.getContact(position));  // 传递联系人信息
         startActivityForResult(intent, 1);
     }
 

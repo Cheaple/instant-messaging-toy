@@ -4,6 +4,9 @@ package com.example.im.bean.contacts;
 import java.io.Serializable;
 
 public class Contact implements Serializable {
+    public static final int CONTACT_TYPE_LIST = 0;  // 已添加的联系人
+    public static final int CONTACT_TYPE_SEARCH = 1;  // 未添加的联系人
+
     private int avatarIcon;  // 头像
     private String nickname;  // 昵称
     private String id;  // ID

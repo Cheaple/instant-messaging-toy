@@ -24,9 +24,6 @@ import com.example.im.mvp.presenter.contacts.ContactsPresenter;
 import butterknife.OnClick;
 
 public class ContactInfoActivity extends AppCompatActivity implements IContactInfoContract.View, View.OnClickListener {
-    private static final int CONTACT_TYPE_LIST = 0x00001;  // 列表中的联系人
-    private static final int CONTACT_TYPE_SEARCH = 0x00002;  // 搜索出的联系人
-
     private Context context;
     private ContactInfoPresenter mPresenter;
 
@@ -44,7 +41,7 @@ public class ContactInfoActivity extends AppCompatActivity implements IContactIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_info);
         Intent intent = getIntent();
-        int type = intent.getIntExtra("Type", CONTACT_TYPE_LIST);
+        int type = intent.getIntExtra("Type", Contact.CONTACT_TYPE_LIST);
         Contact contact = (Contact) intent.getSerializableExtra("Contact");  // 获取所查看联系人的信息
 
         this.context = getApplicationContext();
@@ -60,13 +57,13 @@ public class ContactInfoActivity extends AppCompatActivity implements IContactIn
         this.deleteLayout = this.findViewById(R.id.layout_contact_delete);
 
         // 隐藏Add栏或Delete栏
-        if (type == CONTACT_TYPE_LIST) {
+        if (type == Contact.CONTACT_TYPE_LIST) {
             this.deleteLayout.setVisibility(View.VISIBLE);
             this.chattingLayout.setVisibility(View.VISIBLE);
             this.clearLayout.setVisibility(View.VISIBLE);
             this.addLayout.setVisibility(View.GONE);
         }
-        else if (type == CONTACT_TYPE_SEARCH) {
+        else if (type == Contact.CONTACT_TYPE_SEARCH) {
             this.addLayout.setVisibility(View.VISIBLE);
             this.deleteLayout.setVisibility(View.GONE);
             this.chattingLayout.setVisibility(View.GONE);

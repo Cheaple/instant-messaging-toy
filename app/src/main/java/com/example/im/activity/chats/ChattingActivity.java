@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.im.R;
 import com.example.im.activity.contacts.ContactInfoActivity;
 import com.example.im.adapter.chats.MessageAdapter;
+import com.example.im.bean.chats.Chat;
 import com.example.im.bean.chats.Message;
+import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.presenter.chats.ChattingPresenter;
 
@@ -24,9 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ChattingActivity extends AppCompatActivity implements IChattingContract.View, View.OnClickListener {
-    private static final int CHAT_TYPE_SINGLE = 0x00001;  // 对话
-    private static final int CHAT_TYPE_GROUP = 0x00002;  // 群聊
-
     private Context context;
     private ChattingPresenter mPresenter;
 
@@ -43,7 +42,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         setContentView(R.layout.activity_chatting);
         Intent intent = getIntent();
         //int position = intent.getIntExtra("Position", 0);  // 被点击的会话在会话列表中的位置
-        type = intent.getIntExtra("Chat Type", CHAT_TYPE_SINGLE);
+        type = intent.getIntExtra("Chat Type", Chat.CHAT_TYPE_SINGLE);
 
         context = getApplicationContext();
         mPresenter = new ChattingPresenter(this, context);
@@ -65,11 +64,13 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     public boolean onOptionsItemSelected(MenuItem item) {
         // 点击事件：查看联系人信息或群聊信息
         if (item.getItemId() == R.id.menu_info) {
-            if (type == CHAT_TYPE_SINGLE) {
+            if (type == Chat.CHAT_TYPE_SINGLE) {
                 Intent intent = new Intent(ChattingActivity.this, ContactInfoActivity.class);
+                intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
+                intent.putExtra("Contact", mPresenter.getContactInfo());  // 传递联系人信息
                 startActivityForResult(intent, 1);
             }
-            else if (type == CHAT_TYPE_GROUP) {
+            else if (type == Chat.CHAT_TYPE_GROUP) {
                 Intent intent = new Intent(ChattingActivity.this, GroupInfoActivity.class);
                 startActivityForResult(intent, 1);
             }
@@ -94,6 +95,11 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     @Override
     public void setMsgList() {
         messageAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public int getChatType() {
+        return type;
     }
 
     @Override
