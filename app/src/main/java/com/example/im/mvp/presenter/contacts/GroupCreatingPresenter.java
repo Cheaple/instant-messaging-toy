@@ -33,5 +33,6 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
     @Override
     public void createGroup() {
         mModel.createGroup(mView.getSelectedContacts());
+        mView.gotoGroupChattingActivity();
     }
 }

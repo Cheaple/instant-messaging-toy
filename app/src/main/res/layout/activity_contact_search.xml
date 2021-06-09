@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="276dp"
+        android:layout_marginTop="152dp"
         android:layout_marginRight="50dp"
         android:hint="Mobile Number"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.636"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,4 +29,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_contacts_selecting"
+        android:layout_width="354dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_search" />
 </androidx.constraintlayout.widget.ConstraintLayout>
