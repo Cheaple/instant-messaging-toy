@@ -1,5 +1,8 @@
 package com.example.im.fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.method.DigitsKeyListener;
@@ -13,8 +16,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.im.R;
+import com.example.im.activity.MainActivity;
+import com.example.im.mvp.contract.ISignInContract;
+import com.example.im.mvp.presenter.ChattingPresenter;
+import com.example.im.mvp.presenter.SignInPresenter;
 
-public class SignInFragment extends Fragment  {
+public class SignInFragment extends Fragment implements ISignInContract.View, View.OnClickListener {
+    private Activity context;
+    private SignInPresenter mPresenter;
+
     private EditText idEditView;
     private EditText passwordEditView;
     private Button signInButton;
@@ -30,17 +40,17 @@ public class SignInFragment extends Fragment  {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        context = getActivity();
+        mPresenter = new SignInPresenter(this);
+
         idEditView = (EditText)getView().findViewById(R.id.edit_id);
         passwordEditView = (EditText)getView().findViewById(R.id.edit_password);
         signInButton = (Button)getView().findViewById(R.id.button_sign_in);
 
-        // 限制输入格式
         String digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         idEditView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
         idEditView.setKeyListener(DigitsKeyListener.getInstance(digits));
-
-        // 设置点击事件
-        signIn();
+        signInButton.setOnClickListener(this);
     }
 
     @Override
@@ -55,15 +65,36 @@ public class SignInFragment extends Fragment  {
         return inflater.inflate(R.layout.fragment_sign_in, container, false);
     }
 
-    // 点击事件：登录
-    private void signIn() {
-        this.signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: 登录
-                String id = idEditView.getText().toString();
-                String password = passwordEditView.getText().toString();
-            }
-        });
+    @Override
+    public void onClick(View view) {
+        // 点击事件：登录
+        mPresenter.login();
+    }
+
+    @Override
+    public String getID() {
+        return idEditView.getText().toString();
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordEditView.getText().toString();
+    }
+
+    @Override
+    public void clearID() {
+        idEditView.setText("");
+    }
+
+    @Override
+    public void clearPassword() {
+        passwordEditView.setText("");
+    }
+
+    @Override
+    public void gotoMainActivity() {
+        Intent intent = new Intent(context, MainActivity.class);
+        startActivity(intent);
+        context.finish();
     }
 }
