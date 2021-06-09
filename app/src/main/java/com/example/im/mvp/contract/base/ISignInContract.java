@@ -1,4 +1,4 @@
-package com.example.im.mvp.contract;
+package com.example.im.mvp.contract.base;
 
 import com.example.im.listener.OnLoginListener;
 

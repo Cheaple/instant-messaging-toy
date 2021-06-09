@@ -5,7 +5,7 @@ import android.content.Context;
 import com.example.im.R;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.contacts.Contact;
-import com.example.im.mvp.contract.IChatsContract;
+import com.example.im.mvp.contract.chats.IChatsContract;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

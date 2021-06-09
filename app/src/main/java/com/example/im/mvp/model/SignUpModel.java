@@ -1,7 +1,7 @@
 package com.example.im.mvp.model;
 
 import com.example.im.listener.OnLoginListener;
-import com.example.im.mvp.contract.ISignUpContract;
+import com.example.im.mvp.contract.base.ISignUpContract;
 
 public class SignUpModel implements ISignUpContract.Model {
     @Override

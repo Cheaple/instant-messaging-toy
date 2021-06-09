@@ -1,7 +1,6 @@
 package com.example.im.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -17,8 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.im.R;
 import com.example.im.activity.base.MainActivity;
-import com.example.im.mvp.contract.ISignInContract;
-import com.example.im.mvp.presenter.ChattingPresenter;
+import com.example.im.mvp.contract.base.ISignInContract;
 import com.example.im.mvp.presenter.SignInPresenter;
 
 public class SignInFragment extends Fragment implements ISignInContract.View, View.OnClickListener {

@@ -1,6 +1,4 @@
-package com.example.im.mvp.contract;
-
-import com.example.im.listener.OnLoginListener;
+package com.example.im.mvp.contract.base;
 
 public interface ISignUpContract {
     interface View extends ISignInContract.View{

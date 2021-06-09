@@ -3,7 +3,7 @@ package com.example.im.mvp.presenter;
 import android.content.Context;
 
 import com.example.im.bean.chats.Chat;
-import com.example.im.mvp.contract.IChatsContract;
+import com.example.im.mvp.contract.chats.IChatsContract;
 import com.example.im.mvp.model.ChatsModel;
 
 import java.util.LinkedList;

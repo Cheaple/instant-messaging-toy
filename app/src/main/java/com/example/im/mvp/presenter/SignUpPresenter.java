@@ -2,7 +2,7 @@ package com.example.im.mvp.presenter;
 
 import com.example.im.bean.AccountInfo;
 import com.example.im.listener.OnLoginListener;
-import com.example.im.mvp.contract.ISignUpContract;
+import com.example.im.mvp.contract.base.ISignUpContract;
 import com.example.im.mvp.model.SignUpModel;
 
 public class SignUpPresenter implements ISignUpContract.Presenter {

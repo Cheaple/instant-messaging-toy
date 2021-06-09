@@ -1,4 +1,4 @@
-package com.example.im.mvp.contract;
+package com.example.im.mvp.contract.chats;
 
 
 import java.util.List;

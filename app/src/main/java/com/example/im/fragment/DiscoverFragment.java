@@ -19,8 +19,6 @@ import android.view.ViewGroup;
 
 
 import com.example.im.R;
-import com.example.im.activity.contacts.ContactSearchActivity;
-import com.example.im.activity.contacts.GroupCreatingActivity;
 import com.example.im.activity.discover.PostActivity;
 import com.example.im.adapter.discover.DiscoverAdapter;
 import com.example.im.bean.discover.Discover;
