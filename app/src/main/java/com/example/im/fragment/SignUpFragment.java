@@ -1,5 +1,7 @@
 package com.example.im.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.method.DigitsKeyListener;
@@ -14,8 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.im.R;
+import com.example.im.activity.base.MainActivity;
+import com.example.im.mvp.contract.ISignUpContract;
+import com.example.im.mvp.presenter.SignUpPresenter;
 
-public class SignUpFragment extends Fragment  {
+public class SignUpFragment extends Fragment implements ISignUpContract.View, View.OnClickListener {
+    private Activity context;
+    private SignUpPresenter mPresenter;
+
     private EditText idEditView;
     private EditText passwordEditView;
     private EditText pwConfirmEditView;
@@ -32,18 +40,19 @@ public class SignUpFragment extends Fragment  {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        context = getActivity();
+        mPresenter = new SignUpPresenter(this);
+
         idEditView = (EditText)getView().findViewById(R.id.edit_new_id);
         passwordEditView = (EditText)getView().findViewById(R.id.edit_new_password);
         pwConfirmEditView = (EditText)getView().findViewById(R.id.edit_confirm_password);
         signUpButton = (Button)getView().findViewById(R.id.button_sign_up);
 
-        // 限制输入格式
         String digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         idEditView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
         idEditView.setKeyListener(DigitsKeyListener.getInstance(digits));
+        signUpButton.setOnClickListener(this);
 
-        // 设置点击事件
-        signUp();
     }
 
     @Override
@@ -55,24 +64,51 @@ public class SignUpFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false);
+        return inflater.inflate(R.layout.fragment_sign_up, container, false);
     }
 
-    // 点击事件：注册
-    private void signUp() {
-        this.signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = idEditView.getText().toString();
-                String password = passwordEditView.getText().toString();
-                String pw = pwConfirmEditView.getText().toString();
-                if (!pw.equals(password))
-                    Toast.makeText(getActivity(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-                else {
-                    // TODO: 注册
-                }
-            }
-        });
+
+    @Override
+    public void onClick(View view) {
+        // 点击事件：注册
+        mPresenter.login();
+    }
+
+    @Override
+    public String getID() {
+        return idEditView.getText().toString();
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordEditView.getText().toString();
+    }
+
+    @Override
+    public String getConfirmPassword() {
+        return pwConfirmEditView.getText().toString();
+    }
+
+    @Override
+    public void clearID() {
+        idEditView.setText("");
+    }
+
+    @Override
+    public void clearPassword() {
+        passwordEditView.setText("");
+    }
+
+    @Override
+    public void clearConfirmPassword() {
+        pwConfirmEditView.setText("");
+    }
+
+    @Override
+    public void gotoMainActivity() {
+        Intent intent = new Intent(context, MainActivity.class);
+        startActivity(intent);
+        context.finish();
     }
 }
 

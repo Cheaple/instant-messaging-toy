@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.im.R;
-import com.example.im.activity.MainActivity;
+import com.example.im.activity.base.MainActivity;
 import com.example.im.activity.contacts.ContactInfoActivity;
 
 /**

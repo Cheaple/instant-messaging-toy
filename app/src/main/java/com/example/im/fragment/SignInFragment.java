@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.im.R;
-import com.example.im.activity.MainActivity;
+import com.example.im.activity.base.MainActivity;
 import com.example.im.mvp.contract.ISignInContract;
 import com.example.im.mvp.presenter.ChattingPresenter;
 import com.example.im.mvp.presenter.SignInPresenter;

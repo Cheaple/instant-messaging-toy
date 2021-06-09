@@ -48,6 +48,7 @@
                 android:layout_width="203dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:inputType="textPassword"
                 android:hint="Enter your password"
                 android:maxLines="1" />
 
