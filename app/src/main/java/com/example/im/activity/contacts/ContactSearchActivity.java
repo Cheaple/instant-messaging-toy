@@ -60,7 +60,21 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
     }
 
     @Override
-    public void onItemClick(View view, int position) {}
+    public void onItemClick(View view, int position) {
+        switch (view.getId()){
+            case R.id.button_invitation_accept:  // 点击事件：接受邀请
+                mPresenter.accept(position);
+                Toast.makeText(context,"Accepted",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.button_invitation_refuse:  // 点击事件：拒绝事件
+                Toast.makeText(context,"Refused", Toast.LENGTH_SHORT).show();
+                mPresenter.refuse(position);
+                break;
+            default:
+                Toast.makeText(context,"Default"+(position+1),Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -74,6 +88,11 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
         invitationAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(invitationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    @Override
+    public void setInvitationList() {
+        invitationAdapter.notifyDataSetChanged();
     }
 
     @Override

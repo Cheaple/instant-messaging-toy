@@ -39,10 +39,23 @@
         android:layout_width="83dp"
         android:layout_height="42dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:gravity="center"
+        android:text="Accept"
+        android:textSize="11dp"
+        app:layout_constraintEnd_toStartOf="@+id/button_invitation_refuse"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_invitation_refuse"
+        android:layout_width="83dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center"
-        android:text="Accept"
+        android:text="Refuse"
         android:textSize="11dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

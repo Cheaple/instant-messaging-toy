@@ -31,6 +31,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
         private ImageView avatarImageView;
         private TextView nameTextView;
         private Button acceptButton;
+        private Button refuseButton;
 
         public InvitationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -43,12 +44,16 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
             this.avatarImageView = itemView.findViewById(R.id.img_invitation_avatar);
             this.nameTextView = itemView.findViewById(R.id.text_invitation_nickname);
             this.acceptButton = itemView.findViewById(R.id.button_invitation_accept);
+            this.refuseButton = itemView.findViewById(R.id.button_invitation_refuse);
+
             itemView.setOnClickListener(this);  // 为ItemView添加点击事件
+            acceptButton.setOnClickListener(this);
+            refuseButton.setOnClickListener(this);
         }
 
         public void onClick(View v) {
             // getpostion()为Viewholder自带的一个方法，用来获取RecyclerView当前的位置，将此作为参数，传出去
-            mListener.onItemClick(v, getPosition());
+            mListener.onItemClick(v, (int) v.getTag());
         }
     }
 
@@ -71,6 +76,10 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
         // Add the data to the view
         holder.avatarImageView.setImageResource(contact.getAvatarIcon());  // 设置联系人头像
         holder.nameTextView.setText(contact.getNickname());  // 设置联系人昵称
+
+        holder.itemView.setTag(position);
+        holder.acceptButton.setTag(position);
+        holder.refuseButton.setTag(position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
