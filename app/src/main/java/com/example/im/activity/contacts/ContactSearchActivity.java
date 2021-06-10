@@ -66,7 +66,7 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
                 mPresenter.accept(position);
                 Toast.makeText(context,"Accepted",Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.button_invitation_refuse:  // 点击事件：拒绝事件
+            case R.id.button_invitation_refuse:  // 点击事件：拒绝邀请
                 Toast.makeText(context,"Refused", Toast.LENGTH_SHORT).show();
                 mPresenter.refuse(position);
                 break;

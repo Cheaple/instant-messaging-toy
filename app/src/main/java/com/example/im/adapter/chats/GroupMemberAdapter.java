@@ -13,29 +13,39 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.im.R;
 import com.example.im.activity.chats.GroupInfoActivity;
 import com.example.im.bean.contacts.Contact;
+import com.example.im.listener.OnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.MemberViewHolder> {
-
     private GroupInfoActivity context;
-    private ArrayList<Contact> memberList;
+    private OnItemClickListener mClickListener;
+    private LinkedList<Contact> memberList;
 
-    public GroupMemberAdapter(ArrayList<Contact> memberList, GroupInfoActivity context) {
+    public GroupMemberAdapter(LinkedList<Contact> memberList, GroupInfoActivity context) {
         this.context = context;
         this.memberList = memberList;
     }
 
-    public static class MemberViewHolder extends RecyclerView.ViewHolder {
+    public static class MemberViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private GroupMemberAdapter mAdapter;
+        private OnItemClickListener mListener;
         private ImageView imageView;
         private TextView textView;
+
         public MemberViewHolder(@NonNull View itemView) { super(itemView); }
-        public MemberViewHolder(View itemView, GroupMemberAdapter adapter) {
+        public MemberViewHolder(View itemView, GroupMemberAdapter adapter, OnItemClickListener listener) {
             super(itemView);
             this.mAdapter =  adapter;
+            this.mListener = listener;
             imageView = (ImageView)itemView.findViewById(R.id.img_group_member);
             textView = (TextView)itemView.findViewById(R.id.text_group_member);
+            itemView.setOnClickListener(this);  // 为ItemView添加点击事件
+        }
+
+        public void onClick(View v) {
+            mListener.onItemClick(v, (int) v.getTag());
         }
     }
 
@@ -44,32 +54,23 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
     public GroupMemberAdapter.MemberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         parent.setPadding(20, 0, 20, 0);
         View mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_group_member, parent, false);
-        return new GroupMemberAdapter.MemberViewHolder(mItemView, this);
+        return new GroupMemberAdapter.MemberViewHolder(mItemView, this, mClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
         if (position == getItemCount() - 1) {
-            holder.textView.setVisibility(View.INVISIBLE);
-            // 点击事件：邀请联系人加入群聊
-            /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Invite", Toast.LENGTH_SHORT).show();
-                    // TODO: 邀请联系人
-                }
-            });*/
+            holder.textView.setVisibility(View.INVISIBLE);  // 隐藏邀请按键的名词栏
         }
         else {
-            // 点击事件：查看群聊成员信息
-            /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Member", Toast.LENGTH_SHORT).show();
-                    // TODO: 查看群聊成员信息
-                }
-            });*/
+            Contact contact = memberList.get(position);
+            holder.imageView.setImageResource(contact.getAvatarIcon());
+            holder.textView.setText(contact.getNickname());
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mClickListener = listener;
     }
 
     @Override

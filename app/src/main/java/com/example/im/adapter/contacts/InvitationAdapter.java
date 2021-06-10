@@ -52,7 +52,6 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
         }
 
         public void onClick(View v) {
-            // getpostion()为Viewholder自带的一个方法，用来获取RecyclerView当前的位置，将此作为参数，传出去
             mListener.onItemClick(v, (int) v.getTag());
         }
     }
