@@ -1,61 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/moment_type3"
+    android:id="@+id/moment_type1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="7.5dp"
-        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <View
-            android:layout_width="7.5dp"
-            android:layout_height="45dp"
-            />
+        android:orientation="horizontal"
+        android:layout_marginTop="7.5dp">
         <ImageView
             android:id="@+id/avatar_icon"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:layout_marginLeft="7.5dp"
+            android:layout_marginRight="7.5dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/avatar1" />
-        <View
-            android:layout_width="7.5dp"
-            android:layout_height="45dp"
-            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="7.5dp"
-                />
             <TextView
                 android:id="@+id/nickname_text"
+                android:layout_marginTop="7.5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="昵称"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="7.5dp"
-                />
             <TextView
                 android:id="@+id/moment_text"
+                android:layout_marginTop="7.5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:text="@string/paragraph1"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="7.5dp"
-                />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,14 +71,12 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/image3" />
             </LinearLayout>>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="7.5dp"
-                />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="7.5dp">
                 <TextView
                     android:id="@+id/published_time"
                     android:layout_width="wrap_content"
@@ -106,21 +85,71 @@
                     android:textSize="15sp"
                     android:text="1小时前"/>
                 <ImageView
-                    android:id="@+id/avatar_like"
-                    android:layout_width="20dp"
+                    android:id="@+id/img_like"
+                    android:layout_width="30dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_like" />
+
                 <View
                     android:layout_width="10dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
                     android:textSize="15sp" />
+
                 <ImageView
-                    android:id="@+id/avatar_comment"
-                    android:layout_width="20dp"
+                    android:id="@+id/img_comment"
+                    android:layout_width="30dp"
                     android:layout_height="20dp"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/ic_comment" />
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="7.5dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/grey"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:background="@color/grey">
+                <ImageView
+                    android:id="@+id/img_heart"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="7.5dp"
+                    android:layout_marginRight="7.5dp"
+                    android:src="@drawable/ic_heart" />
+                <TextView
+                    android:id="@+id/text_likes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="徐金龙，陈宇乐"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/teal_700"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/grey"/>
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7.5dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/grey">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/comments_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"/>
+            </FrameLayout>
         </LinearLayout>
 
 

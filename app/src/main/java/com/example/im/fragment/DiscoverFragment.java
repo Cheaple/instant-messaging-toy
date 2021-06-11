@@ -105,7 +105,6 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
                 makeComment(position);
                 break;
             default:
-                Toast.makeText(context,"Default"+(position+1),Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -125,6 +124,7 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
             // 若已点赞，则取消点赞
             holder.ifLiked = false;
             holder.likeImageView.setImageResource(R.drawable.ic_like);
+            mPresenter.cancelLike(position);
         }
         Toast.makeText(context, "btn2", Toast.LENGTH_SHORT).show();
     }
@@ -151,6 +151,7 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
                     // TODO: 评论
                     holder.commentList.add(new Comment(comment, "Me"));
                     holder.commentAdapter.notifyDataSetChanged();
+                    mPresenter.makeComment(comment, position);
                 }
             }
         });
