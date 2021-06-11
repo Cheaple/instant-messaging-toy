@@ -1,5 +1,6 @@
 package com.example.im.activity.discover;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,13 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.im.R;
 import com.example.im.adapter.discover.ImageAdapter;
+import com.example.im.mvp.contract.discover.IPostContract;
+import com.example.im.mvp.presenter.discover.PostPresenter;
 
 import java.util.ArrayList;
 
 import me.nereo.multi_image_selector.MultiImageSelector;
 
-public class PostActivity extends AppCompatActivity {
-    private static final int REQUEST_PHOTOS = 0x00001;
+public class PostActivity extends AppCompatActivity implements IPostContract.View, View.OnClickListener {
+    private static final int REQUEST_PHOTOS = 1;
+
+    private Context context;
+    private IPostContract.Presenter mPresenter;
 
     private ImageAdapter imageAdapter;
     private RecyclerView recyclerView;
@@ -36,22 +42,25 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_moment_post);
         Intent intent = getIntent();
 
+        context = getApplicationContext();
+        mPresenter = new PostPresenter(this, context);
+
         imageAdapter = new ImageAdapter(imageList, this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+
         recyclerView = (RecyclerView)findViewById(R.id.recycle_view_images);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(imageAdapter);
-
-
         inputText = (EditText)findViewById(R.id.edit_moment_text);
         postButton = (Button)findViewById(R.id.button_post);
-        postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(PostActivity.this, "Post", Toast.LENGTH_SHORT).show();
-                // TODO：发布动态
-            }
-        });
+        postButton.setOnClickListener(this);
+
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(imageAdapter);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Toast.makeText(PostActivity.this, "Post", Toast.LENGTH_SHORT).show();
+        mPresenter.postMoment();
     }
 
     public void uploadPhotos() {
