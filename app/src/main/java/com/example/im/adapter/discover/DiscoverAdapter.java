@@ -20,19 +20,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.im.R;
 import com.example.im.bean.discover.Comment;
 import com.example.im.bean.discover.Discover;
+import com.example.im.listener.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DiscoverViewHolder> {
-    private LinkedList<Discover> discoverList;
     private Context context;
+    private OnItemClickListener mClickListener;
+    private LinkedList<Discover> discoverList;
 
-    public static class DiscoverViewHolder extends RecyclerView.ViewHolder {
+    public static class DiscoverViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private DiscoverAdapter mAdapter;
+        private OnItemClickListener mListener;
+
         private View discoverItemView;
-        private ImageView likeImageView;
-        private ImageView commentImageView;
+        public ImageView likeImageView;
+        public ImageView commentImageView;
         private TextView likesTextView;
 
         public LinkedList<Comment> commentList = new LinkedList<Comment>();
@@ -45,9 +49,10 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             super(itemView);
             this.imageCount = imageCount;
         }
-        public DiscoverViewHolder(View itemView, int imageCount, DiscoverAdapter adapter) {
+        public DiscoverViewHolder(View itemView, int imageCount, DiscoverAdapter adapter, OnItemClickListener listener) {
             super(itemView);
             this.mAdapter = adapter;
+            this.mListener = listener;
 
             // Get the layout
             this.imageCount = imageCount;
@@ -67,10 +72,17 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
                 default:
                     this.discoverItemView = itemView.findViewById(R.id.moment_type0);
             }
-
             this.likeImageView = itemView.findViewById(R.id.img_like);
             this.commentImageView = itemView.findViewById(R.id.img_comment);
             this.likesTextView = itemView.findViewById(R.id.text_likes);
+
+            itemView.setOnClickListener(this);  // 为ItemView添加点击事件
+            likeImageView.setOnClickListener(this);
+            commentImageView.setOnClickListener(this);
+        }
+
+        public void onClick(View v) {
+            mListener.onItemClick(v, (int) v.getTag());
         }
     }
     public DiscoverAdapter(LinkedList<Discover> discoverList, Context context) {
@@ -90,19 +102,19 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         switch (viewType) {
             case 1:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type1, parent, false);
-                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 1, this);
+                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 1, this, mClickListener);
             case 2:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type2, parent, false);
-                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 2, this);
+                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 2, this, mClickListener);
             case 3:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type3, parent, false);
-                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 3, this);
+                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 3, this, mClickListener);
             case 4:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type4, parent, false);
-                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 4, this);
+                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 4, this, mClickListener);
             default:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type0, parent, false);
-                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 0, this);
+                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 0, this, mClickListener);
         }
     }
 
@@ -121,7 +133,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         textView = holder.discoverItemView.findViewById(R.id.published_time);
         textView.setText(moment.getPublishedTime());
 
-        // 动态图片
+        // 设置动态图片
         switch (holder.imageCount) {
             case 1:
                 imageView = holder.discoverItemView.findViewById(R.id.picture1);
@@ -153,7 +165,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
                 break;
         }
 
-        // 点赞列表
+        // 设置点赞列表
         ArrayList<String> likes = moment.getLikes();
         String likes_string = new String();
         for (int i = 0; i < likes.size(); ++i) {
@@ -162,9 +174,8 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         }
         holder.likesTextView.setText(likes_string);
 
-        // 评论列表
+        // 设置评论列表
         RecyclerView recyclerView = holder.discoverItemView.findViewById(R.id.comments_recyclerview);
-
         int comment_cnt = moment.getComments().size();
         for (int i = 0; i < comment_cnt; ++i)
             holder.commentList.add(new Comment(moment.getComments().get(i), moment.getCommenter().get(i)));
@@ -172,60 +183,17 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         recyclerView.setAdapter(holder.commentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        giveLike(holder);
-        makeComment(holder);
+        holder.itemView.setTag(position);
+        holder.likeImageView.setTag(position);
+        holder.commentImageView.setTag(position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mClickListener = listener;
     }
 
     @Override
     public int getItemCount() {
         return discoverList.size();
-    }
-
-    private void giveLike(@NonNull DiscoverViewHolder holder) {
-        // 点击事件：点赞
-        holder.likeImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: 点赞
-                if (!holder.ifLiked) {
-                    holder.ifLiked = true;
-                    ((ImageView) v).setImageResource(R.drawable.ic_like_2);
-                }
-                else {
-                    holder.ifLiked = false;
-                    ((ImageView) v).setImageResource(R.drawable.ic_like);
-                }
-                Toast.makeText(context, "btn2", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void makeComment(@NonNull DiscoverViewHolder holder) {
-        // 点击事件：评论
-        holder.commentImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View v = LayoutInflater.from(context).inflate(R.layout.dialog_input, null);
-                builder.setView(v);
-                builder.setMessage("Comment");
-                final EditText editText = (EditText)v.findViewById(R.id.edit_dialog);
-                editText.setHint("");
-                editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(30)});
-                editText.setMaxLines(10);
-                builder.setPositiveButton("Comment", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String comment = editText.getText().toString().trim();
-                        if (!"".equals(comment)) {
-                            // TODO: 评论
-                            holder.commentList.add(new Comment(comment, "Me"));
-                            holder.commentAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
-                builder.show();
-            }
-        });
     }
 }
