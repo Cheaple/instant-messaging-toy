@@ -6,6 +6,7 @@ import com.example.im.R;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.contacts.IGroupCreatingContract;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +29,12 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
     }
 
     @Override
-    public void createGroup(LinkedList<Contact> selectedContacts) {
+    public void createGroup(ArrayList<String> selectedContacts) {
         // TODO: 创建群聊
+    }
+
+    @Override
+    public void inviteContacts(int groupID, ArrayList<String> selectedContacts) {
+        // TODO: 邀请联系人加入群聊
     }
 }

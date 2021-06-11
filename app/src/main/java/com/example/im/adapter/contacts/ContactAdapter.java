@@ -19,6 +19,7 @@ import com.example.im.R;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
@@ -28,7 +29,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     private OnItemClickListener mClickListener;
     private LinkedList<Contact> contactList;
     private boolean ifDisplayCheckBox = true;
-    private LinkedList<Contact> selectedContactList = new LinkedList<>();
+    private ArrayList<String> selectedContactList = new ArrayList<>();
 
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -86,9 +87,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        selectedContactList.add(contact);
+                        selectedContactList.add(contact.getID());
                     } else {
-                        selectedContactList.remove(contact);
+                        selectedContactList.remove(contact.getID());
                     }
                 }
             });
@@ -104,8 +105,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         return contactList.size();
     }
 
-    public LinkedList<Contact> getSelectedContacts() {
+    public ArrayList<String> getSelectedContacts() {
         return selectedContactList;
     }
-
 }

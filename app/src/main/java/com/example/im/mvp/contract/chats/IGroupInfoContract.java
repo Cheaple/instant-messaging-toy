@@ -8,7 +8,7 @@ public interface IGroupInfoContract {
     interface View {
         void setMemberList(List list);  // 初始化成员列表
         void updateMemberList();  // 更新成员列表
-        public void gotoMainActivity();  // 用于在退出群聊后回到主界面
+        void gotoMainActivity();  // 用于在退出群聊后回到主界面
     }
     interface Presenter {
         void showMemberList();

@@ -14,13 +14,13 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
     IGroupInfoContract.Model mModel;
     IGroupInfoContract.View mView;
 
-    private int id;
+    private int groupID;
     private LinkedList<Contact> memberList;
 
-    public GroupInfoPresenter(IGroupInfoContract.View view, int id) {
+    public GroupInfoPresenter(IGroupInfoContract.View view, int groupID) {
         this.mModel = new GroupInfoModel();
         this.mView = view;
-        this.id = id;
+        this.groupID = groupID;
     }
 
     @Override
@@ -34,9 +34,13 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
         return memberList.get(position);
     }
 
+    public int getGroupID() {
+        return groupID;
+    }
+
     @Override
     public void delete() {
-        mModel.delete(id);
+        mModel.delete(groupID);
         mView.gotoMainActivity();
     }
 }

@@ -59,6 +59,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
+        holder.itemView.setTag(position);
         if (position == getItemCount() - 1) {
             holder.textView.setVisibility(View.INVISIBLE);  // 隐藏邀请按键的名词栏
         }

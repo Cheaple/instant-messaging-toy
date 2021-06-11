@@ -19,26 +19,36 @@ import com.example.im.listener.OnItemClickListener;
 import com.example.im.mvp.contract.contacts.IGroupCreatingContract;
 import com.example.im.mvp.presenter.contacts.GroupCreatingPresenter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class GroupCreatingActivity extends AppCompatActivity implements IGroupCreatingContract.View, OnItemClickListener, View.OnClickListener {
+    public final static int TYPE_CREATE = 1;  // 用于新建群聊
+    public final static int TYPE_INVITE = 1;  // 用于邀请联系人加入群聊
+
     private Context context;
     private GroupCreatingPresenter mPresenter;
 
     private ContactAdapter contactAdapter;
-    private LinkedList<Contact> contacts;
     private RecyclerView recyclerView;
     private Button createButton;
+
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_creating);
         Intent intent = getIntent();
+        type = intent.getIntExtra("Type", TYPE_CREATE);
+
 
         context = getApplicationContext();
-        mPresenter = new GroupCreatingPresenter(this, context);
+        if (type == TYPE_CREATE)
+            mPresenter = new GroupCreatingPresenter(this, context);
+        else if (type == TYPE_INVITE)
+            mPresenter = new GroupCreatingPresenter(this, context, intent.getIntExtra("Group ID", -1));
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_contacts_selecting);
         createButton = (Button) findViewById(R.id.button_create);
@@ -52,12 +62,18 @@ public class GroupCreatingActivity extends AppCompatActivity implements IGroupCr
 
     @Override
     public void onClick(View view) {
-        // 点击事件：创建群聊
-        mPresenter.createGroup();
+        if (type == TYPE_CREATE) {
+            // 点击事件：创建群聊
+            mPresenter.createGroup();
+        }
+        else if (type == TYPE_INVITE) {
+            // 点击事件：邀请联系人加入群聊
+            mPresenter.inviteContacts();
+        }
     }
 
     @Override
-    public LinkedList<Contact> getSelectedContacts() {
+    public ArrayList<String> getSelectedContacts() {
         return contactAdapter.getSelectedContacts();
     }
 
