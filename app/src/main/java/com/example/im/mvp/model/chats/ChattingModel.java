@@ -11,12 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ChattingModel implements IChattingContract.Model {
-    private Context context;
-
-    public ChattingModel(Context context) {
-        this.context = context;
-    }
-
     @Override
     public List loadMsgList(String id) {
         LinkedList<Message> list = new LinkedList<>();
@@ -28,7 +22,7 @@ public class ChattingModel implements IChattingContract.Model {
     @Override
     public Contact loadContactInfo(String id) {
         // TODO: 从服务器加载联系人信息
-        return new Contact(R.drawable.avatar1, context.getString(R.string.nickname3), "xixi", "Shanghai");
+        return new Contact(R.drawable.avatar1, "Xixi", "xixi", "Shanghai");
     }
 
     @Override

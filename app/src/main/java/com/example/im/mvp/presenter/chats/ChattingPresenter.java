@@ -23,7 +23,7 @@ public class ChattingPresenter implements IChattingContract.Presenter {
 
     public ChattingPresenter(IChattingContract.View view, Context context) {
         this.context = context;
-        this.mModel = new ChattingModel(context);
+        this.mModel = new ChattingModel();
         this.mView = view;
         this.type = view.getChatType();
     }

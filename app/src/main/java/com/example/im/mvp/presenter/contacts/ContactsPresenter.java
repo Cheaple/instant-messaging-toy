@@ -18,7 +18,7 @@ public class ContactsPresenter implements IContactsContract.Presenter {
 
     public ContactsPresenter(IContactsContract.View view, Context context) {
         this.context = context;
-        this.mModel = new ContactsModel(context);
+        this.mModel = new ContactsModel();
         this.mView = view;
     }
 

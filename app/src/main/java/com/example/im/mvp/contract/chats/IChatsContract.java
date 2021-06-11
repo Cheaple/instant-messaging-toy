@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface IChatsContract {
     interface View {
-        public void setChatList(List list);  // 初始化会话列表
-        public void setChatList();  // 更新会话列表
+        void setChatList(List list);  // 初始化会话列表
+        void setChatList();  // 更新会话列表
     }
     interface Presenter {
-        public void showChatList();
-        public Chat getChat(int position);
+        void showChatList();
+        Chat getChat(int position);
     }
     interface Model {
-        public List loadChatList();
+        List loadChatList();
     }
 }

@@ -5,16 +5,16 @@ import com.example.im.listener.OnLoginListener;
 
 public interface ISignInContract {
     interface View {
-        public String getID();
-        public String getPassword();
-        public void clearID();
-        public  void clearPassword();
-        public void gotoMainActivity();
+        String getID();
+        String getPassword();
+        void clearID();
+        void clearPassword();
+        void gotoMainActivity();
     }
     interface Presenter {
-        public void login();
+        void login();
     }
     interface Model {
-        public void login(String id, String password, OnLoginListener loginListener);
+        void login(String id, String password, OnLoginListener loginListener);
     }
 }

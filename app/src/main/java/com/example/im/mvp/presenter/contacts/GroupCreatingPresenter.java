@@ -22,13 +22,13 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
 
     public GroupCreatingPresenter(IGroupCreatingContract.View view, Context context) {
         this.context = context;
-        this.mModel = new GroupCreatingModel(context);
+        this.mModel = new GroupCreatingModel();
         this.mView = view;
     }
 
     public GroupCreatingPresenter(IGroupCreatingContract.View view, Context context, int groupID) {
         this.context = context;
-        this.mModel = new GroupCreatingModel(context);
+        this.mModel = new GroupCreatingModel();
         this.mView = view;
         this.groupID = groupID;
     }

@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ContactSearchModel implements IContactSearchContract.Model{
-
     @Override
     public List loadInvitationList() {
         LinkedList<Contact> list = new LinkedList<>();

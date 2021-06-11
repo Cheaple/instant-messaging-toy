@@ -7,19 +7,19 @@ import java.util.List;
 
 public interface IChattingContract {
     interface View {
-        public void setMsgList(List list);
-        public void setMsgList();
-        public int getChatType();
-        public String getMsg();
-        public void clearMsg();
+        void setMsgList(List list);
+        void setMsgList();
+        int getChatType();
+        String getMsg();
+        void clearMsg();
     }
     interface Presenter {
-        public void showMsgList();
-        public void sendMsg();
+        void showMsgList();
+        void sendMsg();
     }
     interface Model {
-        public List loadMsgList(String id);
-        public Contact loadContactInfo(String id);
-        public void uploadMsg(String id);
+        List loadMsgList(String id);
+        Contact loadContactInfo(String id);
+        void uploadMsg(String id);
     }
 }

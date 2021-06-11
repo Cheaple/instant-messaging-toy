@@ -18,7 +18,7 @@ public class ChatsPresenter implements IChatsContract.Presenter {
 
     public ChatsPresenter(IChatsContract.View view, Context context) {
         this.context = context;
-        this.mModel = new ChatsModel(context);
+        this.mModel = new ChatsModel();
         this.mView = view;
     }
 
