@@ -3,6 +3,7 @@ package com.example.im.mvp.contract.settings;
 public interface ISettingsContract {
     interface View {
         void gotoLoginActivity();
+        void showText(String content);
     }
     interface  Presenter {
         void changeAvatar();
@@ -14,10 +15,10 @@ public interface ISettingsContract {
     }
     interface Model {
         void changeAvatar();
-        void changeNickname(String nickname);
-        void changeUsername(String username);
-        void changeRegion(String region);
-        void changePassword(String new_pw);
+        void changeNickname(String username, String nickname);
+        void changeUsername(String username, String new_username);
+        void changeRegion(String username, String region);
+        void changePassword(String username, String new_pw);
         void logout();
     }
 }

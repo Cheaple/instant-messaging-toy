@@ -238,4 +238,9 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
         Intent intent = new Intent(context, LoginActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
+    }
 }

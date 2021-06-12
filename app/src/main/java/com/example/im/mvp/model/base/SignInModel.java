@@ -54,7 +54,6 @@ public class SignInModel implements ISignInContract.Model {
 
     @Override
     public void login(String username, String password) {
-        // TODO: 登录
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("username", username);
         params.put("password", password);

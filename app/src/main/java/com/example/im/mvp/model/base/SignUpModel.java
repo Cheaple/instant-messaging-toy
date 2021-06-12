@@ -62,7 +62,7 @@ public class SignUpModel implements ISignUpContract.Model {
                     Message msg = new Message();
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getBoolean("success"))  // 登录成功
+                        if (jsonObject.getBoolean("success"))  // 注册成功
                             msg.what = LOGIN_SUCCESS;
                         else {  // 登录失败
                             msg.what = LOGIN_FAILURE;
