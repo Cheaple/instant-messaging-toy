@@ -24,7 +24,7 @@
                 android:textSize="18dp" />
 
             <EditText
-                android:id="@+id/edit_new_id"
+                android:id="@+id/edit_new_username"
                 android:layout_width="203dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

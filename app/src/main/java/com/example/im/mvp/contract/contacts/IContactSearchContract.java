@@ -8,7 +8,7 @@ public interface IContactSearchContract {
     interface View{
         void setInvitationList(List list);  // 初始化好友邀请列表
         void setInvitationList();  // 刷新好友邀请列表
-        String getTargetID();
+        String getTargetUsername();
         void gotoContactInfoActivity(Contact contact);  // 搜索成功，查看该用户信息
         void searchFailed();  // 搜索失败
     }
@@ -20,7 +20,7 @@ public interface IContactSearchContract {
     }
     interface Model {
         List loadInvitationList();
-        Contact searchUser(String id);
+        Contact searchUser(String username);
         void accept(String id);  // 接收好友邀请
         void refuse(String id);  // 拒绝好友邀请
     }

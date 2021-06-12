@@ -96,7 +96,7 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
     }
 
     @Override
-    public String getTargetID() {
+    public String getTargetUsername() {
         return editText.getText().toString();
     }
 

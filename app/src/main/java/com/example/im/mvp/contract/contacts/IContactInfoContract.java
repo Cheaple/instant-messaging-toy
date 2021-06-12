@@ -3,8 +3,8 @@ package com.example.im.mvp.contract.contacts;
 public interface IContactInfoContract {
     interface View {
         void setAvatar(int avatar);
-        void setName(String name);
-        void setID(String id);
+        void setNickname(String nickname);
+        void setUsername(String username);
         void setRegion(String region);
         void gotoMainActivity();  // 用于在删除好友后回到主界面
     }

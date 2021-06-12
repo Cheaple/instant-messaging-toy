@@ -23,7 +23,7 @@ public class SignUpFragment extends Fragment implements ISignUpContract.View, Vi
     private Activity context;
     private SignUpPresenter mPresenter;
 
-    private EditText idEditView;
+    private EditText usernameEditView;
     private EditText passwordEditView;
     private EditText pwConfirmEditView;
     private Button signUpButton;
@@ -42,14 +42,14 @@ public class SignUpFragment extends Fragment implements ISignUpContract.View, Vi
         context = getActivity();
         mPresenter = new SignUpPresenter(this);
 
-        idEditView = (EditText)getView().findViewById(R.id.edit_new_id);
+        usernameEditView = (EditText)getView().findViewById(R.id.edit_new_username);
         passwordEditView = (EditText)getView().findViewById(R.id.edit_new_password);
         pwConfirmEditView = (EditText)getView().findViewById(R.id.edit_confirm_password);
         signUpButton = (Button)getView().findViewById(R.id.button_sign_up);
 
         String digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        idEditView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
-        idEditView.setKeyListener(DigitsKeyListener.getInstance(digits));
+        usernameEditView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
+        usernameEditView.setKeyListener(DigitsKeyListener.getInstance(digits));
         signUpButton.setOnClickListener(this);
 
     }
@@ -74,8 +74,8 @@ public class SignUpFragment extends Fragment implements ISignUpContract.View, Vi
     }
 
     @Override
-    public String getID() {
-        return idEditView.getText().toString();
+    public String getUsername() {
+        return usernameEditView.getText().toString();
     }
 
     @Override
@@ -89,8 +89,8 @@ public class SignUpFragment extends Fragment implements ISignUpContract.View, Vi
     }
 
     @Override
-    public void clearID() {
-        idEditView.setText("");
+    public void clearUsername() {
+        usernameEditView.setText("");
     }
 
     @Override

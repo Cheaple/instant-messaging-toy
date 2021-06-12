@@ -22,7 +22,7 @@ public class ChattingModel implements IChattingContract.Model {
     @Override
     public Contact loadContactInfo(String id) {
         // TODO: 从服务器加载联系人信息
-        return new Contact(R.drawable.avatar1, "Xixi", "xixi", "Shanghai");
+        return new Contact("000", R.drawable.avatar1, "Xixi", "xixi", "Shanghai");
     }
 
     @Override

@@ -14,10 +14,10 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
     IGroupInfoContract.Model mModel;
     IGroupInfoContract.View mView;
 
-    private int groupID;
+    private String groupID;
     private LinkedList<Contact> memberList;
 
-    public GroupInfoPresenter(IGroupInfoContract.View view, int groupID) {
+    public GroupInfoPresenter(IGroupInfoContract.View view, String groupID) {
         this.mModel = new GroupInfoModel();
         this.mView = view;
         this.groupID = groupID;
@@ -34,7 +34,7 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
         return memberList.get(position);
     }
 
-    public int getGroupID() {
+    public String getGroupID() {
         return groupID;
     }
 

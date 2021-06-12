@@ -5,7 +5,7 @@ import com.example.im.mvp.contract.base.ISignInContract;
 
 public class SignInModel implements ISignInContract.Model {
     @Override
-    public void login(String id, String password, OnLoginListener listener) {
+    public void login(String username, String password, OnLoginListener listener) {
         // TODO: 登录
         if (true) {
             // listener.loginSuccess();

@@ -37,7 +37,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         private OnItemClickListener mListener;
         private View contactItemView;
         private ImageView avatarImageView;
-        private TextView nameTextView;
+        private TextView nicknameTextView;
         private CheckBox checkBox;  // 复选框，用于在创建群聊时选择联系人
 
 
@@ -50,7 +50,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             this.mListener = listener;
             this.contactItemView = itemView.findViewById(R.id.contact);
             this.avatarImageView = itemView.findViewById(R.id.img_contact_avatar);
-            this.nameTextView = itemView.findViewById(R.id.text_contact_nickname);
+            this.nicknameTextView = itemView.findViewById(R.id.text_contact_nickname);
             this.checkBox = itemView.findViewById(R.id.checkbox_contact);
             itemView.setOnClickListener(this);  // 为ItemView添加点击事件
         }
@@ -80,7 +80,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         Contact contact = contactList.get(position);
         // Add the data to the view
         holder.avatarImageView.setImageResource(contact.getAvatarIcon());  // 设置联系人头像
-        holder.nameTextView.setText(contact.getNickname());  // 设置联系人昵称
+        holder.nicknameTextView.setText(contact.getNickname());  // 设置联系人昵称
         if (!ifDisplayCheckBox) holder.checkBox.setVisibility(View.GONE);  // 隐藏复选框
         else {
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

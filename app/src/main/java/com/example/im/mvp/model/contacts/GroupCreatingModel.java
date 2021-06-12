@@ -15,8 +15,8 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
     public List loadContactList() {
         LinkedList<Contact> list = new LinkedList<>();
         // TODO: 从服务器加载对话数据
-        Contact contact1 = new Contact(R.drawable.avatar1, "Xixi", "Daidai", "Chengdu");
-        Contact contact2 = new Contact(R.drawable.avatar2, "Jiyu", "JiYu", "Lanzhou");
+        Contact contact1 = new Contact("001", R.drawable.avatar1, "Xixi", "Daidai", "Chengdu");
+        Contact contact2 = new Contact("002", R.drawable.avatar2, "Jiyu", "JiYu", "Lanzhou");
         list.add(contact1);
         list.add(contact2);
         return list;

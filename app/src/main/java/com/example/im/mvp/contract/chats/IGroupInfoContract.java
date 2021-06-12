@@ -17,6 +17,6 @@ public interface IGroupInfoContract {
     }
     interface Model {
         List loadMemberList();
-        void delete(int id);  // 退出群聊
+        void delete(String id);  // 退出群聊
     }
 }

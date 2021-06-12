@@ -28,18 +28,18 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     }
 
     @Override
-    public void changeName(String name) {
-        mModel.changeName(name);
+    public void changeNickname(String nickname) {
+        mModel.changeNickname(nickname);
     }
 
     @Override
-    public void changeID(String id) {
-        mModel.changeID(id);
+    public void changeUsername(String username) {
+        mModel.changeUsername(username);
     }
 
     @Override
     public void changeRegion(String region) {
-        mModel.changeName(region);
+        mModel.changeRegion(region);
     }
 
     @Override

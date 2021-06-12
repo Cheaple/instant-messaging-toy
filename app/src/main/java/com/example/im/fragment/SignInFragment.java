@@ -23,7 +23,7 @@ public class SignInFragment extends Fragment implements ISignInContract.View, Vi
     private Activity context;
     private SignInPresenter mPresenter;
 
-    private EditText idEditView;
+    private EditText usernameEditView;
     private EditText passwordEditView;
     private Button signInButton;
 
@@ -41,13 +41,13 @@ public class SignInFragment extends Fragment implements ISignInContract.View, Vi
         context = getActivity();
         mPresenter = new SignInPresenter(this);
 
-        idEditView = (EditText)getView().findViewById(R.id.edit_id);
+        usernameEditView = (EditText)getView().findViewById(R.id.edit_username);
         passwordEditView = (EditText)getView().findViewById(R.id.edit_password);
         signInButton = (Button)getView().findViewById(R.id.button_sign_in);
 
         String digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        idEditView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
-        idEditView.setKeyListener(DigitsKeyListener.getInstance(digits));
+        usernameEditView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
+        usernameEditView.setKeyListener(DigitsKeyListener.getInstance(digits));
         signInButton.setOnClickListener(this);
     }
 
@@ -70,8 +70,8 @@ public class SignInFragment extends Fragment implements ISignInContract.View, Vi
     }
 
     @Override
-    public String getID() {
-        return idEditView.getText().toString();
+    public String getUsername() {
+        return usernameEditView.getText().toString();
     }
 
     @Override
@@ -80,8 +80,8 @@ public class SignInFragment extends Fragment implements ISignInContract.View, Vi
     }
 
     @Override
-    public void clearID() {
-        idEditView.setText("");
+    public void clearUsername() {
+        usernameEditView.setText("");
     }
 
     @Override

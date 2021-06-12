@@ -16,9 +16,9 @@ public class SignInPresenter implements ISignInContract.Presenter {
 
     @Override
     public void login() {
-        String id = mView.getID();
+        String username = mView.getUsername();
         String password = mView.getPassword();
-        mModel.login(id, password, new OnLoginListener() {
+        mModel.login(username, password, new OnLoginListener() {
             @Override
             public void loginSuccess(AccountInfo account) {
 

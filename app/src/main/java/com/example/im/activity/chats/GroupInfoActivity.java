@@ -42,10 +42,10 @@ public class GroupInfoActivity extends AppCompatActivity implements IGroupInfoCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
         Intent intent = getIntent();
-        int id = intent.getIntExtra("Group ID", 0);
+        String groupId = intent.getStringExtra("Group ID");
 
         context = getApplicationContext();
-        mPresenter = new GroupInfoPresenter(this, id);
+        mPresenter = new GroupInfoPresenter(this, groupId);
 
         recyclerView = (RecyclerView)findViewById(R.id.recycle_view_group_members);
         deleteLayout = (LinearLayout)findViewById(R.id.layout_group_delete);

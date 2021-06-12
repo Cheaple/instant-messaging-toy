@@ -5,9 +5,9 @@ import com.example.im.listener.OnLoginListener;
 
 public interface ISignInContract {
     interface View {
-        String getID();
+        String getUsername();
         String getPassword();
-        void clearID();
+        void clearUsername();
         void clearPassword();
         void gotoMainActivity();
     }
@@ -15,6 +15,6 @@ public interface ISignInContract {
         void login();
     }
     interface Model {
-        void login(String id, String password, OnLoginListener loginListener);
+        void login(String username, String password, OnLoginListener loginListener);
     }
 }

@@ -37,7 +37,7 @@
                     />
 
                 <LinearLayout
-                    android:id="@+id/layout_my_id"
+                    android:id="@+id/layout_my_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">

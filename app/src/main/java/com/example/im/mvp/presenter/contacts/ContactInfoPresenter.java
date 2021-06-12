@@ -19,8 +19,8 @@ public class ContactInfoPresenter implements IContactInfoContract.Presenter {
     @Override
     public void showInfo() {
         mView.setAvatar(contact.getAvatarIcon());
-        mView.setName(contact.getNickname());
-        mView.setID(contact.getID());
+        mView.setNickname(contact.getNickname());
+        mView.setUsername(contact.getUsername());
         mView.setRegion(contact.getRegion());
     }
 

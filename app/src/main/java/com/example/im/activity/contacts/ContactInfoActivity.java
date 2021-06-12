@@ -116,13 +116,13 @@ public class ContactInfoActivity extends AppCompatActivity implements IContactIn
     }
 
     @Override
-    public void setName(String name) {
-        nameTextView.setText(name);
+    public void setNickname(String nickname) {
+        nameTextView.setText(nickname);
     }
 
     @Override
-    public void setID(String id) {
-        idTextView.setText("ID: " + id);
+    public void setUsername(String username) {
+        idTextView.setText("ID: " + username);
     }
 
     @Override

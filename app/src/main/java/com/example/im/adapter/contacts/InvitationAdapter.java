@@ -29,7 +29,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
         private OnItemClickListener mListener;
         private View contactItemView;
         private ImageView avatarImageView;
-        private TextView nameTextView;
+        private TextView nicknameTextView;
         private Button acceptButton;
         private Button refuseButton;
 
@@ -42,7 +42,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
             this.mListener = listener;
             this.contactItemView = itemView.findViewById(R.id.contact);
             this.avatarImageView = itemView.findViewById(R.id.img_invitation_avatar);
-            this.nameTextView = itemView.findViewById(R.id.text_invitation_nickname);
+            this.nicknameTextView = itemView.findViewById(R.id.text_invitation_nickname);
             this.acceptButton = itemView.findViewById(R.id.button_invitation_accept);
             this.refuseButton = itemView.findViewById(R.id.button_invitation_refuse);
 
@@ -74,7 +74,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
         Contact contact = contactList.get(position);
         // Add the data to the view
         holder.avatarImageView.setImageResource(contact.getAvatarIcon());  // 设置联系人头像
-        holder.nameTextView.setText(contact.getNickname());  // 设置联系人昵称
+        holder.nicknameTextView.setText(contact.getNickname());  // 设置联系人昵称
 
         holder.itemView.setTag(position);
         holder.acceptButton.setTag(position);

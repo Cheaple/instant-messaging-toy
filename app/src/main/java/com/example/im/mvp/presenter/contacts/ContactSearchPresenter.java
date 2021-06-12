@@ -33,9 +33,9 @@ public class ContactSearchPresenter implements IContactSearchContract.Presenter 
 
     @Override
     public void searchUser() {
-        String id = mView.getTargetID();
-        if ("".equals(id)) return;
-        Contact result = mModel.searchUser(id);
+        String username = mView.getTargetUsername();
+        if ("".equals(username)) return;
+        Contact result = mModel.searchUser(username);
         if (result != null)
             mView.gotoContactInfoActivity(result);
         else {

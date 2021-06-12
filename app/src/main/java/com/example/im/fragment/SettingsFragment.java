@@ -37,9 +37,9 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
     private ISettingsContract.Presenter mPresenter;
 
     private ImageView avatarImageView;
-    private TextView nameTextView;
-    private LinearLayout idLayout;
-    private TextView idTextView;
+    private TextView nicknameTextView;
+    private LinearLayout usernameLayout;
+    private TextView usernameTextView;
     private LinearLayout regionLayout;
     private TextView regionTextView;
     private LinearLayout passwordLayout;
@@ -61,9 +61,9 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
         this.mPresenter = new SettingsPresenter(this, context);
 
         this.avatarImageView = getView().findViewById(R.id.img_my_avatar);
-        this.nameTextView = getView().findViewById(R.id.text_my_nickname);
-        this.idLayout = getView().findViewById(R.id.layout_my_id);
-        this.idTextView = getView().findViewById(R.id.text_my_id);
+        this.nicknameTextView = getView().findViewById(R.id.text_my_nickname);
+        this.usernameLayout = getView().findViewById(R.id.layout_my_username);
+        this.usernameTextView = getView().findViewById(R.id.text_my_id);
         this.regionLayout = getView().findViewById(R.id.layout_my_region);
         this.regionTextView = getView().findViewById(R.id.text_my_region);
         this.passwordLayout = getView().findViewById(R.id.layout_my_password);
@@ -72,8 +72,8 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
         // TODO: 设置个人信息
 
         avatarImageView.setOnClickListener(this);
-        nameTextView.setOnClickListener(this);
-        idLayout.setOnClickListener(this);
+        nicknameTextView.setOnClickListener(this);
+        usernameLayout.setOnClickListener(this);
         regionLayout.setOnClickListener(this);
         passwordLayout.setOnClickListener(this);
         logoutLayout.setOnClickListener(this);
@@ -98,10 +98,10 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
                 changeAvatar();
                 break;
             case R.id.text_my_nickname:
-                changeName();
+                changeNickname();
                 break;
-            case R.id.layout_my_id:
-                changeId();
+            case R.id.layout_my_username:
+                changeUsername();
                 break;
             case R.id.layout_my_region:
                 changeRegion();
@@ -131,7 +131,7 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
     }
 
     // 点击事件：修改昵称
-    private void changeName() {
+    private void changeNickname() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View v = LayoutInflater.from(context).inflate(R.layout.dialog_input, null);
         builder.setView(v);
@@ -144,16 +144,16 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
             public void onClick(DialogInterface dialog, int which) {
                 String new_name = editText.getText().toString().trim();
                 if (!"".equals(new_name)) {
-                    nameTextView.setText(new_name);
-                    mPresenter.changeName(new_name);
+                    nicknameTextView.setText(new_name);
+                    mPresenter.changeNickname(new_name);
                 }
             }
         });
         builder.show();
     }
 
-    // 点击事件：修改ID
-    private void changeId() {
+    // 点击事件：修改 Username
+    private void changeUsername() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View v = LayoutInflater.from(context).inflate(R.layout.dialog_input, null);
         builder.setView(v);
@@ -168,8 +168,8 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
             public void onClick(DialogInterface dialog, int which) {
                 String new_id = editText.getText().toString().trim();
                 if (!"".equals(new_id)) {
-                    idTextView.setText("ID: " + new_id);
-                    mPresenter.changeID(new_id);
+                    usernameTextView.setText("ID: " + new_id);
+                    mPresenter.changeUsername(new_id);
                 }
             }
         });

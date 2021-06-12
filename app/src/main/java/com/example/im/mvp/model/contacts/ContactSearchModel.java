@@ -13,8 +13,8 @@ public class ContactSearchModel implements IContactSearchContract.Model{
     @Override
     public List loadInvitationList() {
         LinkedList<Contact> list = new LinkedList<>();
-        Contact contact1 = new Contact(R.drawable.avatar1, "球仔", "Daidai", "Chengdu");
-        Contact contact2 = new Contact(R.drawable.avatar10, "三堆", "sandui", "Wuhan");
+        Contact contact1 = new Contact("003",R.drawable.avatar1, "球仔", "Daidai", "Chengdu");
+        Contact contact2 = new Contact("004",R.drawable.avatar10, "三堆", "sandui", "Wuhan");
         list.add(contact1);
         list.add(contact2);
         // TODO: 从服务器加载邀请数据
@@ -22,7 +22,7 @@ public class ContactSearchModel implements IContactSearchContract.Model{
     }
 
     @Override
-    public Contact searchUser(String id) {
+    public Contact searchUser(String username) {
         // TODO: 根据id搜索用户
         //return new Contact(R.drawable.avatar10, "何金龙", "111111111", "Zhengzhou");
         return null;

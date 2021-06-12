@@ -9,13 +9,13 @@ public class SettingsModel implements ISettingsContract.Model {
     }
 
     @Override
-    public void changeName(String name) {
+    public void changeNickname(String nickname) {
         // TODO: 更新昵称
     }
 
     @Override
-    public void changeID(String id) {
-        // TODO: 更新id
+    public void changeUsername(String username) {
+        // TODO: 更新 username
     }
 
     @Override
