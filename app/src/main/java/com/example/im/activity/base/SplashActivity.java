@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             // 未登录：跳转至登录界面
             Toast.makeText(this, "To Login", Toast.LENGTH_SHORT).show();
-            Intent intent2 = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent2 = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent2);
         }
         finish();

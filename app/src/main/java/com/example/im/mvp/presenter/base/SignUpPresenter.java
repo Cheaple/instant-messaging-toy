@@ -28,7 +28,7 @@ public class SignUpPresenter implements ISignUpContract.Presenter {
 
                 @Override
                 public void loginFailed() {
-//Toast.makeText(getActivity(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+
                 }
             });
         }
