@@ -55,12 +55,12 @@ public class SettingsModel implements ISettingsContract.Model {
 
     @Override
     public void changeNickname(String username, String nickname) {
-        // TODO: 更新昵称
+        change("nickname", "username", username, "nickname", nickname);
     }
 
     @Override
     public void changeUsername(String username, String new_username) {
-        // TODO: 更新 username
+        change("username", "username", username, "name", new_username);
     }
 
     @Override
@@ -68,20 +68,24 @@ public class SettingsModel implements ISettingsContract.Model {
 
     @Override
     public void changePassword(String username, String password) {
+        change("password", "username", username, "password", password);
+    }
+
+    private void change(String operation, String paramName1, String param1, String paramName2, String param2) {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
-        params.put("password", password);
+        params.put(paramName1, param1);
+        params.put(paramName2, param2);
         try {
-            String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/password", params);
+            String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/" + operation, params);
             HttpUtil.sendHttpRequest(url, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getBoolean("success"))  // 修改密码成功
+                        if (jsonObject.getBoolean("success"))  // 修改成功
                             msg.what = CHANGE_SUCCESS;
-                        else {  // 登录失败
+                        else {  // 修改失败
                             msg.what = CHANGE_FAILURE;
                             msg.obj = jsonObject.getString("msg");  // 失败原因
                         }

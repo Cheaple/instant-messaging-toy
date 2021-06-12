@@ -50,7 +50,6 @@ public class SignUpModel implements ISignUpContract.Model {
 
     @Override
     public void login(String username, String password) {
-        // TODO: 登录
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("username", username);
         params.put("password", password);
@@ -64,7 +63,7 @@ public class SignUpModel implements ISignUpContract.Model {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         if (jsonObject.getBoolean("success"))  // 注册成功
                             msg.what = LOGIN_SUCCESS;
-                        else {  // 登录失败
+                        else {  // 注册失败
                             msg.what = LOGIN_FAILURE;
                             msg.obj = jsonObject.getString("msg");  // 失败原因
                         }

@@ -69,14 +69,14 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
         this.passwordLayout = getView().findViewById(R.id.layout_my_password);
         this.logoutLayout = getView().findViewById(R.id.layout_logout);
 
-        // TODO: 设置个人信息
-
         avatarImageView.setOnClickListener(this);
         nicknameTextView.setOnClickListener(this);
         usernameLayout.setOnClickListener(this);
         regionLayout.setOnClickListener(this);
         passwordLayout.setOnClickListener(this);
         logoutLayout.setOnClickListener(this);
+
+        mPresenter.showInfo();
     }
 
     @Override
@@ -231,6 +231,11 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
             }
         });
         builder.show();
+    }
+
+    @Override
+    public void setUsername(String username) {
+        usernameTextView.setText("ID: " + username);
     }
 
     @Override

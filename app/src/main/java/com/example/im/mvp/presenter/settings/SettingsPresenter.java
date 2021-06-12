@@ -27,18 +27,30 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     }
 
     @Override
+    public void showInfo() {
+        mView.setUsername(username);
+        // TODO: 设置昵称和头像
+    }
+
+    @Override
     public void changeAvatar() {
         mModel.changeAvatar();
     }
 
     @Override
     public void changeNickname(String nickname) {
-        mModel.changeNickname(username, nickname);
+        if ("".equals(nickname))
+            mView.showText("昵称不能为空");
+        else
+            mModel.changeNickname(username, nickname);
     }
 
     @Override
     public void changeUsername(String new_username) {
-        mModel.changeUsername(username, new_username);
+        if ("".equals(new_username))
+            mView.showText("ID不能为空");
+        else
+            mModel.changeUsername(username, new_username);
     }
 
     @Override
