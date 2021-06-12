@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.im.R;
-import com.example.im.bean.chats.Message;
+import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.contacts.IContactInfoContract;
 import com.example.im.mvp.presenter.contacts.ContactInfoPresenter;

@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.im.R;
-import com.example.im.bean.chats.Message;
+import com.example.im.bean.chats.Msg;
 
 import java.util.LinkedList;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
     private Context context;
-    private LinkedList<Message> msgList;
+    private LinkedList<Msg> msgList;
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         private MessageAdapter mAdapter;
@@ -42,7 +42,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             this.rightTextView = (TextView)itemView.findViewById(R.id.msg_text_right);
         }
     }
-    public MessageAdapter(LinkedList<Message> msgList, Context context) {
+    public MessageAdapter(LinkedList<Msg> msgList, Context context) {
         this.msgList = msgList;
         this.context = context;
     }
@@ -59,7 +59,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         //Toast.makeText(context, "btn2", Toast.LENGTH_SHORT).show();
 
-        Message msg = msgList.get(position);
+        Msg msg = msgList.get(position);
         if(msg.getSpeaker() == 0) {  // 接受消息
             holder.rightLayout.setVisibility(View.VISIBLE);
             holder.leftLayout.setVisibility(View.GONE);

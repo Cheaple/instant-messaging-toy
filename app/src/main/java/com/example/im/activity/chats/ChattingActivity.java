@@ -17,7 +17,7 @@ import com.example.im.R;
 import com.example.im.activity.contacts.ContactInfoActivity;
 import com.example.im.adapter.chats.MessageAdapter;
 import com.example.im.bean.chats.Chat;
-import com.example.im.bean.chats.Message;
+import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.presenter.chats.ChattingPresenter;
@@ -87,7 +87,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
 
     @Override
     public void setMsgList(List list) {
-        messageAdapter = new MessageAdapter((LinkedList<Message>) list, context);
+        messageAdapter = new MessageAdapter((LinkedList<Msg>) list, context);
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }

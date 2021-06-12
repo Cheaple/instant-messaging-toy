@@ -3,7 +3,7 @@ package com.example.im.mvp.model.chats;
 import android.content.Context;
 
 import com.example.im.R;
-import com.example.im.bean.chats.Message;
+import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 
@@ -13,9 +13,9 @@ import java.util.List;
 public class ChattingModel implements IChattingContract.Model {
     @Override
     public List loadMsgList(String id) {
-        LinkedList<Message> list = new LinkedList<>();
+        LinkedList<Msg> list = new LinkedList<>();
         // TODO: 从服务器加载历史消息
-        list.add(new Message(Message.SPEAKER_TYPE_OTHER, "xixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixi"));  // for test
+        list.add(new Msg(Msg.SPEAKER_TYPE_OTHER, "xixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixixi"));  // for test
         return list;
     }
 
