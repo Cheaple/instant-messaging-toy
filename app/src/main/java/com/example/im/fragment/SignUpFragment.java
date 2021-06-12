@@ -41,7 +41,7 @@ public class SignUpFragment extends Fragment implements ISignUpContract.View, Vi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         context = getActivity();
-        mPresenter = new SignUpPresenter(this);
+        mPresenter = new SignUpPresenter(this, context);
 
         usernameEditView = (EditText)getView().findViewById(R.id.edit_new_username);
         passwordEditView = (EditText)getView().findViewById(R.id.edit_new_password);

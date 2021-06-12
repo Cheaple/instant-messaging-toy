@@ -2,6 +2,7 @@ package com.example.im.mvp.presenter.settings;
 
 import android.content.Context;
 
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.contacts.IGroupCreatingContract;
 import com.example.im.mvp.contract.settings.ISettingsContract;
@@ -57,5 +58,6 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     public void logout() {
         mModel.logout();
         mView.gotoLoginActivity();
+        AccountInfo.getInstance().clearAccountInfo(context);  // 清除用于自动登录的账户信息
     }
 }

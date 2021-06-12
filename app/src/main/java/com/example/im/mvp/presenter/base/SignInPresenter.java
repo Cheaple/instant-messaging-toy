@@ -36,6 +36,7 @@ public class SignInPresenter implements ISignInContract.Presenter {
     public void loginSuccess() {
         mView.gotoMainActivity();
     }
-    public void loginFailure(String e) { mView.showText(e);
-        AccountInfo.getInstance().saveAccountInfo(context, "", "");}
+    public void loginFailure(String e) {
+        mView.showText(e);
+        AccountInfo.getInstance().clearAccountInfo(context);}
 }
