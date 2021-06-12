@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -39,7 +40,7 @@ public class SignInFragment extends Fragment implements ISignInContract.View, Vi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         context = getActivity();
-        mPresenter = new SignInPresenter(this);
+        mPresenter = new SignInPresenter(this, context);
 
         usernameEditView = (EditText)getView().findViewById(R.id.edit_username);
         passwordEditView = (EditText)getView().findViewById(R.id.edit_password);
@@ -94,5 +95,10 @@ public class SignInFragment extends Fragment implements ISignInContract.View, Vi
         Intent intent = new Intent(context, MainActivity.class);
         startActivity(intent);
         context.finish();
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }

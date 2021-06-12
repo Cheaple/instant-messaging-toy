@@ -4,5 +4,5 @@ import com.example.im.bean.AccountInfo;
 
 public interface OnLoginListener {
     void loginSuccess(AccountInfo account);
-    void loginFailed();
+    void loginFailed(String e);
 }

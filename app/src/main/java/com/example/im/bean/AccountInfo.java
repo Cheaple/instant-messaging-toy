@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class AccountInfo {
-    private String id;
+    private String username;
     private String password;
 
     private static AccountInfo instance;
@@ -19,20 +19,25 @@ public class AccountInfo {
     }
 
     // 保存自动登录的用户信息
-    public void saveUserInfo(Context context, String id, String password) {
+    public void saveAccountInfo(Context context, String username, String password) {
         SharedPreferences sp = context.getSharedPreferences("AccountInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString("ID", id);
+        editor.putString("Username", username);
         editor.putString("Password", password);
         editor.commit();
     }
 
+    // 清除自动登录的用户信息
+    public void clearAccountInfo(Context context) {
+        saveAccountInfo(context, "", "");
+    }
+
     // 检查是否已登录
     public boolean ifLoggedIn(Context context) {
-        SharedPreferences sp = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        this.id = sp.getString("USER_NAME", "");
-        this.password = sp.getString("PASSWORD", "");
-        if (!"".equals(this.id))
+        SharedPreferences sp = context.getSharedPreferences("AccountInfo", Context.MODE_PRIVATE);
+        this.username = sp.getString("Username", "");
+        this.password = sp.getString("Password", "");
+        if (!"".equals(this.username))
             return true;
         else
             return false;
@@ -42,12 +47,12 @@ public class AccountInfo {
         return password;
     }
 
-    public String getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
     public void setAccount(String id, String password) {
-        this.id = id;
+        this.username = id;
         this.password = password;
     }
 }

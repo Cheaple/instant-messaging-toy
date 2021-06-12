@@ -20,17 +20,7 @@ public class SignUpPresenter implements ISignUpContract.Presenter {
         String password = mView.getPassword();
         String confirmPassword = mView.getConfirmPassword();
         if (password.equals(confirmPassword)) {
-            mModel.login(username, password, new OnLoginListener() {
-                @Override
-                public void loginSuccess(AccountInfo account) {
 
-                }
-
-                @Override
-                public void loginFailed() {
-
-                }
-            });
         }
         else {
 

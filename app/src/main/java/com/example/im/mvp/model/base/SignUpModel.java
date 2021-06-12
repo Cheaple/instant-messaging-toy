@@ -9,13 +9,7 @@ import java.util.HashMap;
 
 public class SignUpModel implements ISignUpContract.Model {
     @Override
-    public void login(String username, String password, OnLoginListener listener) {
+    public void login(String username, String password) {
         // TODO: 注册
-
-        if (true) {
-            // listener.loginSuccess();
-        }
-        else
-            listener.loginFailed();
     }
 }

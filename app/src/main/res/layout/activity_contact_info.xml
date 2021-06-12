@@ -51,7 +51,7 @@
                     android:text="Region: Beijing Haidian"
                     android:textSize="20sp"
                     android:textStyle="normal"
-                    />
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
 

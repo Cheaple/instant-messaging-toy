@@ -1,16 +1,21 @@
 package com.example.im.mvp.presenter.base;
 
+import android.content.Context;
+
 import com.example.im.bean.AccountInfo;
 import com.example.im.listener.OnLoginListener;
 import com.example.im.mvp.contract.base.ISignInContract;
 import com.example.im.mvp.model.base.SignInModel;
 
 public class SignInPresenter implements ISignInContract.Presenter {
+    private Context context;
+
     private ISignInContract.Model mModel;
     private ISignInContract.View mView;
 
-    public SignInPresenter(ISignInContract.View view) {
-        this.mModel = new SignInModel();
+    public SignInPresenter(ISignInContract.View view, Context context) {
+        this.context = context;
+        this.mModel = new SignInModel(this);
         this.mView = view;
     }
 
@@ -18,16 +23,19 @@ public class SignInPresenter implements ISignInContract.Presenter {
     public void login() {
         String username = mView.getUsername();
         String password = mView.getPassword();
-        mModel.login(username, password, new OnLoginListener() {
-            @Override
-            public void loginSuccess(AccountInfo account) {
-
-            }
-
-            @Override
-            public void loginFailed() {
-
-            }
-        });
+        if ("".equals(username))
+            mView.showText("请输入用户名");
+        else if ("".equals(password))
+            mView.showText("请输入密码");
+        else {
+            AccountInfo.getInstance().saveAccountInfo(context, username, password);
+            mModel.login(username, password);
+        }
     }
+
+    public void loginSuccess() {
+        mView.gotoMainActivity();
+    }
+    public void loginFailure(String e) { mView.showText(e);
+        AccountInfo.getInstance().saveAccountInfo(context, "", "");}
 }

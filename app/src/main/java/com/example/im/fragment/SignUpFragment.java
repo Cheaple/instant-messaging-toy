@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -108,6 +109,11 @@ public class SignUpFragment extends Fragment implements ISignUpContract.View, Vi
         Intent intent = new Intent(context, MainActivity.class);
         startActivity(intent);
         context.finish();
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }
 

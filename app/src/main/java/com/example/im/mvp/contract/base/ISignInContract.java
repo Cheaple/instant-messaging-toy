@@ -10,11 +10,12 @@ public interface ISignInContract {
         void clearUsername();
         void clearPassword();
         void gotoMainActivity();
+        void showText(String content);
     }
     interface Presenter {
         void login();
     }
     interface Model {
-        void login(String username, String password, OnLoginListener loginListener);
+        void login(String username, String password);
     }
 }
