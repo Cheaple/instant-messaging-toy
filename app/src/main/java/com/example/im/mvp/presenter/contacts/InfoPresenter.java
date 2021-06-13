@@ -28,9 +28,23 @@ public class InfoPresenter implements IInfoContract.Presenter {
     }
 
     @Override
+    public void createChatting() {
+        mModel.createChatting(username, contact.getUsername());
+    }
+
+    public void createSuccess(String chattingId) {
+        mView.gotoChattingActivity(contact, chattingId);
+    }
+    public void createFailure(String error) {
+        mView.showText(error);
+    }
+
+
+    @Override
     public void clearChattingHistory() {
         mModel.delete(username, contact.getID());
     }
+
 
     @Override
     public void add() {
@@ -44,6 +58,7 @@ public class InfoPresenter implements IInfoContract.Presenter {
     public void addFailure(String error) {
         mView.showText(error);
     }
+
 
     @Override
     public void delete() {

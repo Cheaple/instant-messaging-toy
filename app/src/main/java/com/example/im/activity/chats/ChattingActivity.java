@@ -41,7 +41,6 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
         Intent intent = getIntent();
-        //int position = intent.getIntExtra("Position", 0);  // 被点击的会话在会话列表中的位置
         type = intent.getIntExtra("Chat Type", Chat.CHAT_TYPE_SINGLE);
 
         context = getApplicationContext();

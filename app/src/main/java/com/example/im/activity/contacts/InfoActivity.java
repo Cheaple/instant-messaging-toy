@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.im.R;
 import com.example.im.activity.base.LoginActivity;
 import com.example.im.activity.base.MainActivity;
+import com.example.im.bean.chats.Chat;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.contacts.IInfoContract;
 import com.example.im.mvp.presenter.contacts.InfoPresenter;
@@ -67,6 +68,7 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
             this.clearLayout.setVisibility(View.GONE);
         }
 
+        chattingLayout.setOnClickListener(this);
         clearLayout.setOnClickListener(this);
         deleteLayout.setOnClickListener(this);
         addLayout.setOnClickListener(this);
@@ -78,6 +80,7 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_go_chatting:  // 点击事件：发起会话
+                mPresenter.createChatting();
                 break;
             case R.id.layout_clear_history:  // 点击事件：清空聊天记录
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -139,6 +142,15 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
         Intent intent = new Intent(context, InfoActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // 结束当前activity
         intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
+        intent.putExtra("Contact", contact);  // 传递联系人信息
+        startActivity(intent);
+    }
+
+    @Override
+    public void gotoChattingActivity(Contact contact, String chattingId) {
+        Intent intent = new Intent(context, InfoActivity.class);
+        intent.putExtra("Type", Chat.CHAT_TYPE_SINGLE);  // 传递会话类型
+        intent.putExtra("Chatting ID", chattingId);  // 传递会话ID
         intent.putExtra("Contact", contact);  // 传递联系人信息
         startActivity(intent);
     }

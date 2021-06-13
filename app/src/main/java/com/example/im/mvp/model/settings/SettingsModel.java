@@ -77,7 +77,7 @@ public class SettingsModel implements ISettingsContract.Model {
         params.put(paramName2, param2);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/" + operation, params);
-            HttpUtil.sendHttpRequest(url, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, null, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();

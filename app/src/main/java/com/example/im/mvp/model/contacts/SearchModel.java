@@ -50,8 +50,7 @@ public class SearchModel implements ISearchContract.Model{
     }
 
     @Override
-    public void loadInvitationList() {
-    }
+    public void loadInvitationList() {}
 
     @Override
     public void searchUser(String username, String target) {
@@ -60,7 +59,7 @@ public class SearchModel implements ISearchContract.Model{
         params.put("search", target);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/search", params);
-            HttpUtil.sendHttpRequest(url, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, null, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
