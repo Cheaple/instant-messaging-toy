@@ -2,6 +2,7 @@ package com.example.im.mvp.presenter.contacts;
 
 import android.content.Context;
 
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.contacts.IContactInfoContract;
 import com.example.im.mvp.contract.contacts.IContactSearchContract;
@@ -21,26 +22,25 @@ public class ContactSearchPresenter implements IContactSearchContract.Presenter 
 
     public ContactSearchPresenter(IContactSearchContract.View view, Context context) {
         this.context = context;
-        this.mModel = new ContactSearchModel();
+        this.mModel = new ContactSearchModel(this);
         this.mView = view;
     }
 
     @Override
-    public void showInvitationList() {
-        invitationList = (LinkedList<Contact>) mModel.loadInvitationList();
-        mView.setInvitationList(invitationList);
-    }
+    public void showInvitationList() {}
 
     @Override
     public void searchUser() {
         String username = mView.getTargetUsername();
-        if ("".equals(username)) return;
-        Contact result = mModel.searchUser(username);
-        if (result != null)
-            mView.gotoContactInfoActivity(result);
-        else {
-            mView.searchFailed();
-        }
+        if (!"".equals(username))
+            mModel.searchUser(AccountInfo.getInstance().getUsername(), username);
+    }
+
+    public void searchSuccess(Contact contact) {
+        mView.gotoContactInfoActivity(contact);
+    }
+    public void searchFailure(String error) {
+        mView.showText(error);
     }
 
     @Override

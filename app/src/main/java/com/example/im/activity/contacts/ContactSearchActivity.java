@@ -108,8 +108,9 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
         startActivityForResult(intent, 1);
     }
 
+
     @Override
-    public void searchFailed() {
-        Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }

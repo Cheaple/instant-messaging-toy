@@ -1,6 +1,8 @@
 package com.example.im.bean.contacts;
 
 
+import com.example.im.R;
+
 import java.io.Serializable;
 
 public class Contact implements Serializable {
@@ -12,6 +14,12 @@ public class Contact implements Serializable {
     private String nickname;  // 昵称
     private String username;  // 用户名，用户眼里的 ID
     private String region;  // 地区
+
+    public Contact(String id, String nickname, String username) {
+        this.id = id;
+        this.nickname = nickname;
+        this.username = username;
+    }
 
     public Contact(String id, int avatarIcon, String nickname, String username, String region) {
         this.id = id;
