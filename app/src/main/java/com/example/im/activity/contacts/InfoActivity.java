@@ -2,7 +2,6 @@ package com.example.im.activity.contacts;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,17 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.im.R;
-import com.example.im.bean.chats.Msg;
+import com.example.im.activity.base.LoginActivity;
+import com.example.im.activity.base.MainActivity;
 import com.example.im.bean.contacts.Contact;
-import com.example.im.mvp.contract.contacts.IContactInfoContract;
-import com.example.im.mvp.presenter.contacts.ContactInfoPresenter;
-import com.example.im.mvp.presenter.contacts.ContactsPresenter;
+import com.example.im.mvp.contract.contacts.IInfoContract;
+import com.example.im.mvp.presenter.contacts.InfoPresenter;
 
-import butterknife.OnClick;
-
-public class ContactInfoActivity extends AppCompatActivity implements IContactInfoContract.View, View.OnClickListener {
+public class InfoActivity extends AppCompatActivity implements IInfoContract.View, View.OnClickListener {
     private Context context;
-    private ContactInfoPresenter mPresenter;
+    private InfoPresenter mPresenter;
 
     private ImageView avatarImageView;
     private TextView nameTextView;
@@ -45,7 +42,7 @@ public class ContactInfoActivity extends AppCompatActivity implements IContactIn
         Contact contact = (Contact) intent.getSerializableExtra("Contact");  // 获取所查看联系人的信息
 
         this.context = getApplicationContext();
-        this.mPresenter = new ContactInfoPresenter(this, contact);
+        this.mPresenter = new InfoPresenter(this, contact);
 
         this.avatarImageView = this.findViewById(R.id.img_contact_info_avatar);
         this.nameTextView = this.findViewById(R.id.text_contact_info_nickname);
@@ -132,6 +129,22 @@ public class ContactInfoActivity extends AppCompatActivity implements IContactIn
 
     @Override
     public void gotoMainActivity() {
-        finish();
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // 清除栈中的所有activity
+        startActivity(intent);
+    }
+
+    @Override
+    public void gotoInfoActivity(Contact contact) {
+        Intent intent = new Intent(context, InfoActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // 结束当前activity
+        intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
+        intent.putExtra("Contact", contact);  // 传递联系人信息
+        startActivity(intent);
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }

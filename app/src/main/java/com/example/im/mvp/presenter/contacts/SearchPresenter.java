@@ -4,25 +4,22 @@ import android.content.Context;
 
 import com.example.im.bean.AccountInfo;
 import com.example.im.bean.contacts.Contact;
-import com.example.im.mvp.contract.contacts.IContactInfoContract;
-import com.example.im.mvp.contract.contacts.IContactSearchContract;
-import com.example.im.mvp.contract.contacts.IGroupCreatingContract;
-import com.example.im.mvp.model.contacts.ContactSearchModel;
-import com.example.im.mvp.model.contacts.GroupCreatingModel;
+import com.example.im.mvp.contract.contacts.ISearchContract;
+import com.example.im.mvp.model.contacts.SearchModel;
 
 import java.util.LinkedList;
 
-public class ContactSearchPresenter implements IContactSearchContract.Presenter {
+public class SearchPresenter implements ISearchContract.Presenter {
     private Context context;
 
-    IContactSearchContract.Model mModel;
-    IContactSearchContract.View mView;
+    ISearchContract.Model mModel;
+    ISearchContract.View mView;
 
     private LinkedList<Contact> invitationList;
 
-    public ContactSearchPresenter(IContactSearchContract.View view, Context context) {
+    public SearchPresenter(ISearchContract.View view, Context context) {
         this.context = context;
-        this.mModel = new ContactSearchModel(this);
+        this.mModel = new SearchModel(this);
         this.mView = view;
     }
 
@@ -36,8 +33,8 @@ public class ContactSearchPresenter implements IContactSearchContract.Presenter 
             mModel.searchUser(AccountInfo.getInstance().getUsername(), username);
     }
 
-    public void searchSuccess(Contact contact) {
-        mView.gotoContactInfoActivity(contact);
+    public void searchSuccess(Contact contact, boolean isContact) {
+        mView.gotoInfoActivity(contact, isContact);
     }
     public void searchFailure(String error) {
         mView.showText(error);

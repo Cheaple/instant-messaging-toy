@@ -1,7 +1,6 @@
 package com.example.im.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,14 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
 import com.example.im.R;
-import com.example.im.activity.contacts.ContactInfoActivity;
-import com.example.im.activity.contacts.ContactSearchActivity;
+import com.example.im.activity.contacts.InfoActivity;
+import com.example.im.activity.contacts.SearchActivity;
 import com.example.im.activity.contacts.GroupCreatingActivity;
-import com.example.im.adapter.chats.ChatAdapter;
 import com.example.im.adapter.contacts.ContactAdapter;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.OnItemClickListener;
@@ -96,7 +93,7 @@ public class ContactsFragment extends Fragment implements IContactsContract.View
         switch (item.getItemId()) {
         case 0:
             // 点击事件：跳转至联系人搜索界面
-            Intent intent = new Intent(getActivity(), ContactSearchActivity.class);
+            Intent intent = new Intent(getActivity(), SearchActivity.class);
             startActivityForResult(intent, 1);
             break;
         case 1:
@@ -111,7 +108,7 @@ public class ContactsFragment extends Fragment implements IContactsContract.View
     @Override
     public void onItemClick(View view, int position) {
         // 点击事件：跳转至联系人信息界面
-        Intent intent = new Intent(context, ContactInfoActivity.class);
+        Intent intent = new Intent(context, InfoActivity.class);
         intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
         intent.putExtra("Contact", mPresenter.getContact(position));  // 传递联系人信息
         startActivityForResult(intent, 1);

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.im.R;
-import com.example.im.activity.contacts.ContactInfoActivity;
+import com.example.im.activity.contacts.InfoActivity;
 import com.example.im.adapter.chats.MessageAdapter;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.chats.Msg;
@@ -65,7 +65,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         // 点击事件：查看联系人信息或群聊信息
         if (item.getItemId() == R.id.menu_info) {
             if (type == Chat.CHAT_TYPE_SINGLE) {
-                Intent intent = new Intent(ChattingActivity.this, ContactInfoActivity.class);
+                Intent intent = new Intent(ChattingActivity.this, InfoActivity.class);
                 intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
                 intent.putExtra("Contact", mPresenter.getContactInfo());  // 传递联系人信息
                 startActivityForResult(intent, 1);

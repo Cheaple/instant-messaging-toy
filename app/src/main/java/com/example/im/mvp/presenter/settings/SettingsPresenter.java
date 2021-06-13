@@ -18,12 +18,15 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     ISettingsContract.View mView;
 
     private String username;
+    private String password;
 
     public SettingsPresenter(ISettingsContract.View view, Context context) {
         this.context = context;
         this.mModel = new SettingsModel(this);
         this.mView = view;
         this.username = AccountInfo.getInstance().getUsername();
+        this.password = AccountInfo.getInstance().getPassword();
+        AccountInfo.getInstance().saveAccountInfo(context);
     }
 
     @Override
@@ -49,8 +52,10 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     public void changeUsername(String new_username) {
         if ("".equals(new_username))
             mView.showText("ID不能为空");
-        else
+        else {
             mModel.changeUsername(username, new_username);
+            username = new_username;
+        }
     }
 
     @Override
@@ -69,14 +74,21 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
         else if (!new_pw.equals(confirm_pw)) {
             mView.showText("请确认新密码");
         }
-        else mModel.changePassword(username, new_pw);
+        else {
+            mModel.changePassword(username, new_pw);
+            password = new_pw;  // 暂时修改密码
+        }
     }
 
     public void changeSuccess() {
         mView.showText("修改成功");
+        AccountInfo.getInstance().setAccount(username, password);
+        AccountInfo.getInstance().saveAccountInfo(context);  // 保存新用户名或新密码
     }
     public void changeFailure(String error) {
         mView.showText(error);
+        this.username = AccountInfo.getInstance().getUsername();  // 恢复原用户名
+        this.password = AccountInfo.getInstance().getPassword();  // 恢复原密码
     }
 
     @Override

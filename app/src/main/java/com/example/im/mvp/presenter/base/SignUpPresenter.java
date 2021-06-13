@@ -33,13 +33,14 @@ public class SignUpPresenter implements ISignUpContract.Presenter {
             mView.clearConfirmPassword();
         }
         else {
-            AccountInfo.getInstance().saveAccountInfo(context, username, password);
+            AccountInfo.getInstance().setAccount(username, password);
             mModel.login(username, password);
         }
     }
 
     public void loginSuccess() {
         mView.gotoMainActivity();
+        AccountInfo.getInstance().saveAccountInfo(context);
     }
     public void loginFailure(String error) {
         mView.showText(error);

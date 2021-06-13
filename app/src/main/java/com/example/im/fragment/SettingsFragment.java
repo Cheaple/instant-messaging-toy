@@ -1,8 +1,6 @@
 package com.example.im.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,8 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.im.R;
 import com.example.im.activity.base.LoginActivity;
-import com.example.im.activity.base.MainActivity;
-import com.example.im.activity.contacts.ContactInfoActivity;
 import com.example.im.mvp.contract.settings.ISettingsContract;
 import com.example.im.mvp.presenter.settings.SettingsPresenter;
 
@@ -241,6 +237,7 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
     @Override
     public void gotoLoginActivity() {
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // 清除栈中的所有activity
         startActivity(intent);
     }
 

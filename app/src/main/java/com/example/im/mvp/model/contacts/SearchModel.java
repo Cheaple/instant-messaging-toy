@@ -2,15 +2,11 @@ package com.example.im.mvp.model.contacts;
 
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
 
-import com.example.im.R;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.HttpCallbackListener;
-import com.example.im.mvp.contract.contacts.IContactSearchContract;
-import com.example.im.mvp.model.settings.SettingsModel;
-import com.example.im.mvp.presenter.contacts.ContactSearchPresenter;
-import com.example.im.mvp.presenter.settings.SettingsPresenter;
+import com.example.im.mvp.contract.contacts.ISearchContract;
+import com.example.im.mvp.presenter.contacts.SearchPresenter;
 import com.example.im.util.HttpUtil;
 import com.google.gson.Gson;
 
@@ -18,32 +14,31 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
-public class ContactSearchModel implements IContactSearchContract.Model{
+public class SearchModel implements ISearchContract.Model{
     private static final int SEARCH_SUCCESS = 0;
     private static final int SEARCH_FAILURE = 1;
 
-    private ContactSearchModel.MyHandler mHandler;
-    public ContactSearchModel(ContactSearchPresenter presenter) {
-        mHandler = new ContactSearchModel.MyHandler(presenter);
+    private SearchModel.MyHandler mHandler;
+    public SearchModel(SearchPresenter presenter) {
+        mHandler = new SearchModel.MyHandler(presenter);
     }
 
     private static class MyHandler extends Handler {
-        private WeakReference<ContactSearchPresenter> mWeakReference;
+        private WeakReference<SearchPresenter> mWeakReference;
 
-        public MyHandler(ContactSearchPresenter presenter) {
+        public MyHandler(SearchPresenter presenter) {
             mWeakReference = new WeakReference<>(presenter);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            ContactSearchPresenter mPresenter = mWeakReference.get();
+            SearchPresenter mPresenter = mWeakReference.get();
             switch (msg.what) {
                 case SEARCH_SUCCESS:
-                    mPresenter.searchSuccess((Contact) msg.obj);
+                    // TODO: 判断该用户是否为当前用户的好友
+                    mPresenter.searchSuccess((Contact) msg.obj, false);
                     break;
                 case SEARCH_FAILURE:
                     mPresenter.searchFailure(msg.obj.toString());

@@ -15,23 +15,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.im.R;
-import com.example.im.adapter.contacts.ContactAdapter;
 import com.example.im.adapter.contacts.InvitationAdapter;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.OnItemClickListener;
-import com.example.im.mvp.contract.contacts.IContactSearchContract;
-import com.example.im.mvp.presenter.contacts.ContactSearchPresenter;
-import com.example.im.mvp.presenter.contacts.GroupCreatingPresenter;
+import com.example.im.mvp.contract.contacts.ISearchContract;
+import com.example.im.mvp.presenter.contacts.SearchPresenter;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.OnClick;
 
-
-public class ContactSearchActivity extends AppCompatActivity implements IContactSearchContract.View, OnItemClickListener, View.OnClickListener {
+public class SearchActivity extends AppCompatActivity implements ISearchContract.View, OnItemClickListener, View.OnClickListener {
     private Context context;
-    private ContactSearchPresenter mPresenter;
+    private SearchPresenter mPresenter;
 
     private InvitationAdapter invitationAdapter;
     private EditText editText;
@@ -45,7 +41,7 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
         Intent intent = getIntent();
 
         context = getApplicationContext();
-        mPresenter = new ContactSearchPresenter(this, context);
+        mPresenter = new SearchPresenter(this, context);
 
         editText = (EditText)findViewById(R.id.edit_new_friend_id);
         searchButton = (Button)findViewById(R.id.button_search);
@@ -101,9 +97,12 @@ public class ContactSearchActivity extends AppCompatActivity implements IContact
     }
 
     @Override
-    public void gotoContactInfoActivity(Contact contact) {
-        Intent intent = new Intent(context, ContactInfoActivity.class);
-        intent.putExtra("Type", Contact.CONTACT_TYPE_SEARCH);
+    public void gotoInfoActivity(Contact contact, boolean isContact) {
+        Intent intent = new Intent(context, InfoActivity.class);
+        if (!isContact)  // 如果查找的用户不是当前用户的好友
+            intent.putExtra("Type", Contact.CONTACT_TYPE_SEARCH);
+        else  // 查找的用户是当前用户的好友
+            intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
         intent.putExtra("Contact", contact);  // 传递联系人信息
         startActivityForResult(intent, 1);
     }

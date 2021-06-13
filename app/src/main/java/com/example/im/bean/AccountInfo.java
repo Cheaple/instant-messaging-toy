@@ -19,7 +19,7 @@ public class AccountInfo {
     }
 
     // 保存自动登录的用户信息
-    public void saveAccountInfo(Context context, String username, String password) {
+    public void saveAccountInfo(Context context) {
         SharedPreferences sp = context.getSharedPreferences("AccountInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("Username", username);
@@ -29,7 +29,8 @@ public class AccountInfo {
 
     // 清除自动登录的用户信息
     public void clearAccountInfo(Context context) {
-        saveAccountInfo(context, "", "");
+        setAccount("", "");
+        saveAccountInfo(context);
     }
 
     // 检查是否已登录

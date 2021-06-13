@@ -28,12 +28,13 @@ public class SignInPresenter implements ISignInContract.Presenter {
         else if ("".equals(password))
             mView.showText("请输入密码");
         else {
-            AccountInfo.getInstance().saveAccountInfo(context, username, password);
+            AccountInfo.getInstance().setAccount(username, password);
             mModel.login(username, password);
         }
     }
 
     public void loginSuccess() {
+        AccountInfo.getInstance().saveAccountInfo(context);
         mView.gotoMainActivity();
     }
     public void loginFailure(String error) {
