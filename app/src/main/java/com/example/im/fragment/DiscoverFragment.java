@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.im.R;
 import com.example.im.activity.discover.PostActivity;
 import com.example.im.adapter.discover.DiscoverAdapter;
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.discover.Discover;
 import com.example.im.bean.discover.Reply;
 import com.example.im.listener.OnItemClickListener;
@@ -109,9 +110,8 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
 
     private void giveLike(int position) {
         // 获取被点击的item的holder
-        DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder) recyclerView.findViewHolderForLayoutPosition(position);
-        System.out.println(position);
-        //DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder) recyclerView.getChildViewHolder(v);
+        DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder)
+                recyclerView.findViewHolderForLayoutPosition(position);
         if (!holder.ifLiked) {
             holder.giveLike();
             mPresenter.giveLike(position);
@@ -124,12 +124,12 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
 
     private void makeComment(int position) {
         // 获取被点击的item的holder
-        View v = recyclerView.getChildAt(position);
-        DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder )recyclerView.getChildViewHolder(v);
+        DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder)
+                recyclerView.findViewHolderForLayoutPosition(position);
 
         // 弹出对话框：输入评论内容
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        v = LayoutInflater.from(context).inflate(R.layout.dialog_input, null);
+        View v = LayoutInflater.from(context).inflate(R.layout.dialog_input, null);
         builder.setView(v);
         builder.setMessage("Comment");
         final EditText editText = (EditText)v.findViewById(R.id.edit_dialog);
@@ -142,7 +142,7 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
                 String comment = editText.getText().toString().trim();
                 if (!"".equals(comment)) {
                     // TODO: 评论
-                    holder.commentList.add(new Reply(comment, "Me"));
+                    holder.commentList.add(new Reply(AccountInfo.getInstance().getNickname(), comment));
                     holder.commentAdapter.notifyDataSetChanged();
                     mPresenter.makeComment(comment, position);
                 }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class DiscoverModel implements IDiscoverContract.Model {
@@ -54,6 +55,9 @@ public class DiscoverModel implements IDiscoverContract.Model {
                     break;
                 case GIVE_SUCCESS:
                     mPresenter.giveSuccess();
+                    break;
+                case COMMENT_SUCCESS:
+                    mPresenter.commentSuccess();
                     break;
                 case FAILURE:
                     mPresenter.discoverFailure(msg.obj.toString());
@@ -91,8 +95,8 @@ public class DiscoverModel implements IDiscoverContract.Model {
                             Collections.sort(momentList, new Comparator<Discover>() {
                                 @Override
                                 public int compare(Discover d1, Discover d2) {
-                                    if (d1.getTime().compareTo(d2.getTime())>0) return 1;
-                                    return -1;
+                                    if (d1.getTime().compareTo(d2.getTime())>0) return -1;
+                                    return 1;
                                 }
                             });
 
@@ -162,12 +166,46 @@ public class DiscoverModel implements IDiscoverContract.Model {
     }
 
     @Override
-    public void cancelLike(String momentId) {
-
-    }
+    public void cancelLike(String momentId) {}
 
     @Override
     public void makeComment(String momentId, String content) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("id", momentId);
+        params.put("text", content);
+        try {
+            String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/moment/reply", params);
+            //String url = "http://8.140.133.34:7200/moment/reply" + "?id=" + momentId + "&text=" + content;
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success")) { // 评论成功
+                            msg.what = COMMENT_SUCCESS;
+                        }
+                        else {  // 评论失败
+                            msg.what = FAILURE;
+                            msg.obj = jsonObject.getString("msg");  // 失败原因
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
 
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

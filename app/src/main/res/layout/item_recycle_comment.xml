@@ -3,13 +3,15 @@
     android:id="@+id/comment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="3dp"
     android:orientation="horizontal">
     <TextView
         android:id="@+id/comment_nickname"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
         android:text="徐金龙："
-        android:textSize="21sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/teal_700"/>
     <TextView
@@ -18,7 +20,7 @@
         android:layout_height="wrap_content"
         android:text="强强强强强强强强强强强强强强强强强强强强"
         android:textStyle="normal"
-        android:textSize="20sp"/>
+        android:textSize="17dp"/>
 
     <View
         android:layout_width="match_parent"
