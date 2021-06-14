@@ -9,20 +9,20 @@ public class Discover {
     private String publisher;  // 昵称
     private String momentType;  // 动态类型
     private String text;  // 文字
-    private String publishedTime;  // 发布时间
+    private String time;  // 发布时间
     private ArrayList<Integer> images;  // 图片
     private int imageCount = 0;  // 图片数量
     private ArrayList<String> thumbs;  // 点赞
     private LinkedList<Reply> replies;  // 评论
 
-    public Discover(String id, int avatarIcon, String publisher, String momentType, String text, String publishedTime,
+    public Discover(String id, int avatarIcon, String publisher, String momentType, String text, String time,
                     ArrayList<Integer> images, int imageCount, ArrayList<String> thumbs, LinkedList<Reply> replies) {
         this.id = id;
         this.avatarIcon = avatarIcon;
         this.publisher = publisher;
         this.momentType = momentType;
         this.text = text;
-        this.publishedTime = publishedTime;
+        this.time = time;
         this.images = images;
         this.imageCount = imageCount;
         this.thumbs = thumbs;
@@ -69,12 +69,12 @@ public class Discover {
         this.text = text;
     }
 
-    public String getPublishedTime() {
-        return publishedTime;
+    public String getTime() {
+        return time;
     }
 
-    public void setPublishedTime(String publishedTime) {
-        this.publishedTime = publishedTime;
+    public void setPublishedTime(String time) {
+        this.time = time;
     }
 
     public ArrayList<Integer> getImages() {
@@ -116,7 +116,7 @@ public class Discover {
                 ", publisher='" + publisher + '\'' +
                 ", momentType='" + momentType + '\'' +
                 ", text='" + text + '\'' +
-                ", publishedTime='" + publishedTime + '\'' +
+                ", time='" + time + '\'' +
                 ", thumbs=" + thumbs +
                 ", replies=" + replies +
                 '}';

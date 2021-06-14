@@ -109,9 +109,9 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
 
     private void giveLike(int position) {
         // 获取被点击的item的holder
-        View v = recyclerView.getChildAt(position);
+        DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder) recyclerView.findViewHolderForLayoutPosition(position);
         System.out.println(position);
-        DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder) recyclerView.getChildViewHolder(v);
+        //DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder) recyclerView.getChildViewHolder(v);
         if (!holder.ifLiked) {
             holder.giveLike();
             mPresenter.giveLike(position);

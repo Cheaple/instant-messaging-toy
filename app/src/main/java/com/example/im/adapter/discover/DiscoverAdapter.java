@@ -85,6 +85,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         }
 
         public void setLikeList(ArrayList<String> likeList) {
+            likeList.remove(null);  // 若点赞者不是当前用户的好友，则忽略之
             this.likeList = likeList;
         }
 
@@ -175,7 +176,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         textView = holder.discoverItemView.findViewById(R.id.moment_text);
         textView.setText(moment.getText());
         textView = holder.discoverItemView.findViewById(R.id.published_time);
-        textView.setText(moment.getPublishedTime());
+        textView.setText(moment.getTime());
 
         // 设置动态图片
         switch (holder.imageCount) {

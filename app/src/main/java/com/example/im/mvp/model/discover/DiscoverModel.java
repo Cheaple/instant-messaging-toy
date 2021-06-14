@@ -21,6 +21,8 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class DiscoverModel implements IDiscoverContract.Model {
@@ -84,6 +86,16 @@ public class DiscoverModel implements IDiscoverContract.Model {
                                 momentList.add(moment);
                                 System.out.println(moment.toString());
                             }
+
+                            // 对动态按照发布时间进行排序
+                            Collections.sort(momentList, new Comparator<Discover>() {
+                                @Override
+                                public int compare(Discover d1, Discover d2) {
+                                    if (d1.getTime().compareTo(d2.getTime())>0) return 1;
+                                    return -1;
+                                }
+                            });
+
                             msg.what = LOAD_SUCCESS;
                             msg.obj = momentList;
                             // TODO: 获取头像、图片和视频
