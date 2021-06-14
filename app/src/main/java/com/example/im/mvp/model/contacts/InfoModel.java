@@ -24,6 +24,8 @@ public class InfoModel implements IInfoContract.Model {
     private static final int DELETE_FAILURE = 3;
     private static final int CREATE_SUCCESS = 4;
     private static final int CREATE_FAILURE = 5;
+    private static final int CLEAR_SUCCESS = 6;
+    private static final int CLEAR_FAILURE = 7;
 
     private InfoModel.MyHandler mHandler;
     public InfoModel(InfoPresenter presenter) {
@@ -59,6 +61,12 @@ public class InfoModel implements IInfoContract.Model {
                     break;
                 case CREATE_FAILURE:
                     mPresenter.createFailure(msg.obj.toString());
+                    break;
+                case CLEAR_SUCCESS:
+                    mPresenter.clearSuccess();
+                    break;
+                case CLEAR_FAILURE:
+                    mPresenter.clearFailure(msg.obj.toString());
                     break;
                 default:
                     break;

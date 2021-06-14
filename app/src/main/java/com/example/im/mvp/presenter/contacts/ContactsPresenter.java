@@ -18,14 +18,20 @@ public class ContactsPresenter implements IContactsContract.Presenter {
 
     public ContactsPresenter(IContactsContract.View view, Context context) {
         this.context = context;
-        this.mModel = new ContactsModel();
+        this.mModel = new ContactsModel(this);
         this.mView = view;
     }
 
     @Override
     public void showContactList(){
-        contactList = (LinkedList<Contact>) mModel.loadContactList();
+        mModel.loadContactList();
+    }
+
+    public void loadSuccess(LinkedList<Contact> contactList) {
         mView.setContactList(contactList);
+    }
+    public void loadFailure(String error) {
+        mView.showText(error);
     }
 
     @Override

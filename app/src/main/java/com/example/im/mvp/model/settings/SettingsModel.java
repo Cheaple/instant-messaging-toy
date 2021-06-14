@@ -71,9 +71,9 @@ public class SettingsModel implements ISettingsContract.Model {
         change("password", "password", password);
     }
 
-    private void change(String operation, String paramName1, String param1) {
+    private void change(String operation, String paramName, String param) {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put(paramName1, param1);
+        params.put(paramName, param);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/" + operation, params);
             HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求

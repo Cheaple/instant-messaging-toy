@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.example.im.R;
@@ -125,5 +126,10 @@ public class ContactsFragment extends Fragment implements IContactsContract.View
     @Override
     public void setContactList() {
         contactAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }

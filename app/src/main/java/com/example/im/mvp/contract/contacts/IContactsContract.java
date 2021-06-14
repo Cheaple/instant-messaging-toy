@@ -9,6 +9,7 @@ public interface IContactsContract {
     interface View {
         void setContactList(List list);  // 初始化好友列表
         void setContactList();  // 更新好友列表
+        void showText(String error);
     }
     interface Presenter {
         void showContactList();
@@ -16,6 +17,6 @@ public interface IContactsContract {
 
     }
     interface Model {
-        List loadContactList();
+        void loadContactList();
     }
 }

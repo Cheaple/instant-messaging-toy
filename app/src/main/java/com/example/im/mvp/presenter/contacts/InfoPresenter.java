@@ -45,6 +45,13 @@ public class InfoPresenter implements IInfoContract.Presenter {
         mModel.delete(username, contact.getID());
     }
 
+    public void clearSuccess() {
+        mView.showText("聊天记录清除成功");
+    }
+    public void clearFailure(String error) {
+        mView.showText(error);
+    }
+
 
     @Override
     public void add() {
