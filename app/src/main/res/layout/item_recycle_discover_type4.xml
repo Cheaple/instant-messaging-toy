@@ -122,16 +122,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="7.5dp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/grey"/>
+
             <LinearLayout
+                android:id="@+id/layout_likes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/grey">
                 <ImageView
                     android:id="@+id/img_heart"

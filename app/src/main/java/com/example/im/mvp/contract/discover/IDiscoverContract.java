@@ -7,6 +7,7 @@ import java.util.LinkedList;
 public interface IDiscoverContract {
     interface View {
         void setMomentList(LinkedList<Discover> list);
+        void showText(String error);
     }
     interface Presenter {
         void showMomentList();
@@ -15,6 +16,6 @@ public interface IDiscoverContract {
         void makeComment(String content, int position);
     }
     interface Model {
-        LinkedList<Discover> loadMomentList();
+        void loadMomentList();
     }
 }

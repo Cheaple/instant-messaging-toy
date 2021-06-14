@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.im.R;
-import com.example.im.bean.discover.Comment;
+import com.example.im.bean.discover.Reply;
 
 import java.util.LinkedList;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
-    private LinkedList<Comment> data;
+    private LinkedList<Reply> commentList;
     private Context context;
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
@@ -36,8 +36,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             this.nicknameTextView = itemView.findViewById(R.id.comment_nickname);
         }
     }
-    public CommentAdapter(LinkedList<Comment> data, Context context) {
-        this.data = data;
+    public CommentAdapter(LinkedList<Reply> commentList, Context context) {
+        this.commentList = commentList;
         this.context = context;
     }
 
@@ -52,13 +52,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        Comment comment = data.get(position);
-        holder.nicknameTextView.setText(comment.getCommenter() + ": ");  // 设置评论者昵称
-        holder.contentTextView.setText(comment.getComment());  // 设置评论内容
+        Reply comment = commentList.get(position);
+        holder.nicknameTextView.setText(comment.getSender() + ": ");  // 设置评论者昵称
+        holder.contentTextView.setText(comment.getText());  // 设置评论内容
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return commentList.size();
     }
 }

@@ -1,16 +1,12 @@
 package com.example.im.adapter.discover;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.im.R;
-import com.example.im.bean.discover.Comment;
 import com.example.im.bean.discover.Discover;
+import com.example.im.bean.discover.Reply;
 import com.example.im.listener.OnItemClickListener;
 
 import java.util.ArrayList;
@@ -37,9 +33,10 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         private View discoverItemView;
         public ImageView likeImageView;
         public ImageView commentImageView;
+        private LinearLayout likesLayout;
         private TextView likesTextView;
 
-        public LinkedList<Comment> commentList = new LinkedList<Comment>();
+        public LinkedList<Reply> commentList = new LinkedList<>();
         public CommentAdapter commentAdapter;
 
         public int imageCount;
@@ -74,6 +71,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             }
             this.likeImageView = itemView.findViewById(R.id.img_like);
             this.commentImageView = itemView.findViewById(R.id.img_comment);
+            this.likesLayout = itemView.findViewById(R.id.layout_likes);
             this.likesTextView = itemView.findViewById(R.id.text_likes);
 
             itemView.setOnClickListener(this);  // 为ItemView添加点击事件
@@ -127,7 +125,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         imageView.setImageResource(moment.getAvatarIcon());
         TextView textView;
         textView = holder.discoverItemView.findViewById(R.id.nickname_text);
-        textView.setText(moment.getNickname());
+        textView.setText(moment.getPublisher());
         textView = holder.discoverItemView.findViewById(R.id.moment_text);
         textView.setText(moment.getText());
         textView = holder.discoverItemView.findViewById(R.id.published_time);
@@ -166,20 +164,23 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         }
 
         // 设置点赞列表
-        ArrayList<String> likes = moment.getLikes();
+        ArrayList<String> likes = moment.getThumbs();
         String likes_string = new String();
         for (int i = 0; i < likes.size(); ++i) {
             if (i != 0) likes_string += ", ";
             likes_string = likes_string + likes.get(i);
         }
-        holder.likesTextView.setText(likes_string);
+        if (likes.size() > 0) {
+            holder.likesLayout.setVisibility(View.VISIBLE);
+            holder.likesTextView.setText(likes_string);
+        }
+        else
+            holder.likesLayout.setVisibility(View.GONE);
+
 
         // 设置评论列表
         RecyclerView recyclerView = holder.discoverItemView.findViewById(R.id.comments_recyclerview);
-        int comment_cnt = moment.getComments().size();
-        for (int i = 0; i < comment_cnt; ++i)
-            holder.commentList.add(new Comment(moment.getComments().get(i), moment.getCommenter().get(i)));
-        holder.commentAdapter = new CommentAdapter(holder.commentList, context);
+        holder.commentAdapter = new CommentAdapter(moment.getReplies(), context);
         recyclerView.setAdapter(holder.commentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 

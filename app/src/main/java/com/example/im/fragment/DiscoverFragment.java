@@ -20,20 +20,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import com.example.im.R;
 import com.example.im.activity.discover.PostActivity;
 import com.example.im.adapter.discover.DiscoverAdapter;
-import com.example.im.bean.discover.Comment;
 import com.example.im.bean.discover.Discover;
+import com.example.im.bean.discover.Reply;
 import com.example.im.listener.OnItemClickListener;
 import com.example.im.mvp.contract.discover.IDiscoverContract;
 import com.example.im.mvp.presenter.discover.DiscoverPresenter;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -149,7 +147,7 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
                 String comment = editText.getText().toString().trim();
                 if (!"".equals(comment)) {
                     // TODO: 评论
-                    holder.commentList.add(new Comment(comment, "Me"));
+                    holder.commentList.add(new Reply(comment, "Me"));
                     holder.commentAdapter.notifyDataSetChanged();
                     mPresenter.makeComment(comment, position);
                 }
@@ -164,5 +162,10 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
         discoverAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(discoverAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }

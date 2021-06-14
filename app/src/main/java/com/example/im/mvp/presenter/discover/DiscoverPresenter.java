@@ -2,6 +2,7 @@ package com.example.im.mvp.presenter.discover;
 
 import android.content.Context;
 
+import com.example.im.bean.chats.Chat;
 import com.example.im.bean.discover.Discover;
 import com.example.im.mvp.contract.discover.IDiscoverContract;
 import com.example.im.mvp.contract.settings.ISettingsContract;
@@ -20,15 +21,22 @@ public class DiscoverPresenter implements IDiscoverContract.Presenter {
 
     public DiscoverPresenter(IDiscoverContract.View view, Context context) {
         this.context = context;
-        this.mModel = new DiscoverModel();
+        this.mModel = new DiscoverModel(this);
         this.mView = view;
     }
 
     @Override
     public void showMomentList() {
-        momentList = mModel.loadMomentList();
+        mModel.loadMomentList();
+    }
+
+    public void loadSuccess(LinkedList<Discover> momentList) {
         mView.setMomentList(momentList);
     }
+    public void loadFailure(String error) {
+        mView.showText(error);
+    }
+
 
     @Override
     public void giveLike(int position) {

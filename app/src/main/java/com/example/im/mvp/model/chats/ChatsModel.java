@@ -66,7 +66,7 @@ public class ChatsModel implements IChatsContract.Model {
                     Message msg = new Message();
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getBoolean("success")) { // 加载好友列表成功
+                        if (jsonObject.getBoolean("success")) { // 加载会话列表成功
                             msg.what = LOAD_SUCCESS;
                             Gson gson = new Gson();
                             Chat[] chats = gson.fromJson(jsonObject.getString("chats"), Chat[].class);

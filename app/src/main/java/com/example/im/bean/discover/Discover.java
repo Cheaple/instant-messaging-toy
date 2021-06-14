@@ -1,60 +1,124 @@
 package com.example.im.bean.discover;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Discover {
-    private int avatarIcon;  //头像
-    private String nickname;  //昵称
+    private String id;
+    private int avatarIcon;  // 头像
+    private String publisher;  // 昵称
+    private String momentType;  // 动态类型
     private String text;  // 文字
     private String publishedTime;  // 发布时间
     private ArrayList<Integer> images;  // 图片
-    private ArrayList<String> likes;  // 点赞
-    private ArrayList<String> comments;  // 评论
-    private ArrayList<String> commenter;  // 评论者
+    private int imageCount = 0;  // 图片数量
+    private ArrayList<String> thumbs;  // 点赞
+    private LinkedList<Reply> replies;  // 评论
 
-    public Discover(String nickname, int avatarIcon, String text, String publishedTime, ArrayList<Integer> images, ArrayList<String> likes, ArrayList<String> comments, ArrayList<String> commenter) {
-        this.nickname = nickname;
+    public Discover(String id, int avatarIcon, String publisher, String momentType, String text, String publishedTime,
+                    ArrayList<Integer> images, int imageCount, ArrayList<String> thumbs, LinkedList<Reply> replies) {
+        this.id = id;
         this.avatarIcon = avatarIcon;
+        this.publisher = publisher;
+        this.momentType = momentType;
         this.text = text;
         this.publishedTime = publishedTime;
         this.images = images;
-        this.likes = likes;
-        this.comments = comments;
-        this.commenter = commenter;
+        this.imageCount = imageCount;
+        this.thumbs = thumbs;
+        this.replies = replies;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getAvatarIcon() {
         return avatarIcon;
     }
 
-    public ArrayList<Integer> getImages() {
-        return images;
+    public void setAvatarIcon(int avatarIcon) {
+        this.avatarIcon = avatarIcon;
     }
 
-    public String getPublishedTime() {
-        return publishedTime;
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getMomentType() {
+        return momentType;
+    }
+
+    public void setMomentType(String momentType) {
+        this.momentType = momentType;
     }
 
     public String getText() {
         return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getPublishedTime() {
+        return publishedTime;
+    }
+
+    public void setPublishedTime(String publishedTime) {
+        this.publishedTime = publishedTime;
+    }
+
+    public ArrayList<Integer> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<Integer> images) {
+        this.images = images;
+    }
+
     public int getImageCount() {
-        return images.size();
+        return imageCount;
     }
 
-    public ArrayList<String> getLikes() {
-        return likes;
+    public void setImageCount(int imageCount) {
+        this.imageCount = imageCount;
     }
 
-    public ArrayList<String> getComments() {
-        return comments;
+    public ArrayList<String> getThumbs() {
+        return thumbs;
     }
-    public ArrayList<String> getCommenter() {
-        return commenter;
+
+    public void setThumbs(ArrayList<String> likes) {
+        this.thumbs = thumbs;
+    }
+
+    public LinkedList<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(LinkedList<Reply> replies) {
+        this.replies = replies;
+    }
+
+    @Override
+    public String toString() {
+        return "Discover{" +
+                "id='" + id + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", momentType='" + momentType + '\'' +
+                ", text='" + text + '\'' +
+                ", publishedTime='" + publishedTime + '\'' +
+                ", thumbs=" + thumbs +
+                ", replies=" + replies +
+                '}';
     }
 }
