@@ -14,6 +14,7 @@ public interface ISignInContract {
     }
     interface Presenter {
         void login();
+        void autoLogin();
     }
     interface Model {
         void login(String username, String password);

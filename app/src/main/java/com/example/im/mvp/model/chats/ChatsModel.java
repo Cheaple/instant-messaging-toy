@@ -21,8 +21,8 @@ public class ChatsModel implements IChatsContract.Model {
         ArrayList<Contact> contactList = new ArrayList<>();
         contactList.add(contact1);
         contactList.add(contact2);
-        list.add(new Chat(Chat.CHAT_TYPE_SINGLE, 101, "Daidai", R.drawable.avatar1, "6666666", "2021/01/01"));
-        list.add(new Chat(Chat.CHAT_TYPE_GROUP, 201, "Jige", R.drawable.avatar10,"6666666", "2021/01/01"));
+        list.add(new Chat(Chat.CHAT_TYPE_SINGLE, "101", "Daidai", R.drawable.avatar1, "6666666", "2021/01/01"));
+        list.add(new Chat(Chat.CHAT_TYPE_GROUP, "201", "Jige", R.drawable.avatar10,"6666666", "2021/01/01"));
         return list;
     }
 }

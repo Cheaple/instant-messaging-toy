@@ -55,7 +55,7 @@ public class SignUpModel implements ISignUpContract.Model {
         params.put("password", password);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/register", params);
-            HttpUtil.sendHttpRequest(url, null, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, null, true, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();

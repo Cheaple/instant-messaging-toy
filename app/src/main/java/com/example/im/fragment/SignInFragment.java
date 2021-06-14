@@ -41,6 +41,7 @@ public class SignInFragment extends Fragment implements ISignInContract.View, Vi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         context = getActivity();
         mPresenter = new SignInPresenter(this, context);
+        mPresenter.autoLogin();
 
         usernameEditView = (EditText)getView().findViewById(R.id.edit_username);
         passwordEditView = (EditText)getView().findViewById(R.id.edit_password);

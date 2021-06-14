@@ -69,11 +69,10 @@ public class InfoModel implements IInfoContract.Model {
     @Override
     public void delete(String username, String target) {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
         params.put("delete", target);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/delete", params);
-            HttpUtil.sendHttpRequest(url, null, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
@@ -109,16 +108,16 @@ public class InfoModel implements IInfoContract.Model {
     @Override
     public void add(String username, String target) {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
         params.put("add", target);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/add", params);
-            HttpUtil.sendHttpRequest(url, null, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
+                        System.out.println(response.toString());
                         if (jsonObject.getBoolean("success")) { // 添加成功
                             msg.what = ADD_SUCCESS;
                         }
@@ -158,7 +157,7 @@ public class InfoModel implements IInfoContract.Model {
             body.put("memberList", memberList);
 
             String url = "http://8.140.133.34:7200/chat/create" + "?username=" + username;
-            HttpUtil.sendHttpRequest(url, body, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, body, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();

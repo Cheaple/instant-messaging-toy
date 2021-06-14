@@ -45,4 +45,10 @@ public class SignUpPresenter implements ISignUpContract.Presenter {
     public void loginFailure(String error) {
         mView.showText(error);
         AccountInfo.getInstance().clearAccountInfo(context);}
+
+    @Override
+    public void autoLogin() {
+        if (AccountInfo.getInstance().ifLoggedIn(context))
+            mModel.login(AccountInfo.getInstance().getUsername(), AccountInfo.getInstance().getPassword());
+    }
 }

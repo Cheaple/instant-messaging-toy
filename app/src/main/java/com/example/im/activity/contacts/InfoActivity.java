@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.im.R;
 import com.example.im.activity.base.LoginActivity;
 import com.example.im.activity.base.MainActivity;
+import com.example.im.activity.chats.ChattingActivity;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.contacts.IInfoContract;
@@ -148,7 +149,7 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
 
     @Override
     public void gotoChattingActivity(Contact contact, String chattingId) {
-        Intent intent = new Intent(context, InfoActivity.class);
+        Intent intent = new Intent(context, ChattingActivity.class);
         intent.putExtra("Type", Chat.CHAT_TYPE_SINGLE);  // 传递会话类型
         intent.putExtra("Chatting ID", chattingId);  // 传递会话ID
         intent.putExtra("Contact", contact);  // 传递联系人信息

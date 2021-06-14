@@ -55,11 +55,10 @@ public class SearchModel implements ISearchContract.Model{
     @Override
     public void searchUser(String username, String target) {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
         params.put("search", target);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/search", params);
-            HttpUtil.sendHttpRequest(url, null, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();

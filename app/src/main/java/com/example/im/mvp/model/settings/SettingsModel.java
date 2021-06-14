@@ -55,12 +55,12 @@ public class SettingsModel implements ISettingsContract.Model {
 
     @Override
     public void changeNickname(String username, String nickname) {
-        change("nickname", "username", username, "nickname", nickname);
+        change("nickname", "nickname", nickname);
     }
 
     @Override
     public void changeUsername(String username, String new_username) {
-        change("username", "username", username, "name", new_username);
+        change("username", "name", new_username);
     }
 
     @Override
@@ -68,16 +68,15 @@ public class SettingsModel implements ISettingsContract.Model {
 
     @Override
     public void changePassword(String username, String password) {
-        change("password", "username", username, "password", password);
+        change("password", "password", password);
     }
 
-    private void change(String operation, String paramName1, String param1, String paramName2, String param2) {
+    private void change(String operation, String paramName1, String param1) {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put(paramName1, param1);
-        params.put(paramName2, param2);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/" + operation, params);
-            HttpUtil.sendHttpRequest(url, null, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
