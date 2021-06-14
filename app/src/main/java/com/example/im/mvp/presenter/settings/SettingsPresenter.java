@@ -19,6 +19,7 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
 
     private String username;
     private String password;
+    private String nickname;
 
     public SettingsPresenter(ISettingsContract.View view, Context context) {
         this.context = context;
@@ -26,6 +27,7 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
         this.mView = view;
         this.username = AccountInfo.getInstance().getUsername();
         this.password = AccountInfo.getInstance().getPassword();
+        this.nickname = AccountInfo.getInstance().getNickname();
         AccountInfo.getInstance().saveAccountInfo(context);
     }
 
@@ -44,8 +46,10 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     public void changeNickname(String new_nickname) {
         if ("".equals(new_nickname))
             mView.showText("昵称不能为空");
-        else
+        else {
             mModel.changeNickname(new_nickname);
+            nickname = new_nickname;
+        }
     }
 
     @Override
@@ -82,6 +86,7 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
 
     public void changeSuccess() {
         mView.showText("修改成功");
+        AccountInfo.getInstance().setNickname(nickname);
         AccountInfo.getInstance().setAccount(username, password);
         AccountInfo.getInstance().saveAccountInfo(context);  // 保存新用户名或新密码
     }

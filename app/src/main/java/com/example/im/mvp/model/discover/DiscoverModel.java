@@ -24,8 +24,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class DiscoverModel implements IDiscoverContract.Model {
-    private static final int LOAD_SUCCESS = 0;
-    private static final int LOAD_FAILURE = 1;
+    private static final int FAILURE = 0;
+    private static final int LOAD_SUCCESS = 1;
+    private static final int GIVE_SUCCESS = 2;
+    private static final int CANCEL_SUCCESS = 3;
+    private static final int COMMENT_SUCCESS = 4;
 
     private DiscoverModel.MyHandler mHandler;
     public DiscoverModel(DiscoverPresenter presenter) {
@@ -47,8 +50,11 @@ public class DiscoverModel implements IDiscoverContract.Model {
                 case LOAD_SUCCESS:
                     mPresenter.loadSuccess((LinkedList<Discover>) msg.obj);
                     break;
-                case LOAD_FAILURE:
-                    mPresenter.loadFailure(msg.obj.toString());
+                case GIVE_SUCCESS:
+                    mPresenter.giveSuccess();
+                    break;
+                case FAILURE:
+                    mPresenter.discoverFailure(msg.obj.toString());
                     break;
                 default:
                     break;
@@ -83,7 +89,7 @@ public class DiscoverModel implements IDiscoverContract.Model {
                             // TODO: 获取头像、图片和视频
                         }
                         else {  // 加载失败
-                            msg.what = LOAD_FAILURE;
+                            msg.what = FAILURE;
                             msg.obj = jsonObject.getString("msg");  // 失败原因
                         }
                     }
@@ -96,7 +102,7 @@ public class DiscoverModel implements IDiscoverContract.Model {
                 @Override
                 public void onFailure(Exception e) {  // http请求失败
                     Message msg = new Message();
-                    msg.what = LOAD_FAILURE;
+                    msg.what = FAILURE;
                     msg.obj = e.toString();
                     mHandler.sendMessage(msg);
                 }
@@ -104,8 +110,52 @@ public class DiscoverModel implements IDiscoverContract.Model {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void giveLike(String momentId) {
+        try {
+            String url = "http://8.140.133.34:7200/moment/thumb" + "?id=" + momentId;
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success")) { // 点赞成功
+                            msg.what = LOAD_SUCCESS;
+                        }
+                        else {  // 点赞失败
+                            //msg.what = FAILURE;
+                            msg.obj = jsonObject.getString("msg");  // 失败原因
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
 
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void cancelLike(String momentId) {
+
+    }
+
+    @Override
+    public void makeComment(String momentId, String content) {
 
     }
 }

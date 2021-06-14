@@ -31,25 +31,40 @@ public class DiscoverPresenter implements IDiscoverContract.Presenter {
     }
 
     public void loadSuccess(LinkedList<Discover> momentList) {
+        this.momentList = momentList;
         mView.setMomentList(momentList);
     }
-    public void loadFailure(String error) {
-        mView.showText(error);
-    }
-
 
     @Override
     public void giveLike(int position) {
+        mModel.giveLike(momentList.get(position).getId());
+    }
+
+    public void giveSuccess() {
 
     }
+
 
     @Override
     public void cancelLike(int position) {
+        mModel.cancelLike(momentList.get(position).getId());
+    }
+
+    public void cancelSuccess() {
 
     }
 
+
     @Override
     public void makeComment(String content, int position) {
+        mModel.makeComment(momentList.get(position).getId(), content);
+    }
 
+    public void commentSuccess() {
+
+    }
+
+    public void discoverFailure(String error) {
+        mView.showText(error);
     }
 }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 public class AccountInfo {
     private String username;
     private String password;
+    private String nickname = "Xixi";
 
     private static AccountInfo instance;
 
@@ -50,6 +51,14 @@ public class AccountInfo {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public void setAccount(String id, String password) {

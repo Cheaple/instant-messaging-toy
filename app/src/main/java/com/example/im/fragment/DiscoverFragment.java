@@ -110,21 +110,15 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
     private void giveLike(int position) {
         // 获取被点击的item的holder
         View v = recyclerView.getChildAt(position);
-        DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder )recyclerView.getChildViewHolder(v);
-
+        DiscoverAdapter.DiscoverViewHolder holder = (DiscoverAdapter.DiscoverViewHolder) recyclerView.getChildViewHolder(v);
         if (!holder.ifLiked) {
-            // 若未点赞，则点赞
-            holder.ifLiked = true;
-            holder.likeImageView.setImageResource(R.drawable.ic_like_2);
+            holder.giveLike();
             mPresenter.giveLike(position);
         }
         else {
-            // 若已点赞，则取消点赞
-            holder.ifLiked = false;
-            holder.likeImageView.setImageResource(R.drawable.ic_like);
+            holder.cancelLike();
             mPresenter.cancelLike(position);
         }
-        Toast.makeText(context, "btn2", Toast.LENGTH_SHORT).show();
     }
 
     private void makeComment(int position) {

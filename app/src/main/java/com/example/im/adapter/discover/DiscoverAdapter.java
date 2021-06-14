@@ -14,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.im.R;
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.discover.Discover;
 import com.example.im.bean.discover.Reply;
 import com.example.im.listener.OnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DiscoverViewHolder> {
@@ -33,14 +35,17 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         private View discoverItemView;
         public ImageView likeImageView;
         public ImageView commentImageView;
-        private LinearLayout likesLayout;
+        public LinearLayout likesLayout;
         private TextView likesTextView;
 
+        public int imageCount;
+        public ArrayList<String> likeList;
+        public boolean ifLiked = false;  // 当前用户是否给该动态点赞
         public LinkedList<Reply> commentList = new LinkedList<>();
         public CommentAdapter commentAdapter;
 
-        public int imageCount;
-        public boolean ifLiked = false;
+
+
 
         public DiscoverViewHolder(@NonNull View itemView, int imageCount) {
             super(itemView);
@@ -77,6 +82,47 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             itemView.setOnClickListener(this);  // 为ItemView添加点击事件
             likeImageView.setOnClickListener(this);
             commentImageView.setOnClickListener(this);
+        }
+
+        public void setLikeList(ArrayList<String> likeList) {
+            this.likeList = likeList;
+        }
+
+        public void updateLikes() {
+            String likes_string = new String();
+            for (int i = 0; i < likeList.size(); ++i) {
+                if (i != 0) likes_string += ", ";
+                likes_string = likes_string + likeList.get(i);
+                if (likeList.get(i).equals(AccountInfo.getInstance().getNickname()))
+                    ifLiked = true;  // 检查本用户是否已点赞
+            }
+
+            // 根据是否点赞，更改点赞按键颜色
+            if (ifLiked)
+                likeImageView.setImageResource(R.drawable.ic_like_2);
+            else
+                likeImageView.setImageResource(R.drawable.ic_like);
+
+            if (likeList.size() > 0) {
+                likesLayout.setVisibility(View.VISIBLE);
+                likesTextView.setText(likes_string);
+            }
+            else  // 若无赞，则隐藏点赞条
+                likesLayout.setVisibility(View.GONE);
+
+
+        }
+
+        public void giveLike() {
+            likeList.add(AccountInfo.getInstance().getNickname());
+            ifLiked = true;
+            updateLikes();
+        }
+
+        public void cancelLike() {
+            likeList.remove(AccountInfo.getInstance().getNickname());
+            ifLiked = false;
+            updateLikes();
         }
 
         public void onClick(View v) {
@@ -164,19 +210,8 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         }
 
         // 设置点赞列表
-        ArrayList<String> likes = moment.getThumbs();
-        String likes_string = new String();
-        for (int i = 0; i < likes.size(); ++i) {
-            if (i != 0) likes_string += ", ";
-            likes_string = likes_string + likes.get(i);
-        }
-        if (likes.size() > 0) {
-            holder.likesLayout.setVisibility(View.VISIBLE);
-            holder.likesTextView.setText(likes_string);
-        }
-        else
-            holder.likesLayout.setVisibility(View.GONE);
-
+        holder.setLikeList(moment.getThumbs());
+        holder.updateLikes();
 
         // 设置评论列表
         RecyclerView recyclerView = holder.discoverItemView.findViewById(R.id.comments_recyclerview);

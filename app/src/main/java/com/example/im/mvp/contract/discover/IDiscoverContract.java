@@ -17,5 +17,8 @@ public interface IDiscoverContract {
     }
     interface Model {
         void loadMomentList();
+        void giveLike(String momentId);
+        void cancelLike(String momentId);
+        void makeComment(String momentId, String content);
     }
 }
