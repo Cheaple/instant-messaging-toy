@@ -18,5 +18,6 @@ public interface ISignInContract {
     }
     interface Model {
         void login(String username, String password);
+        void loadInfo(String username);
     }
 }

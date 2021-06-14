@@ -16,8 +16,9 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 public class SettingsModel implements ISettingsContract.Model {
-    private static final int CHANGE_SUCCESS = 0;
-    private static final int CHANGE_FAILURE = 1;
+    private static final int LOAD_SUCCESS = 2;
+    private static final int CHANGE_SUCCESS = 2;
+    private static final int CHANGE_FAILURE = 3;
 
     private SettingsModel.MyHandler mHandler;
     public SettingsModel(SettingsPresenter presenter) {

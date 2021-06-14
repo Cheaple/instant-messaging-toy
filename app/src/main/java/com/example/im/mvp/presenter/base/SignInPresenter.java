@@ -3,6 +3,7 @@ package com.example.im.mvp.presenter.base;
 import android.content.Context;
 
 import com.example.im.bean.AccountInfo;
+import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.OnLoginListener;
 import com.example.im.mvp.contract.base.ISignInContract;
 import com.example.im.mvp.model.base.SignInModel;
@@ -35,11 +36,19 @@ public class SignInPresenter implements ISignInContract.Presenter {
 
     public void loginSuccess() {
         AccountInfo.getInstance().saveAccountInfo(context);
-        mView.gotoMainActivity();
+        mModel.loadInfo(AccountInfo.getInstance().getUsername());
     }
     public void loginFailure(String error) {
         mView.showText(error);
         AccountInfo.getInstance().clearAccountInfo(context);
+    }
+
+    public void loadSuccess(Contact contact) {
+        AccountInfo.getInstance().setNickname(contact.getNickname());  // 设置全局使用的昵称
+        mView.gotoMainActivity();
+    }
+    public void loadFailure(String error) {
+        mView.showText(error);
     }
 
     @Override

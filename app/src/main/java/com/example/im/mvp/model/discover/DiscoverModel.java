@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class DiscoverModel implements IDiscoverContract.Model {
-    private static final int FAILURE = 0;
+    private static final int FAILURE = 100;
     private static final int LOAD_SUCCESS = 1;
     private static final int GIVE_SUCCESS = 2;
     private static final int CANCEL_SUCCESS = 3;
@@ -123,7 +123,7 @@ public class DiscoverModel implements IDiscoverContract.Model {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         if (jsonObject.getBoolean("success")) { // 点赞成功
-                            msg.what = LOAD_SUCCESS;
+                            msg.what = GIVE_SUCCESS;
                         }
                         else {  // 点赞失败
                             //msg.what = FAILURE;
@@ -139,7 +139,7 @@ public class DiscoverModel implements IDiscoverContract.Model {
                 @Override
                 public void onFailure(Exception e) {  // http请求失败
                     Message msg = new Message();
-                    msg.what = FAILURE;
+                    //msg.what = FAILURE;
                     msg.obj = e.toString();
                     mHandler.sendMessage(msg);
                 }

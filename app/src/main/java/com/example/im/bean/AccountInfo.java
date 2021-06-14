@@ -6,7 +6,8 @@ import android.content.SharedPreferences;
 public class AccountInfo {
     private String username;
     private String password;
-    private String nickname = "Xixi";
+    private String nickname = "Nickname";
+
 
     private static AccountInfo instance;
 

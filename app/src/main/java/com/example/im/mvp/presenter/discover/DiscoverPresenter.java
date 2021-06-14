@@ -40,9 +40,7 @@ public class DiscoverPresenter implements IDiscoverContract.Presenter {
         mModel.giveLike(momentList.get(position).getId());
     }
 
-    public void giveSuccess() {
-
-    }
+    public void giveSuccess() {}
 
 
     @Override

@@ -3,6 +3,7 @@ package com.example.im.mvp.contract.settings;
 public interface ISettingsContract {
     interface View {
         void setUsername(String username);
+        void setNickname(String nickname);
         void gotoLoginActivity();
         void showText(String content);
     }

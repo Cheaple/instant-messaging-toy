@@ -235,6 +235,10 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
     }
 
     @Override
+    public void setNickname(String nickname) { nicknameTextView.setText(nickname); }
+
+
+    @Override
     public void gotoLoginActivity() {
         Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // 清除栈中的所有activity
