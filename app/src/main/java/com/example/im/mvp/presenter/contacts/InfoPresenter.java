@@ -42,7 +42,7 @@ public class InfoPresenter implements IInfoContract.Presenter {
 
     @Override
     public void clearChattingHistory() {
-        mModel.delete(username, contact.getID());
+        mModel.delete(contact.getID());
     }
 
     public void clearSuccess() {
@@ -55,7 +55,7 @@ public class InfoPresenter implements IInfoContract.Presenter {
 
     @Override
     public void add() {
-        mModel.add(username, contact.getUsername());
+        mModel.add(contact.getUsername());
     }
 
     public void addSuccess() {
@@ -69,7 +69,7 @@ public class InfoPresenter implements IInfoContract.Presenter {
 
     @Override
     public void delete() {
-        mModel.delete(username, contact.getUsername());
+        mModel.delete(contact.getUsername());
     }
 
     public void deleteSuccess() {

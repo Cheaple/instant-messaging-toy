@@ -53,7 +53,7 @@ public class SearchModel implements ISearchContract.Model{
     public void loadInvitationList() {}
 
     @Override
-    public void searchUser(String username, String target) {
+    public void searchUser(String target) {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("search", target);
         try {

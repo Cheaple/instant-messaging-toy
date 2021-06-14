@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.im.R;
 import com.example.im.activity.chats.ChattingActivity;
@@ -90,5 +91,10 @@ public class ChatsFragment extends Fragment implements IChatsContract.View, Adap
     @Override
     public void setChatList() {
         chatAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }

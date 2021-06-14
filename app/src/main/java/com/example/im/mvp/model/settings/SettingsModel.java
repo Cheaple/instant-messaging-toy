@@ -54,21 +54,21 @@ public class SettingsModel implements ISettingsContract.Model {
     }
 
     @Override
-    public void changeNickname(String username, String nickname) {
-        change("nickname", "nickname", nickname);
+    public void changeNickname(String new_nickname) {
+        change("nickname", "nickname", new_nickname);
     }
 
     @Override
-    public void changeUsername(String username, String new_username) {
+    public void changeUsername(String new_username) {
         change("username", "name", new_username);
     }
 
     @Override
-    public void changeRegion(String username, String region) {}
+    public void changeRegion(String new_region) {}
 
     @Override
-    public void changePassword(String username, String password) {
-        change("password", "password", password);
+    public void changePassword(String new_password) {
+        change("password", "password", new_password);
     }
 
     private void change(String operation, String paramName, String param) {

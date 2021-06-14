@@ -30,7 +30,7 @@ public class SearchPresenter implements ISearchContract.Presenter {
     public void searchUser() {
         String username = mView.getTargetUsername();
         if (!"".equals(username))
-            mModel.searchUser(AccountInfo.getInstance().getUsername(), username);
+            mModel.searchUser(username);
     }
 
     public void searchSuccess(Contact contact, boolean isContact) {

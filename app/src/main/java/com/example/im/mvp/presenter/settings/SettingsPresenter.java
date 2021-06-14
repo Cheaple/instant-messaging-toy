@@ -41,11 +41,11 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     }
 
     @Override
-    public void changeNickname(String nickname) {
-        if ("".equals(nickname))
+    public void changeNickname(String new_nickname) {
+        if ("".equals(new_nickname))
             mView.showText("昵称不能为空");
         else
-            mModel.changeNickname(username, nickname);
+            mModel.changeNickname(new_nickname);
     }
 
     @Override
@@ -53,14 +53,14 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
         if ("".equals(new_username))
             mView.showText("ID不能为空");
         else {
-            mModel.changeUsername(username, new_username);
+            mModel.changeUsername(new_username);
             username = new_username;
         }
     }
 
     @Override
-    public void changeRegion(String region) {
-        mModel.changeRegion(username, region);
+    public void changeRegion(String new_region) {
+        mModel.changeRegion(new_region);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
             mView.showText("请确认新密码");
         }
         else {
-            mModel.changePassword(username, new_pw);
+            mModel.changePassword(new_pw);
             password = new_pw;  // 暂时修改密码
         }
     }

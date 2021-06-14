@@ -17,10 +17,10 @@ public interface ISettingsContract {
     }
     interface Model {
         void changeAvatar();
-        void changeNickname(String username, String nickname);
-        void changeUsername(String username, String new_username);
-        void changeRegion(String username, String region);
-        void changePassword(String username, String new_pw);
+        void changeNickname(String new_nickname);
+        void changeUsername(String new_username);
+        void changeRegion(String new_region);
+        void changePassword(String new_pw);
         void logout();
     }
 }

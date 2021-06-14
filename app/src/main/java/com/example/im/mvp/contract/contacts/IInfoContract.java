@@ -24,7 +24,7 @@ public interface IInfoContract {
     interface Model {
         void createChatting(String username, String target);
         void clearChattingHistory(String username);
-        void add(String username, String target);
-        void delete(String username, String target);
+        void add(String username);
+        void delete(String username);
     }
 }

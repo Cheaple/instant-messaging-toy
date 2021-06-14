@@ -69,7 +69,7 @@ public class ContactsModel implements IContactsContract.Model {
                             msg.what = LOAD_SUCCESS;
                             Gson gson = new Gson();
                             Contact[] contacts = gson.fromJson(jsonObject.getString("contacts"), Contact[].class);
-                            msg.obj = new LinkedList<Contact>(Arrays.asList(contacts));
+                            msg.obj = new LinkedList<>(Arrays.asList(contacts));
                             // TODO: 获取联系人头像
                         }
                         else {  // 加载失败

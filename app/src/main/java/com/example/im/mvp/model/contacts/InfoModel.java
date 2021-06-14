@@ -75,9 +75,9 @@ public class InfoModel implements IInfoContract.Model {
     }
 
     @Override
-    public void delete(String username, String target) {
+    public void delete(String username) {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("delete", target);
+        params.put("delete", username);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/delete", params);
             HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
@@ -114,9 +114,9 @@ public class InfoModel implements IInfoContract.Model {
     }
 
     @Override
-    public void add(String username, String target) {
+    public void add(String username) {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("add", target);
+        params.put("add", username);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/add", params);
             HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
@@ -164,7 +164,7 @@ public class InfoModel implements IInfoContract.Model {
             body.put("groupType", "PRIVATE_CHAT");  // 会话类型：私人会话
             body.put("memberList", memberList);
 
-            String url = "http://8.140.133.34:7200/chat/create" + "?username=" + username;
+            String url = "http://8.140.133.34:7200/chat/create";
             HttpUtil.sendHttpRequest(url, body, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功

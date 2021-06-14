@@ -20,7 +20,7 @@ public interface ISearchContract {
     }
     interface Model {
         void loadInvitationList();
-        void searchUser(String username, String target);
+        void searchUser(String target);
         void accept(String id);  // 接收好友邀请
         void refuse(String id);  // 拒绝好友邀请
     }

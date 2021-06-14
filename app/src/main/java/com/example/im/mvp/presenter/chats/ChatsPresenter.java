@@ -3,6 +3,7 @@ package com.example.im.mvp.presenter.chats;
 import android.content.Context;
 
 import com.example.im.bean.chats.Chat;
+import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChatsContract;
 import com.example.im.mvp.model.chats.ChatsModel;
 
@@ -18,14 +19,20 @@ public class ChatsPresenter implements IChatsContract.Presenter {
 
     public ChatsPresenter(IChatsContract.View view, Context context) {
         this.context = context;
-        this.mModel = new ChatsModel();
+        this.mModel = new ChatsModel(this);
         this.mView = view;
     }
 
     @Override
     public void showChatList(){
-        chatList = (LinkedList<Chat>) mModel.loadChatList();
+        mModel.loadChatList();
+    }
+
+    public void loadSuccess(LinkedList<Chat> chatList) {
         mView.setChatList(chatList);
+    }
+    public void loadFailure(String error) {
+        mView.showText(error);
     }
 
     @Override
