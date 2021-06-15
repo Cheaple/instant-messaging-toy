@@ -23,8 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ContactsModel implements IContactsContract.Model {
-    private static final int LOAD_SUCCESS = 0;
-    private static final int LOAD_FAILURE = 1;
+    private static final int LOAD_SUCCESS = 1;
+    private static final int LOAD_FAILURE = 2;
 
     private ContactsModel.MyHandler mHandler;
     public ContactsModel(ContactsPresenter presenter) {

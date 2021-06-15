@@ -148,11 +148,11 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
     }
 
     @Override
-    public void gotoChattingActivity(Contact contact, String chattingId) {
+    public void gotoChattingActivity(Contact contact, String chatId) {
         Intent intent = new Intent(context, ChattingActivity.class);
-        intent.putExtra("Type", Chat.CHAT_TYPE_SINGLE);  // 传递会话类型
-        intent.putExtra("Chatting ID", chattingId);  // 传递会话ID
-        intent.putExtra("Contact", contact);  // 传递联系人信息
+        intent.putExtra("Chat Type", Chat.CHAT_TYPE_SINGLE);  // 传递会话类型
+        intent.putExtra("Chat ID", chatId);  // 传递会话ID
+        intent.putExtra("Contact", contact.getUsername());  // 传递联系人信息
         startActivity(intent);
     }
 

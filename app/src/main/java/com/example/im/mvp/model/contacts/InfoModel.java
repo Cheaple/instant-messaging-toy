@@ -18,14 +18,14 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 public class InfoModel implements IInfoContract.Model {
-    private static final int ADD_SUCCESS = 0;
-    private static final int ADD_FAILURE = 1;
-    private static final int DELETE_SUCCESS = 2;
-    private static final int DELETE_FAILURE = 3;
-    private static final int CREATE_SUCCESS = 4;
-    private static final int CREATE_FAILURE = 5;
-    private static final int CLEAR_SUCCESS = 6;
-    private static final int CLEAR_FAILURE = 7;
+    private static final int ADD_SUCCESS = 1;
+    private static final int ADD_FAILURE = 2;
+    private static final int DELETE_SUCCESS = 3;
+    private static final int DELETE_FAILURE = 4;
+    private static final int CREATE_SUCCESS = 5;
+    private static final int CREATE_FAILURE = 6;
+    private static final int CLEAR_SUCCESS = 7;
+    private static final int CLEAR_FAILURE = 8;
 
     private InfoModel.MyHandler mHandler;
     public InfoModel(InfoPresenter presenter) {

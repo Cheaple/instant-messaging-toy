@@ -16,8 +16,8 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 public class SearchModel implements ISearchContract.Model{
-    private static final int SEARCH_SUCCESS = 0;
-    private static final int SEARCH_FAILURE = 1;
+    private static final int SEARCH_SUCCESS = 1;
+    private static final int SEARCH_FAILURE = 2;
 
     private SearchModel.MyHandler mHandler;
     public SearchModel(SearchPresenter presenter) {

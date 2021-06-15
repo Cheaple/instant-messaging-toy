@@ -9,17 +9,20 @@ public interface IChattingContract {
     interface View {
         void setMsgList(List list);
         void setMsgList();
-        int getChatType();
         String getMsg();
         void clearMsg();
+        void gotoInfoActivity(Contact contact, boolean isContact);
+        void gotoGroupInfoActivity(String groupID);
+        void showText(String error);
     }
     interface Presenter {
         void showMsgList();
         void sendMsg();
+        void checkInfo();  // 查看好友信息
     }
     interface Model {
-        List loadMsgList(String id);
-        Contact loadContactInfo(String id);
-        void uploadMsg(String id);
+        void loadMsgList(String id);
+        void checkInfo(String username);
+        void sendMsg(String id, String content);
     }
 }

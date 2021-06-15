@@ -24,8 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ChatsModel implements IChatsContract.Model {
-    private static final int LOAD_SUCCESS = 0;
-    private static final int LOAD_FAILURE = 1;
+    private static final int LOAD_SUCCESS = 1;
+    private static final int LOAD_FAILURE = 2;
 
     private ChatsModel.MyHandler mHandler;
     public ChatsModel(ChatsPresenter presenter) {

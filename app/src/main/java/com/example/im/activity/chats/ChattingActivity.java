@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,17 +35,19 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     private EditText inputText;
     private Button sendButton;
 
-    private int type;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
         Intent intent = getIntent();
-        type = intent.getIntExtra("Chat Type", Chat.CHAT_TYPE_SINGLE);
+        int type = intent.getIntExtra("Chat Type", Chat.CHAT_TYPE_SINGLE);
+        String id = intent.getStringExtra("Chat ID");
 
         context = getApplicationContext();
-        mPresenter = new ChattingPresenter(this, context);
+        if (type == Chat.CHAT_TYPE_SINGLE)
+            mPresenter = new ChattingPresenter(this, context, type, id, intent.getStringExtra("Contact"));
+        else
+            mPresenter = new ChattingPresenter(this, context, type, id);
 
         recyclerView = (RecyclerView) findViewById(R.id.msg_recycle_view);
         inputText = (EditText) findViewById(R.id.input_text);
@@ -63,15 +66,11 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     public boolean onOptionsItemSelected(MenuItem item) {
         // 点击事件：查看联系人信息或群聊信息
         if (item.getItemId() == R.id.menu_info) {
-            if (type == Chat.CHAT_TYPE_SINGLE) {
-                Intent intent = new Intent(ChattingActivity.this, InfoActivity.class);
-                intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
-                intent.putExtra("Contact", mPresenter.getContactInfo());  // 传递联系人信息
-                startActivityForResult(intent, 1);
+            if (mPresenter.getType() == Chat.CHAT_TYPE_SINGLE) {
+                mPresenter.checkInfo();
             }
-            else if (type == Chat.CHAT_TYPE_GROUP) {
-                Intent intent = new Intent(ChattingActivity.this, GroupInfoActivity.class);
-                startActivityForResult(intent, 1);
+            else {
+                gotoGroupInfoActivity(mPresenter.getId());
             }
             return true;
         }
@@ -97,15 +96,33 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     }
 
     @Override
-    public int getChatType() {
-        return type;
-    }
-
-    @Override
     public String getMsg() {
         return inputText.getText().toString();
     }
 
     @Override
     public void clearMsg() { inputText.setText(""); }
+
+    @Override
+    public void gotoInfoActivity(Contact contact, boolean isContact) {
+        Intent intent = new Intent(context, InfoActivity.class);
+        if (!isContact)  // 如果查找的用户不是当前用户的好友
+            intent.putExtra("Type", Contact.CONTACT_TYPE_SEARCH);
+        else  // 查找的用户是当前用户的好友
+            intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
+        intent.putExtra("Contact", contact);  // 传递联系人信息
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void gotoGroupInfoActivity(String groupID) {
+        Intent intent = new Intent(ChattingActivity.this, GroupInfoActivity.class);
+        intent.putExtra("Group ID", groupID);  // 传递群聊ID
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
+    }
 }
