@@ -57,8 +57,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        //Toast.makeText(context, "btn2", Toast.LENGTH_SHORT).show();
-
         Msg msg = msgList.get(position);
         if(msg.getSpeaker() == 0) {  // 接受消息
             holder.rightLayout.setVisibility(View.VISIBLE);

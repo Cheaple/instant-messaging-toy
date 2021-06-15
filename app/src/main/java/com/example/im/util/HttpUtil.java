@@ -62,9 +62,9 @@ public class HttpUtil {
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
-                    System.out.println("Receive http response = " + response.toString());
-                    listener.onSuccess(response.toString());
-
+                    String result = java.net.URLDecoder.decode(response.toString());  // 对http响应进行解码
+                    System.out.println("Receive http response = " + result);
+                    listener.onSuccess(result);
                 } catch (Exception e) {
                     e.printStackTrace();
                     listener.onFailure(e);

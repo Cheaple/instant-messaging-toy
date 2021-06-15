@@ -2,8 +2,10 @@ package com.example.im.mvp.presenter.discover;
 
 import android.content.Context;
 
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.discover.Discover;
+import com.example.im.bean.discover.Reply;
 import com.example.im.mvp.contract.discover.IDiscoverContract;
 import com.example.im.mvp.contract.settings.ISettingsContract;
 import com.example.im.mvp.model.discover.DiscoverModel;
@@ -55,12 +57,12 @@ public class DiscoverPresenter implements IDiscoverContract.Presenter {
 
     @Override
     public void makeComment(String content, int position) {
-        mModel.makeComment(momentList.get(position).getId(), content);
+        Discover moment = momentList.get(position);
+        moment.getReplies().add(new Reply(AccountInfo.getInstance().getNickname(), content));
+        mModel.makeComment(moment.getId(), content);
     }
 
-    public void commentSuccess() {
-
-    }
+    public void commentSuccess() {}
 
     public void discoverFailure(String error) {
         mView.showText(error);

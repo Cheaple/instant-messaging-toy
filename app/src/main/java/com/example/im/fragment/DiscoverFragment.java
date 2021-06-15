@@ -142,8 +142,6 @@ public class DiscoverFragment extends Fragment implements IDiscoverContract.View
                 String comment = editText.getText().toString().trim();
                 if (!"".equals(comment)) {
                     // TODO: 评论
-                    holder.commentList.add(new Reply(AccountInfo.getInstance().getNickname(), comment));
-                    holder.commentAdapter.notifyDataSetChanged();
                     mPresenter.makeComment(comment, position);
                 }
             }
