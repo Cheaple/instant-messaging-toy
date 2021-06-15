@@ -189,7 +189,7 @@ public class InfoModel implements IInfoContract.Model {
                 @Override
                 public void onFailure(Exception e) {  // http请求失败
                     Message msg = new Message();
-                    msg.what = ADD_FAILURE;
+                    msg.what = CREATE_FAILURE;
                     msg.obj = e.toString();
                     mHandler.sendMessage(msg);
                 }

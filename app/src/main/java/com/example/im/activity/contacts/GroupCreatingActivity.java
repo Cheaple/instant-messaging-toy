@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.im.R;
+import com.example.im.activity.chats.ChattingActivity;
 import com.example.im.activity.discover.PostActivity;
 import com.example.im.adapter.contacts.ContactAdapter;
+import com.example.im.bean.chats.Chat;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.OnItemClickListener;
 import com.example.im.mvp.contract.contacts.IGroupCreatingContract;
@@ -86,8 +88,16 @@ public class GroupCreatingActivity extends AppCompatActivity implements IGroupCr
     }
 
     @Override
-    public void gotoGroupChattingActivity() {
-        // TODO: 跳转至刚创建的群聊界面
-        finish();
+    public void gotoGroupChattingActivity(String groupID) {
+        Intent intent = new Intent(context, ChattingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // 结束当前activity
+        intent.putExtra("Chat Type", Chat.CHAT_TYPE_GROUP);  // 传递会话类型
+        intent.putExtra("Chat ID", groupID);  // 传递会话ID
+        startActivity(intent);
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }

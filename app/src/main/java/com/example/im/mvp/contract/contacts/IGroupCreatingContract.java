@@ -1,5 +1,7 @@
 package com.example.im.mvp.contract.contacts;
 
+import android.widget.Toast;
+
 import com.example.im.bean.contacts.Contact;
 
 import java.util.ArrayList;
@@ -10,7 +12,8 @@ public interface IGroupCreatingContract {
     interface View {
         void setContactList(List list);  // 初始化联系人列表
         ArrayList<String> getSelectedContacts();  // 获取被选中的联系人
-        void gotoGroupChattingActivity();
+        void gotoGroupChattingActivity(String groupID);
+        void showText(String content);
     }
     interface Presenter {
         void showContactList();
@@ -18,7 +21,7 @@ public interface IGroupCreatingContract {
         void inviteContacts();
     }
     interface Model {
-        List loadContactList();
+        void loadContactList();
         void createGroup(ArrayList<String> selectedContacts);
         void inviteContacts(int groupID, ArrayList<String> selectedContacts);
     }

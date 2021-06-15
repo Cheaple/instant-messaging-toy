@@ -22,31 +22,53 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
 
     public GroupCreatingPresenter(IGroupCreatingContract.View view, Context context) {
         this.context = context;
-        this.mModel = new GroupCreatingModel();
+        this.mModel = new GroupCreatingModel(this);
         this.mView = view;
     }
 
     public GroupCreatingPresenter(IGroupCreatingContract.View view, Context context, int groupID) {
         this.context = context;
-        this.mModel = new GroupCreatingModel();
+        this.mModel = new GroupCreatingModel(this);
         this.mView = view;
         this.groupID = groupID;
     }
 
     @Override
     public void showContactList() {
-        contactList = (LinkedList<Contact>) mModel.loadContactList();
+        mModel.loadContactList();
         mView.setContactList(contactList);
+    }
+
+    public void loadSuccess(LinkedList<Contact> contactList) {
+        this.contactList = contactList;
+        mView.setContactList(contactList);
+    }
+    public void loadFailure(String error) {
+        mView.showText(error);
     }
 
     @Override
     public void createGroup() {
         mModel.createGroup(mView.getSelectedContacts());
-        mView.gotoGroupChattingActivity();
     }
+
+    public void createSuccess(String groupID) {
+        mView.gotoGroupChattingActivity(groupID);
+    }
+    public void createFailure(String error) {
+        mView.showText(error);
+    }
+
 
     @Override
     public void inviteContacts() {
         mModel.inviteContacts(groupID, mView.getSelectedContacts());
+    }
+
+    public void inviteSuccess(String groupID) {
+
+    }
+    public void inviteFailure(String error) {
+        mView.showText(error);
     }
 }
