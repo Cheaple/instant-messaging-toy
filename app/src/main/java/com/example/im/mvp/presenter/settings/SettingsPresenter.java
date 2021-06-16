@@ -39,8 +39,8 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     }
 
     @Override
-    public void changeAvatar() {
-        mModel.changeAvatar();
+    public void changeAvatar(String avatar) {
+        mModel.changeAvatar(avatar);
     }
 
     @Override

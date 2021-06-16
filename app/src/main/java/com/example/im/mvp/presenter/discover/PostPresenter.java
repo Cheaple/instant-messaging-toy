@@ -20,7 +20,7 @@ public class PostPresenter implements IPostContract.Presenter {
 
     public PostPresenter(IPostContract.View view, Context context) {
         this.context = context;
-        this.mModel = new PostModel();
+        this.mModel = new PostModel(this);
         this.mView = view;
     }
 

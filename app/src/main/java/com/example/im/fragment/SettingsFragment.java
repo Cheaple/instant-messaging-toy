@@ -18,10 +18,16 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.dmcbig.mediapicker.PickerActivity;
+import com.dmcbig.mediapicker.PickerConfig;
+import com.dmcbig.mediapicker.entity.Media;
 import com.example.im.R;
 import com.example.im.activity.base.LoginActivity;
+import com.example.im.activity.discover.PostActivity;
 import com.example.im.mvp.contract.settings.ISettingsContract;
 import com.example.im.mvp.presenter.settings.SettingsPresenter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +35,8 @@ import com.example.im.mvp.presenter.settings.SettingsPresenter;
  * create an instance of this fragment.
  */
 public class SettingsFragment extends Fragment implements ISettingsContract.View, View.OnClickListener {
+    private static final int REQUEST_PICTURE = 100;
+
     private Activity context;
     private ISettingsContract.Presenter mPresenter;
 
@@ -111,6 +119,23 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
         }
     }
 
+    private void uploadPhoto() {
+        Intent intent = new Intent(context, PickerActivity.class);
+        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE);  // 设置选择类型：图片
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 1);  // 最大选择数量：1
+        startActivityForResult(intent, REQUEST_PICTURE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PICTURE && resultCode == PickerConfig.RESULT_CODE) {
+            ArrayList<Media> selected = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+            String avatar = selected.get(0).path;
+            mPresenter.changeAvatar(avatar);
+        }
+    }
+
     // 点击事件：修改头像
     private void changeAvatar() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -118,9 +143,7 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
         builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(context, "Change", Toast.LENGTH_SHORT).show();
-                //TODO: 更新头像
-                mPresenter.changeAvatar();
+                uploadPhoto();
             }
         });
         builder.show();

@@ -49,8 +49,40 @@ public class SettingsModel implements ISettingsContract.Model {
     }
 
     @Override
-    public void changeAvatar() {
-        // TODO: 更新头像
+    public void changeAvatar(String new_avatar) {
+        // TODO: 构建body，传输新头像图片
+        try {
+            String url = "http://8.140.133.34:7200/user/";
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success"))  // 修改成功
+                            msg.what = CHANGE_SUCCESS;
+                        else {  // 修改失败
+                            msg.what = CHANGE_FAILURE;
+                            msg.obj = jsonObject.getString("msg");  // 失败原因
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
+
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = CHANGE_FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

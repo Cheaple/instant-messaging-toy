@@ -9,7 +9,7 @@ public interface ISettingsContract {
     }
     interface  Presenter {
         void showInfo();
-        void changeAvatar();
+        void changeAvatar(String avatar);
         void changeNickname(String nickname);
         void changeUsername(String Username);
         void changeRegion(String region);
@@ -17,7 +17,7 @@ public interface ISettingsContract {
         void logout();
     }
     interface Model {
-        void changeAvatar();
+        void changeAvatar(String new_avatar);
         void changeNickname(String new_nickname);
         void changeUsername(String new_username);
         void changeRegion(String new_region);

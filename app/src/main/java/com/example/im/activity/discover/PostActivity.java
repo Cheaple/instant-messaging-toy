@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 
 public class PostActivity extends AppCompatActivity implements IPostContract.View, View.OnClickListener {
-    private static final int REQUEST_PHOTOS = 1;
+    private static final int REQUEST_PICTURE = 100;
 
     private Context context;
     private IPostContract.Presenter mPresenter;
@@ -64,17 +64,17 @@ public class PostActivity extends AppCompatActivity implements IPostContract.Vie
 
     public void uploadPhotos() {
         Intent intent = new Intent(PostActivity.this, PickerActivity.class);
-        intent.putExtra(PickerConfig.MAX_SELECT_COUNT,9);  // 最大选择数量：9
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 9);  // 最大选择数量：9
         ArrayList<Media> defaultSelect = selected;
         intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST, defaultSelect);  // 设置默认选中的照片
-        PostActivity.this.startActivityForResult(intent,200);
+        PostActivity.this.startActivityForResult(intent, REQUEST_PICTURE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 200 && resultCode == PickerConfig.RESULT_CODE){
-            ArrayList<Media> newSelected = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);  // 选择完后返回的lis
+        if (requestCode == REQUEST_PICTURE && resultCode == PickerConfig.RESULT_CODE) {
+            ArrayList<Media> newSelected = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);  // 选择完后返回的list
             if (!newSelected.isEmpty() && !selected.equals(newSelected)) {  // 如果更新了被选图片，则刷新
                 selected.clear();
                 selected.addAll(newSelected);
