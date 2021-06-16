@@ -28,6 +28,7 @@ public class ContactsPresenter implements IContactsContract.Presenter {
     }
 
     public void loadSuccess(LinkedList<Contact> contactList) {
+        this.contactList = contactList;
         mView.setContactList(contactList);
     }
     public void loadFailure(String error) {

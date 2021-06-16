@@ -36,7 +36,6 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
     @Override
     public void showContactList() {
         mModel.loadContactList();
-        mView.setContactList(contactList);
     }
 
     public void loadSuccess(LinkedList<Contact> contactList) {

@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
-import io.reactivex.Single;
 
 public class SignInModel implements ISignInContract.Model {
     private static final int LOGIN_SUCCESS = 0;

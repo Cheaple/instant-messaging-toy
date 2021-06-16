@@ -2,6 +2,8 @@ package com.example.im.adapter.discover;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dmcbig.mediapicker.PickerConfig;
+import com.dmcbig.mediapicker.entity.Media;
 import com.example.im.R;
 import com.example.im.activity.discover.PostActivity;
 
@@ -25,9 +29,9 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int IMAGE_TYPE_USER = 0x00002;  // 用户上传的图片
 
     private PostActivity context;
-    private ArrayList<String> imageList;
+    private ArrayList<Media> imageList;
 
-    public ImageAdapter(ArrayList<String> imageList, PostActivity context) {
+    public ImageAdapter(ArrayList<Media> imageList, PostActivity context) {
         this.context = context;
         this.imageList = imageList;
     }
@@ -61,10 +65,10 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         View mItemView;
         switch (viewType) {
             case IMAGE_TYPE_UPLOAD:
-                mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_img_user, parent, false);
+                mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_img_upload, parent, false);
                 return new UploadImageViewHolder(mItemView, this);
             case IMAGE_TYPE_USER:
-                mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_img_upload, parent, false);
+                mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_img_user, parent, false);
                 return new UserImageViewHolder(mItemView, this);
             default:
                 return null;
@@ -74,15 +78,27 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof UploadImageViewHolder) {
+            // 点击事件：上传照片或视频
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "1", Toast.LENGTH_SHORT).show();
                     context.uploadPhotos();
-                }
-            });
-        } else if (holder instanceof UserImageViewHolder) {
-
+                }});
+        }
+        else if (holder instanceof UserImageViewHolder) {
+            Media media = imageList.get(position);
+            if (media.mediaType == 1) {  // 图片
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.inPreferredConfig = Bitmap.Config.RGB_565;
+                opt.inPurgeable = true;
+                opt.inInputShareable = true;
+                opt.inSampleSize = 16;
+                Bitmap bitmap = BitmapFactory.decodeFile(media.path);
+                ((UserImageViewHolder) holder).imageView.setImageBitmap(bitmap);
+            }
+            else { // 视频
+                context.showText("Video");
+            }
         }
     }
 

@@ -48,7 +48,7 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
             GroupCreatingPresenter mPresenter = mWeakReference.get();
             switch (msg.what) {
                 case LOAD_SUCCESS:
-                    mPresenter.loadSuccess((LinkedList<Contact>) msg.obj);
+                    //mPresenter.loadSuccess((LinkedList<Contact>) msg.obj);
                     break;
                 case LOAD_FAILURE:
                     mPresenter.loadFailure(msg.obj.toString());

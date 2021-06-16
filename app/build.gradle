@@ -40,17 +40,12 @@ dependencies {
     implementation("com.jakewharton:butterknife:10.2.1")
     annotationProcessor("com.jakewharton:butterknife-compiler:10.2.1")
 
-    implementation 'com.github.lovetuzitong:MultiImageSelector:1.2'
-    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-
-    compile 'com.google.code.gson:gson:2.6.2'
+    implementation("com.dmcBig:mediapicker:+")
+    compile 'com.google.code.gson:gson:2.8.6'
 }
 
 allprojects {
     repositories {
-        maven { url "https://jitpack.io" }
+        mavenCentral()
     }
 }

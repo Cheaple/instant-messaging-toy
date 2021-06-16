@@ -31,16 +31,7 @@
         <activity android:name=".activity.discover.PostActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity android:name=".activity.contacts.GroupCreatingActivity" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
-        </provider>
+        <activity android:name="com.dmcbig.mediapicker.PickerActivity"/>
 
     </application>
 
