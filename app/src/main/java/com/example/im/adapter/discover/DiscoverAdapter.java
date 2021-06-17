@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,6 +60,9 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             // Get the layout
             this.imageCount = imageCount;
             switch (imageCount) {
+                case 100:  // Video
+                    this.discoverItemView = itemView.findViewById(R.id.moment_type_video);
+                    break;
                 case 1:
                     this.discoverItemView = itemView.findViewById(R.id.moment_type1);
                     break;
@@ -72,7 +76,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
                     this.discoverItemView = itemView.findViewById(R.id.moment_type4);
                     break;
                 default:
-                    this.discoverItemView = itemView.findViewById(R.id.moment_type0);
+                    this.discoverItemView = itemView.findViewById(R.id.moment_type_text);
             }
             this.likeImageView = itemView.findViewById(R.id.img_like);
             this.commentImageView = itemView.findViewById(R.id.img_comment);
@@ -137,6 +141,8 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
 
     @Override
     public int getItemViewType(int position) {
+        if (this.discoverList.get(position).getMomentType().equals("MOMENT_VIDEO"))
+            return 0;
         return this.discoverList.get(position).getImageCount();
     }
 
@@ -145,6 +151,9 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
     public DiscoverAdapter.DiscoverViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View mItemView;
         switch (viewType) {
+            case 0:
+                mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_video, parent, false);
+                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 100, this, mClickListener);
             case 1:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type1, parent, false);
                 return new DiscoverAdapter.DiscoverViewHolder(mItemView, 1, this, mClickListener);
@@ -180,6 +189,10 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
 
         // 设置动态图片
         switch (holder.imageCount) {
+            case 100:
+                VideoView videoView = holder.discoverItemView.findViewById(R.id.video_moment);
+                // TODO: 播放视频
+                break;
             case 1:
                 imageView = holder.discoverItemView.findViewById(R.id.picture1);
                 imageView.setImageResource(moment.getImages().get(0));
