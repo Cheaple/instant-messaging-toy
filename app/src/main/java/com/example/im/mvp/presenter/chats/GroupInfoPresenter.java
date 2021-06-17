@@ -14,15 +14,23 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
     private LinkedList<Contact> memberList;
 
     public GroupInfoPresenter(IGroupInfoContract.View view, String groupID) {
-        this.mModel = new GroupInfoModel();
+        this.mModel = new GroupInfoModel(this);
         this.mView = view;
         this.groupID = groupID;
     }
 
     @Override
     public void showMemberList() {
-        memberList = (LinkedList<Contact>) mModel.loadMemberList();
+        mModel.loadMemberList(groupID);
+
+    }
+
+    public void loadSuccess(LinkedList<Contact> memberList) {
+        this.memberList = memberList;
         mView.setMemberList(memberList);
+    }
+    public void loadFailure(String error) {
+        mView.showText(error);
     }
 
     @Override
@@ -34,9 +42,10 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
         return groupID;
     }
 
+
     @Override
     public void delete() {
         mModel.delete(groupID);
-        mView.gotoMainActivity();
+        mView.gotoChattingActivity();
     }
 }

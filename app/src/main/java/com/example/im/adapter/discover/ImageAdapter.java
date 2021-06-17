@@ -53,8 +53,8 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public UserImageViewHolder(@NonNull View itemView) { super(itemView); }
         public UserImageViewHolder(View itemView, ImageAdapter adapter) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.img_user);
             this.mAdapter =  adapter;
+            imageView = (ImageView) itemView.findViewById(R.id.img_user);
         }
     }
 

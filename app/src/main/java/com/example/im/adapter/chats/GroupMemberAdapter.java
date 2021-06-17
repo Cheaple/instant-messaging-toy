@@ -68,6 +68,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
             holder.imageView.setImageResource(contact.getAvatarIcon());
             holder.textView.setText(contact.getNickname());
         }
+        holder.itemView.setTag(position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

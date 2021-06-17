@@ -90,7 +90,23 @@ public class GroupInfoActivity extends AppCompatActivity implements IGroupInfoCo
     }
 
     @Override
-    public void gotoMainActivity() {
+    public void gotoChattingActivity() {
         finish();
+    }
+
+    @Override
+    public void gotoInfoActivity(Contact contact, boolean isContact) {
+        Intent intent = new Intent(context, InfoActivity.class);
+        if (!isContact)  // 如果查找的用户不是当前用户的好友
+            intent.putExtra("Type", Contact.CONTACT_TYPE_SEARCH);
+        else  // 查找的用户是当前用户的好友
+            intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
+        intent.putExtra("Contact", contact);  // 传递联系人信息
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void showText(String content) {
+        Toast.makeText(context, content, Toast.LENGTH_SHORT).show();
     }
 }
