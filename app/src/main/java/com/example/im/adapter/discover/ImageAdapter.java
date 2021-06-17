@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,11 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
             else { // 视频
                 context.showText("Video");
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(media.path);
+                Bitmap bitmap = mmr.getFrameAtTime();  // 获取第一帧图片
+                ((UserImageViewHolder) holder).imageView.setImageBitmap(bitmap);
+                mmr.release();
             }
         }
     }
