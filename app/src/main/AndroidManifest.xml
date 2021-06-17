@@ -32,6 +32,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity android:name=".activity.contacts.GroupCreatingActivity" />
         <activity android:name="com.dmcbig.mediapicker.PickerActivity"/>
+        <activity android:name="com.dmcbig.mediapicker.TakePhotoActivity"/>
 
     </application>
 

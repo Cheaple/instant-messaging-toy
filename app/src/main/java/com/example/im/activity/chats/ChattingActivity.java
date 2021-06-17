@@ -8,12 +8,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dmcbig.mediapicker.PickerActivity;
+import com.dmcbig.mediapicker.PickerConfig;
+import com.dmcbig.mediapicker.TakePhotoActivity;
+import com.dmcbig.mediapicker.entity.Media;
 import com.example.im.R;
 import com.example.im.activity.contacts.InfoActivity;
 import com.example.im.adapter.chats.MessageAdapter;
@@ -23,17 +29,22 @@ import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.presenter.chats.ChattingPresenter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ChattingActivity extends AppCompatActivity implements IChattingContract.View, View.OnClickListener {
+    private static final int REQUEST_PICTURE = 100;
+    private static final int REQUEST_CAMERA = 101;
+
     private Context context;
     private ChattingPresenter mPresenter;
 
     private MessageAdapter messageAdapter;
     private RecyclerView recyclerView;
     private EditText inputText;
-    private Button sendButton;
+    private ImageView sendImageView;
+    private ImageView moreImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +62,23 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
 
         recyclerView = (RecyclerView) findViewById(R.id.msg_recycle_view);
         inputText = (EditText) findViewById(R.id.input_text);
-        sendButton = (Button) findViewById(R.id.send);
-        sendButton.setOnClickListener(this);
+        sendImageView = (ImageView) findViewById(R.id.img_send);
+        moreImageView = (ImageView) findViewById(R.id.img_more);
+
+        sendImageView.setOnClickListener(this);
+        moreImageView.setOnClickListener(this);
 
         mPresenter.showMsgList();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PICTURE && resultCode == PickerConfig.RESULT_CODE) {
+            ArrayList<Media> selected = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+            String avatar = selected.get(0).path;
+
+        }
     }
 
     @Override
@@ -79,8 +103,14 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
 
     @Override
     public void onClick(View view) {
-        // 点击事件：发送消息
-        mPresenter.sendMsg();
+        switch (view.getId()) {
+            case R.id.img_send:
+                mPresenter.sendMsg();  // 点击事件：发送消息
+                break;
+            case R.id.img_more:
+                showPopupMenu(view);
+        }
+
     }
 
     @Override
@@ -88,6 +118,42 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         messageAdapter = new MessageAdapter((LinkedList<Msg>) list, context);
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.message_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_album:
+                        selectPicture();
+                        break;
+                    case R.id.menu_camera:
+                        takePhoto();
+                        break;
+                    case R.id.menu_location:
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void selectPicture() {
+        Intent intent = new Intent(context, PickerActivity.class);
+        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE);  // 设置选择类型：图片
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 1);  // 最大选择数量：1
+        startActivityForResult(intent, REQUEST_PICTURE);
+    }
+
+    private void takePhoto() {
+        Intent intent =new Intent(context, TakePhotoActivity.class);  // Take a photo with a camera
+        startActivityForResult(intent, REQUEST_CAMERA);
     }
 
     @Override
