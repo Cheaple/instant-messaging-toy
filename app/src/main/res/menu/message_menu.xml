@@ -10,6 +10,10 @@
         android:title="Camera"/>
 
     <item
+        android:id="@+id/menu_video"
+        android:title="Video"/>
+
+    <item
         android:id="@+id/menu_location"
         android:title="Location"/>
 

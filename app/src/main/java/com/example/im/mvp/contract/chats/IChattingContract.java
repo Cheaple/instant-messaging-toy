@@ -18,6 +18,8 @@ public interface IChattingContract {
     interface Presenter {
         void showMsgList();
         void sendMsg();
+        void sendPicture(String path);
+        void sendLocation();
         void checkInfo();  // 查看好友信息
     }
     interface Model {

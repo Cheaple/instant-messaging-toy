@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.im"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 18
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
 
@@ -41,11 +41,13 @@ dependencies {
     annotationProcessor("com.jakewharton:butterknife-compiler:10.2.1")
 
     implementation("com.dmcBig:mediapicker:+")
+    compile 'com.github.autume:syd-camera:v1.0.0'
     compile 'com.google.code.gson:gson:2.8.6'
 }
 
 allprojects {
     repositories {
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }

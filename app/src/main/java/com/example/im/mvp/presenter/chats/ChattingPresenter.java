@@ -64,13 +64,27 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     public void sendMsg() {
         String content = mView.getMsg();
         if (!"".equals(content)) {  // 如果输入框非空，则发送消息
-            Msg msg = new Msg(0, content);
+            Msg msg = new Msg(0, Msg.TYPE_MSG, content);
             msgList.add(msg);
             mModel.sendMsg(id, content);
             mView.setMsgList();
             mView.clearMsg();
         }
     }
+
+    @Override
+    public void sendPicture(String path) {
+        Msg msg = new Msg(0, Msg.TYPE_PICTURE, path);
+        msgList.add(msg);
+        //mModel.sendMsg(id, content);
+        mView.setMsgList();
+    }
+
+    @Override
+    public void sendLocation() {
+
+    }
+
     public void sendSuccess() {}
 
     @Override

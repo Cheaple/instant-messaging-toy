@@ -1,7 +1,10 @@
 package com.example.im.activity.chats;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +31,9 @@ import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.presenter.chats.ChattingPresenter;
+import com.oden.syd_camera.SydCameraActivity;
+import com.oden.syd_camera.SydVideoActivity;
+import com.oden.syd_camera.camera.CameraParaUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -36,6 +42,7 @@ import java.util.List;
 public class ChattingActivity extends AppCompatActivity implements IChattingContract.View, View.OnClickListener {
     private static final int REQUEST_PICTURE = 100;
     private static final int REQUEST_CAMERA = 101;
+    private static final int REQUEST_VIDEO = 102;
 
     private Context context;
     private ChattingPresenter mPresenter;
@@ -74,10 +81,17 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PICTURE && resultCode == PickerConfig.RESULT_CODE) {
-            ArrayList<Media> selected = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
-            String avatar = selected.get(0).path;
-
+        switch (requestCode) {
+            case REQUEST_PICTURE:
+                if (resultCode != PickerConfig.RESULT_CODE) return;
+                break;
+            case REQUEST_CAMERA:
+                if (resultCode != SydVideoActivity.RESULT_OK) return;
+                String path = data.getStringExtra(CameraParaUtil.picturePath);
+                showText(path);
+                break;
+            case REQUEST_VIDEO:
+                break;
         }
     }
 
@@ -133,6 +147,9 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
                     case R.id.menu_camera:
                         takePhoto();
                         break;
+                    case R.id.menu_video:
+                        takeVideo();
+                        break;
                     case R.id.menu_location:
                         break;
                     default:
@@ -152,8 +169,16 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     }
 
     private void takePhoto() {
-        Intent intent =new Intent(context, TakePhotoActivity.class);  // Take a photo with a camera
+        Intent intent = new Intent(context, SydCameraActivity.class);
+        intent.putExtra(CameraParaUtil.picQuality, 70);  // 图片质量0~100
+        intent.putExtra(CameraParaUtil.picWidth, 1536);  // 照片最小宽度配置，高度根据屏幕比例自动配置
+        intent.putExtra(CameraParaUtil.previewWidth, 1280);  // 相机预览界面最小宽度配置，高度根据屏幕比例自动配置
         startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    private void takeVideo() {
+        Intent intent = new Intent(context, SydVideoActivity.class);
+        startActivityForResult(intent, REQUEST_VIDEO);
     }
 
     @Override

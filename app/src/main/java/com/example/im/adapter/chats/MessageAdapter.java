@@ -58,15 +58,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Msg msg = msgList.get(position);
-        if(msg.getSpeaker() == 0) {  // 接受消息
-            holder.rightLayout.setVisibility(View.VISIBLE);
-            holder.leftLayout.setVisibility(View.GONE);
-            holder.rightTextView.setText(msg.getContent());
-        } else if(msg.getSpeaker() == 1) {  // 发送消息
-            holder.leftLayout.setVisibility(View.VISIBLE);
-            holder.rightLayout.setVisibility(View.GONE);
-            holder.leftTextView.setText(msg.getContent());
+        switch (msg.getType()) {
+            case Msg.TYPE_MSG:
+                if(msg.getSpeaker() == 0) {  // 接受消息
+                    holder.rightLayout.setVisibility(View.VISIBLE);
+                    holder.leftLayout.setVisibility(View.GONE);
+                    holder.rightTextView.setText(msg.getContent());
+                } else if(msg.getSpeaker() == 1) {  // 发送消息
+                    holder.leftLayout.setVisibility(View.VISIBLE);
+                    holder.rightLayout.setVisibility(View.GONE);
+                    holder.leftTextView.setText(msg.getContent());
+                }
+                break;
+            case Msg.TYPE_PICTURE:
+                break;
+            case Msg.TYPE_VIDEO:
+                break;
         }
+
     }
 
     @Override
