@@ -182,4 +182,19 @@ public class ChattingModel implements IChattingContract.Model {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void sendPicture(String id, String path) {
+        // TODO: 发送图片
+    }
+
+    @Override
+    public void sendVideo(String id, String path) {
+        // TODO：发送视频
+    }
+
+    @Override
+    public void sendLocation(String id) {
+        // TODO：发送
+    }
 }

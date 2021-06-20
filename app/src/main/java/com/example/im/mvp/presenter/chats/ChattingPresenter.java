@@ -76,8 +76,16 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     public void sendPicture(String path) {
         Msg msg = new Msg(0, Msg.TYPE_PICTURE, path);
         msgList.add(msg);
-        //mModel.sendMsg(id, content);
         mView.setMsgList();
+        mModel.sendPicture(id, path);
+    }
+
+    @Override
+    public void sendVideo(String path) {
+        Msg msg = new Msg(0, Msg.TYPE_VIDEO, path);
+        msgList.add(msg);
+        mView.setMsgList();
+        mModel.sendVideo(id, path);
     }
 
     @Override

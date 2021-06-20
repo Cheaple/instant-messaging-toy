@@ -26,8 +26,11 @@ import java.util.LinkedList;
 import static android.app.PendingIntent.getActivity;
 
 public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int IMAGE_TYPE_UPLOAD = 0x00001;  // 用于上传图片的加号图片
-    private static final int IMAGE_TYPE_USER = 0x00002;  // 用户上传的图片
+    private static final int IMAGE_TYPE_UPLOAD = 1;  // 用于上传图片的加号图片
+    private static final int IMAGE_TYPE_USER = 2;  // 用户上传的图片
+
+    private static final int TYPE_PICTURE = 1;
+    private static final int TYPE_VIDEO = 3;
 
     private PostActivity context;
     private ArrayList<Media> imageList;
@@ -88,7 +91,8 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         else if (holder instanceof UserImageViewHolder) {
             Media media = imageList.get(position);
-            if (media.mediaType == 1) {  // 图片
+            System.out.println(media.mediaType);
+            if (media.mediaType == TYPE_PICTURE) {  // 图片
                 BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.inPreferredConfig = Bitmap.Config.RGB_565;
                 opt.inPurgeable = true;
@@ -97,7 +101,7 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 Bitmap bitmap = BitmapFactory.decodeFile(media.path);
                 ((UserImageViewHolder) holder).imageView.setImageBitmap(bitmap);
             }
-            else { // 视频
+            else if (media.mediaType == TYPE_VIDEO) { // 视频
                 context.showText("Video");
                 MediaMetadataRetriever mmr = new MediaMetadataRetriever();
                 mmr.setDataSource(media.path);

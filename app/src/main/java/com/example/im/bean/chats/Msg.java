@@ -2,6 +2,10 @@ package com.example.im.bean.chats;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+
+import java.io.File;
+import java.net.URI;
 
 public class Msg {
     public final static int SPEAKER_TYPE_ME = 0;
@@ -14,7 +18,9 @@ public class Msg {
     private int speaker;  // 0为自己，1为对方
     private int type;
     private String content;
-    private Bitmap picture;
+    //private Bitmap picture;
+    private Uri picture;
+    private Uri video;
 
     public Msg(int speaker, int type, String content) {
         this.speaker = speaker;
@@ -22,19 +28,19 @@ public class Msg {
         if (type == TYPE_MSG)
             this.content = content;
         else if (type == TYPE_PICTURE) {
-            BitmapFactory.Options opt = new BitmapFactory.Options();
+            /*BitmapFactory.Options opt = new BitmapFactory.Options();
             opt.inPreferredConfig = Bitmap.Config.RGB_565;
             opt.inPurgeable = true;
             opt.inInputShareable = true;
             opt.inSampleSize = 16;
-            picture = BitmapFactory.decodeFile(content);
+            picture = BitmapFactory.decodeFile(content);*/
+            File picPath = new File(content);
+            picture = Uri.fromFile(picPath);
         }
-    }
-
-    public Msg(int speaker, int type, Bitmap picture) {
-        this.speaker = speaker;
-        this.type = type;
-        this.picture = picture;
+        else if (type == TYPE_VIDEO) {
+            File picPath = new File(content);
+            video = Uri.fromFile(picPath);
+        }
     }
 
     public int getSpeaker() {
@@ -42,11 +48,15 @@ public class Msg {
     }
 
     public int getType() {
-        return TYPE_MSG;
+        return type;
     }
 
-    public Bitmap getPicture() {
+    public Uri getPicture() {
         return picture;
+    }
+
+    public Uri getVideo() {
+        return video;
     }
 
     public String getContent() {

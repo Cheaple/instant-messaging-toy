@@ -1,15 +1,11 @@
 package com.example.im.activity.chats;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -25,13 +21,12 @@ import com.dmcbig.mediapicker.TakePhotoActivity;
 import com.dmcbig.mediapicker.entity.Media;
 import com.example.im.R;
 import com.example.im.activity.contacts.InfoActivity;
-import com.example.im.adapter.chats.MessageAdapter;
+import com.example.im.adapter.chats.MsgAdapter;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.presenter.chats.ChattingPresenter;
-import com.oden.syd_camera.SydCameraActivity;
 import com.oden.syd_camera.SydVideoActivity;
 import com.oden.syd_camera.camera.CameraParaUtil;
 
@@ -44,10 +39,13 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     private static final int REQUEST_CAMERA = 101;
     private static final int REQUEST_VIDEO = 102;
 
+    private static final int TYPE_PICTURE = 1;
+    private static final int TYPE_VIDEO = 3;
+
     private Context context;
     private ChattingPresenter mPresenter;
 
-    private MessageAdapter messageAdapter;
+    private MsgAdapter messageAdapter;
     private RecyclerView recyclerView;
     private EditText inputText;
     private ImageView sendImageView;
@@ -84,6 +82,14 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         switch (requestCode) {
             case REQUEST_PICTURE:
                 if (resultCode != PickerConfig.RESULT_CODE) return;
+                ArrayList<Media> selected = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+                if (!selected.isEmpty()) {
+                    Media media = selected.get(0);
+                    if (media.mediaType == TYPE_PICTURE)  // 如果选择了图片
+                        mPresenter.sendPicture(media.path);
+                    else if (media.mediaType == TYPE_VIDEO)  // 选择了视频
+                        mPresenter.sendVideo(media.path);
+                }
                 break;
             case REQUEST_CAMERA:
                 if (resultCode != SydVideoActivity.RESULT_OK) return;
@@ -129,7 +135,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
 
     @Override
     public void setMsgList(List list) {
-        messageAdapter = new MessageAdapter((LinkedList<Msg>) list, context);
+        messageAdapter = new MsgAdapter((LinkedList<Msg>) list, context);
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
@@ -151,6 +157,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
                         takeVideo();
                         break;
                     case R.id.menu_location:
+                        getLocation();
                         break;
                     default:
                         break;
@@ -163,22 +170,22 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
 
     private void selectPicture() {
         Intent intent = new Intent(context, PickerActivity.class);
-        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE);  // 设置选择类型：图片
         intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 1);  // 最大选择数量：1
         startActivityForResult(intent, REQUEST_PICTURE);
     }
 
     private void takePhoto() {
-        Intent intent = new Intent(context, SydCameraActivity.class);
-        intent.putExtra(CameraParaUtil.picQuality, 70);  // 图片质量0~100
-        intent.putExtra(CameraParaUtil.picWidth, 1536);  // 照片最小宽度配置，高度根据屏幕比例自动配置
-        intent.putExtra(CameraParaUtil.previewWidth, 1280);  // 相机预览界面最小宽度配置，高度根据屏幕比例自动配置
-        startActivityForResult(intent, REQUEST_CAMERA);
+        Intent intent =new Intent(context, TakePhotoActivity.class); //Take a photo with a camera
+        startActivityForResult(intent,200);
     }
 
     private void takeVideo() {
         Intent intent = new Intent(context, SydVideoActivity.class);
         startActivityForResult(intent, REQUEST_VIDEO);
+    }
+
+    private void getLocation() {
+
     }
 
     @Override

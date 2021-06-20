@@ -19,6 +19,7 @@ public interface IChattingContract {
         void showMsgList();
         void sendMsg();
         void sendPicture(String path);
+        void sendVideo(String path);
         void sendLocation();
         void checkInfo();  // 查看好友信息
     }
@@ -26,5 +27,8 @@ public interface IChattingContract {
         void loadMsgList(String id);
         void checkInfo(String username);
         void sendMsg(String id, String content);
+        void sendPicture(String id, String path);
+        void sendVideo(String id, String path);
+        void sendLocation(String id);
     }
 }
