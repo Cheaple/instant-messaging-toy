@@ -4,7 +4,7 @@ import com.example.im.bean.contacts.Contact;
 
 public interface IInfoContract {
     interface View {
-        void setAvatar(int avatar);
+        void setAvatar(String avatar);
         void setNickname(String nickname);
         void setUsername(String username);
         void setRegion(String region);

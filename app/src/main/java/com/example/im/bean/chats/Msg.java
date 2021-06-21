@@ -28,19 +28,19 @@ public class Msg {
         if (type == TYPE_MSG)
             this.content = content;
         else if (type == TYPE_PICTURE) {
-            /*BitmapFactory.Options opt = new BitmapFactory.Options();
-            opt.inPreferredConfig = Bitmap.Config.RGB_565;
-            opt.inPurgeable = true;
-            opt.inInputShareable = true;
-            opt.inSampleSize = 16;
-            picture = BitmapFactory.decodeFile(content);*/
-            File picPath = new File(content);
-            picture = Uri.fromFile(picPath);
+            File file = new File(content);
+            picture = Uri.fromFile(file);
         }
         else if (type == TYPE_VIDEO) {
-            File picPath = new File(content);
-            video = Uri.fromFile(picPath);
+            File file = new File(content);
+            video = Uri.fromFile(file);
         }
+    }
+
+    public Msg(int speaker, int type, Uri video) {
+        this.speaker = speaker;
+        this.type = type;
+        this.video = video;
     }
 
     public int getSpeaker() {

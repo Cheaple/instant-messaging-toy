@@ -65,7 +65,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         }
         else {
             Contact contact = memberList.get(position);
-            holder.imageView.setImageResource(contact.getAvatarIcon());
+            //holder.imageView.setImageResource(contact.getAvatar());
             holder.textView.setText(contact.getNickname());
         }
         holder.itemView.setTag(position);

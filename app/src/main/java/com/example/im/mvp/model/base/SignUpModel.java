@@ -110,7 +110,12 @@ public class SignUpModel implements ISignUpContract.Model {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         if (jsonObject.getBoolean("success")) { // 查找成功
                             msg.what = LOAD_SUCCESS;
-                            msg.obj = new Gson().fromJson(jsonObject.getString("user"), Contact.class);
+                            JSONObject userJsonObject = jsonObject.getJSONObject("user");
+                            String id = userJsonObject.getString("id");
+                            String avatar = userJsonObject.getString("avatar");
+                            String nickname = userJsonObject.getString("nickname");
+                            String username = userJsonObject.getString("username");
+                            msg.obj = new Contact(id, avatar, nickname, username);
                         }
                         else {  // 查找失败
                             msg.what = LOAD_FAILURE;

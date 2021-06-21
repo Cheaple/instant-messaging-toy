@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.im.R;
 import com.example.im.activity.base.LoginActivity;
 import com.example.im.activity.base.MainActivity;
@@ -112,8 +113,9 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
     }
 
     @Override
-    public void setAvatar(int avatar) {
-        avatarImageView.setImageResource(avatar);
+    public void setAvatar(String avatar) {
+        String avatarUrl = context.getString(R.string.server)+"/picture/" + avatar;
+        Glide.with(context).load(avatarUrl).into(avatarImageView);  // 设置联系人头像
     }
 
     @Override

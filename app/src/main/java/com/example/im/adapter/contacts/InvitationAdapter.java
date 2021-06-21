@@ -73,7 +73,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
         // Retrieve the data for that position
         Contact contact = contactList.get(position);
         // Add the data to the view
-        holder.avatarImageView.setImageResource(contact.getAvatarIcon());  // 设置联系人头像
+        //holder.avatarImageView.setImageResource(contact.getAvatar());  // 设置联系人头像
         holder.nicknameTextView.setText(contact.getNickname());  // 设置联系人昵称
 
         holder.itemView.setTag(position);

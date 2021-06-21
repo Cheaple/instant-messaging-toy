@@ -14,6 +14,10 @@
         android:title="Video"/>
 
     <item
+        android:id="@+id/menu_record"
+        android:title="Record"/>
+
+    <item
         android:id="@+id/menu_location"
         android:title="Location"/>
 

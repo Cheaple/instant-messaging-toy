@@ -10,7 +10,7 @@ public class Contact implements Serializable {
     public static final int CONTACT_TYPE_SEARCH = 1;  // 未添加的联系人
 
     private String id;  // 唯一标识 ID
-    private int avatarIcon;  // 头像
+    private String avatar;  // 头像
     private String nickname;  // 昵称
     private String username;  // 用户名，用户眼里的 ID
     private String region;  // 地区
@@ -21,20 +21,19 @@ public class Contact implements Serializable {
         this.username = username;
     }
 
-    public Contact(String id, int avatarIcon, String nickname, String username, String region) {
+    public Contact(String id, String avatar, String nickname, String username) {
         this.id = id;
-        this.avatarIcon = avatarIcon;
+        this.avatar = avatar;
         this.nickname = nickname;
         this.username = username;
-        this.region = region;
     }
 
     public String getID() {
         return id;
     }
 
-    public int getAvatarIcon() {
-        return avatarIcon;
+    public String getAvatar() {
+        return avatar;
     }
 
     public String getNickname() {
@@ -45,5 +44,16 @@ public class Contact implements Serializable {
 
     public String getRegion() {
         return region;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id='" + id + '\'' +
+                ", avatar=" + avatar +
+                ", nickname='" + nickname + '\'' +
+                ", username='" + username + '\'' +
+                ", region='" + region + '\'' +
+                '}';
     }
 }

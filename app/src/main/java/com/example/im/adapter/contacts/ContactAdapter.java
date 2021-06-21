@@ -2,6 +2,7 @@ package com.example.im.adapter.contacts;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.im.R;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.OnItemClickListener;
@@ -78,8 +80,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         // Retrieve the data for that position
         Contact contact = contactList.get(position);
-        // Add the data to the view
-        holder.avatarImageView.setImageResource(contact.getAvatarIcon());  // 设置联系人头像
+
+        String avatarUrl = context.getString(R.string.server)+"/picture/" + contact.getAvatar();
+        Glide.with(context).load(avatarUrl).into(holder.avatarImageView);  // 设置联系人头像
         holder.nicknameTextView.setText(contact.getNickname());  // 设置联系人昵称
         if (!ifDisplayCheckBox) holder.checkBox.setVisibility(View.GONE);  // 隐藏复选框
         else {

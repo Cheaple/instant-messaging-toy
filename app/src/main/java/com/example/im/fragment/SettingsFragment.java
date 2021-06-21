@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.dmcbig.mediapicker.PickerActivity;
 import com.dmcbig.mediapicker.PickerConfig;
 import com.dmcbig.mediapicker.entity.Media;
@@ -250,6 +251,12 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
             }
         });
         builder.show();
+    }
+
+    @Override
+    public void setAvatar(String avatar) {
+        String avatarUrl = context.getString(R.string.server)+"/picture/" + avatar;
+        Glide.with(context).load(avatarUrl).into(avatarImageView);  // 设置联系人头像
     }
 
     @Override

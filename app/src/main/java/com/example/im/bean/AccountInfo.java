@@ -7,7 +7,7 @@ public class AccountInfo {
     private String username;
     private String password;
     private String nickname = "Nickname";
-
+    private String avatar = "default_avatar";
 
     private static AccountInfo instance;
 
@@ -58,8 +58,16 @@ public class AccountInfo {
         return nickname;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public void setAccount(String id, String password) {

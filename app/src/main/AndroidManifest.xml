@@ -33,10 +33,6 @@
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity android:name=".activity.contacts.GroupCreatingActivity" />
         <activity android:name="com.dmcbig.mediapicker.PickerActivity"/>
-        <activity android:name="com.dmcbig.mediapicker.TakePhotoActivity"/>
-        <activity android:name="com.oden.syd_camera.SydCameraActivity"/>
-        <activity android:name="com.oden.syd_camera.SydVideoActivity"/>
-
     </application>
 
 </manifest>

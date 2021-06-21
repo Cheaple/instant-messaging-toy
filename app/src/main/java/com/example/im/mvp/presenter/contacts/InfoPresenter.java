@@ -21,10 +21,10 @@ public class InfoPresenter implements IInfoContract.Presenter {
 
     @Override
     public void showInfo() {
-        mView.setAvatar(contact.getAvatarIcon());
+        //mView.setAvatar(contact.getAvatar());
         mView.setNickname(contact.getNickname());
         mView.setUsername(contact.getUsername());
-        mView.setRegion(contact.getRegion());
+        mView.setAvatar(contact.getAvatar());
     }
 
     @Override

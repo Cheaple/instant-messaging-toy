@@ -2,7 +2,10 @@ package com.example.im.activity.chats;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +30,13 @@ import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.presenter.chats.ChattingPresenter;
+import com.example.im.util.UriUtil;
+import com.oden.syd_camera.SydCameraActivity;
 import com.oden.syd_camera.SydVideoActivity;
 import com.oden.syd_camera.camera.CameraParaUtil;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +45,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     private static final int REQUEST_PICTURE = 100;
     private static final int REQUEST_CAMERA = 101;
     private static final int REQUEST_VIDEO = 102;
+    private static final int REQUEST_RECORD = 103;
 
     private static final int TYPE_PICTURE = 1;
     private static final int TYPE_VIDEO = 3;
@@ -92,11 +100,15 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
                 }
                 break;
             case REQUEST_CAMERA:
-                if (resultCode != SydVideoActivity.RESULT_OK) return;
-                String path = data.getStringExtra(CameraParaUtil.picturePath);
-                showText(path);
+                Uri uri = data.getData();
+                showText(uri.getPath());
+                //mPresenter.sendPicture(UriUtil.getFileAbsolutePath(context, uri));
                 break;
             case REQUEST_VIDEO:
+                Uri uri2 = data.getData();
+                mPresenter.sendVideo(UriUtil.getFileAbsolutePath(context, uri2));
+                break;
+            case REQUEST_RECORD:
                 break;
         }
     }
@@ -156,6 +168,8 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
                     case R.id.menu_video:
                         takeVideo();
                         break;
+                    case R.id.menu_record:
+
                     case R.id.menu_location:
                         getLocation();
                         break;
@@ -175,13 +189,21 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     }
 
     private void takePhoto() {
-        Intent intent =new Intent(context, TakePhotoActivity.class); //Take a photo with a camera
-        startActivityForResult(intent,200);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
     }
 
     private void takeVideo() {
-        Intent intent = new Intent(context, SydVideoActivity.class);
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);  //限制时长s
+        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 30*1024*1024);  // 限制大小
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);  //设置质量
         startActivityForResult(intent, REQUEST_VIDEO);
+    }
+
+    private void takeRecord() {
+
     }
 
     private void getLocation() {

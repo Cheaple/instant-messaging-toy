@@ -35,7 +35,7 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     public void showInfo() {
         mView.setUsername(username);
         mView.setNickname(nickname);
-        // TODO: 设置昵称和头像
+        mView.setAvatar(AccountInfo.getInstance().getAvatar());
     }
 
     @Override

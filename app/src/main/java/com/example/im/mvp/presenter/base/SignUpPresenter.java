@@ -49,6 +49,7 @@ public class SignUpPresenter implements ISignUpContract.Presenter {
 
     public void loadSuccess(Contact contact) {
         AccountInfo.getInstance().setNickname(contact.getNickname());  // 设置全局使用的昵称
+        AccountInfo.getInstance().setAvatar(contact.getAvatar());  // 设置全局使用的头像
         mView.gotoMainActivity();
     }
     public void loadFailure(String error) {

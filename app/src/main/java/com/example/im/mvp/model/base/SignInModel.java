@@ -50,6 +50,7 @@ public class SignInModel implements ISignInContract.Model {
                     mPresenter.loginFailure(msg.obj.toString());
                     break;
                 case LOAD_SUCCESS:
+                    System.out.println((Contact) msg.obj);
                     mPresenter.loadSuccess((Contact) msg.obj);
                     break;
                 case LOAD_FAILURE:
@@ -71,7 +72,6 @@ public class SignInModel implements ISignInContract.Model {
             HttpUtil.sendHttpRequest(url, null, true, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
-                    System.out.println(response.toString());
                     Message msg = new Message();
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
@@ -108,13 +108,17 @@ public class SignInModel implements ISignInContract.Model {
             HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
-                    System.out.println(response.toString());
                     Message msg = new Message();
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         if (jsonObject.getBoolean("success")) { // 查找成功
                             msg.what = LOAD_SUCCESS;
-                            msg.obj = new Gson().fromJson(jsonObject.getString("user"), Contact.class);
+                            JSONObject userJsonObject = jsonObject.getJSONObject("user");
+                            String id = userJsonObject.getString("id");
+                            String avatar = userJsonObject.getString("avatar");
+                            String nickname = userJsonObject.getString("nickname");
+                            String username = userJsonObject.getString("username");
+                            msg.obj = new Contact(id, avatar, nickname, username);
                         }
                         else {  // 查找失败
                             msg.what = LOAD_FAILURE;
