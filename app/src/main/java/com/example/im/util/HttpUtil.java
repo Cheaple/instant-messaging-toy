@@ -1,6 +1,9 @@
 package com.example.im.util;
 
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.example.im.listener.HttpCallbackListener;
 
 import org.json.JSONObject;
@@ -12,9 +15,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +86,9 @@ public class HttpUtil {
         }).start();
     }
 
-    public static void uploadFile(String address, ArrayList<String> path, HttpCallbackListener listener) {
+    public static void uploadFile(String address, String path, String fileType, HttpCallbackListener listener) {
+        String endl = "\r\n";
+        String boundary = "*****";
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -94,38 +102,43 @@ public class HttpUtil {
                         System.out.println("set cookie = [" + cookie + "]");
                         conn.setRequestProperty("Cookie", cookie);
                     }
-                    conn.setRequestMethod("GET");
                     conn.setConnectTimeout(8000);  // 连接超时时间
                     conn.setReadTimeout(8000);  // 读取超时异常
                     conn.setDoInput(true);
                     conn.setDoOutput(true);
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
                     conn.connect();
 
-                    // 传输文件
-                    String end = "\r\n";
-                    String twoHyphens = "--";
-                    String boundary = "*****";
-                    OutputStream outputStream = conn.getOutputStream();
-                    DataOutputStream out = new DataOutputStream(outputStream);
-                    for (int i = 0; i < path.size(); ++i) {
-                        String filename = path.get(i).substring(path.lastIndexOf("//") + 1);
-                        out.writeBytes(twoHyphens + boundary + end);
-                        out.writeBytes("Content-Disposition: form-data; " + "name=\"file" + i
-                                + "\";filename=\"" + filename + "\"" + end);
-                        out.writeBytes(end);
+                    // 构建 form-data
+                    DataOutputStream writer = new DataOutputStream(conn.getOutputStream());
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("--" + boundary + endl);
+                    sb.append("Content-Disposition: form-data; name=\"fileType\"").append(endl);
+                    sb.append("Content-Type: text/plain; charset=ASCII").append(endl + endl);
+                    sb.append(fileType).append(endl);
+                    writer.writeBytes(sb.toString());
+                    writer.flush();
 
-                        FileInputStream fStream = new FileInputStream(path.get(i));
-                        int bufferSize = 1024;
-                        byte[] buffer = new byte[bufferSize];
-                        int length = -1;
-                        while ((length = fStream.read(buffer)) != -1) {
-                            out.write(buffer, 0, length);
-                        }
-                        fStream.close();
-                        out.writeBytes(end);
-                    }
-                    out.writeBytes(twoHyphens + boundary + twoHyphens + end);
-                    out.flush();
+                    StringBuilder sb1 = new StringBuilder();
+                    sb1.append("--" + boundary + endl);
+                    sb1.append("Content-Disposition: form-data; name=\"file\"; filename=\""
+                            + path + "\"").append(endl);
+                    sb1.append("Content-Type: " + URLConnection.guessContentTypeFromName(path)).append(endl);
+                    sb1.append("Content-Transfer-Encoding: binary").append(endl + endl);
+                    writer.writeBytes(sb1.toString());
+
+                    // 传输文件
+                    InputStream fileInputStream = new FileInputStream(path);
+                    byte[] buffer = new byte[1024];
+                    int len = 0;
+                    while ((len = fileInputStream.read(buffer)) != -1)
+                        writer.write(buffer, 0, len);
+                    fileInputStream.close();
+                    writer.writeBytes(endl);
+                    writer.flush();
+                    writer.writeBytes("--" + boundary + "--" + endl);
+                    writer.close();
 
                     // 获取响应
                     InputStream inputStream = conn.getInputStream();
@@ -135,7 +148,7 @@ public class HttpUtil {
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
-                    String result = java.net.URLDecoder.decode(response.toString());  // 对http响应进行解码
+                    String result = URLDecoder.decode(response.toString());  // 对http响应进行解码
                     System.out.println("Receive http response = " + result);
                     listener.onSuccess(result);
                 } catch (Exception e) {

@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class Discover {
     private String id;
-    private int avatarIcon;  // 头像
+    private String avatar;  // 头像
     private String publisher;  // 昵称
     private String momentType;  // 动态类型
     private String text;  // 文字
@@ -15,10 +15,10 @@ public class Discover {
     private ArrayList<String> thumbs;  // 点赞
     private LinkedList<Reply> replies;  // 评论
 
-    public Discover(String id, int avatarIcon, String publisher, String momentType, String text, String time,
+    public Discover(String id, String avatar, String publisher, String momentType, String text, String time,
                     ArrayList<Integer> images, int imageCount, ArrayList<String> thumbs, LinkedList<Reply> replies) {
         this.id = id;
-        this.avatarIcon = avatarIcon;
+        this.avatar = avatar;
         this.publisher = publisher;
         this.momentType = momentType;
         this.text = text;
@@ -37,12 +37,12 @@ public class Discover {
         this.id = id;
     }
 
-    public int getAvatarIcon() {
-        return avatarIcon;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvatarIcon(int avatarIcon) {
-        this.avatarIcon = avatarIcon;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getPublisher() {

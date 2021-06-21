@@ -18,6 +18,8 @@ public class PostPresenter implements IPostContract.Presenter {
     IPostContract.Model mModel;
     IPostContract.View mView;
 
+    String momentType;
+
     public PostPresenter(IPostContract.View view, Context context) {
         this.context = context;
         this.mModel = new PostModel(this);
@@ -27,6 +29,7 @@ public class PostPresenter implements IPostContract.Presenter {
     @Override
     public void postMoment() {
         ArrayList<Media> selected = mView.getSelected();
+        ArrayList<String> files = new ArrayList<>();
         boolean ifImageSelected = false;
         boolean ifVideoSelected = false;
 
@@ -36,19 +39,35 @@ public class PostPresenter implements IPostContract.Presenter {
                 ifImageSelected = true;
             else
                 ifVideoSelected = true;
+            files.add(selected.get(i).path);
         }
 
 
         String text = mView.getText();  // 动态文本
         if (ifImageSelected && ifVideoSelected) {
-            postFailure("不能同时上传图片和视频！");
+            mView.showText("不能同时发布图片和视频！");
         }
         else if (ifImageSelected) {
-
+            momentType = "PICTURE";
+            mModel.upload(momentType, files);
         }
-        else {
-
+        else if (ifVideoSelected) {
+            momentType = "VIDEO";
+            mModel.upload(momentType, files);
         }
+        else if (!"".equals(text)){
+            momentType = "TEXT";
+            mModel.postMoment(momentType, text, null);
+        }
+    }
+
+    public void post(String text, ArrayList<String> files) {
+        mModel.postMoment(momentType, text, files);
+    }
+
+    public void uploadSuccess(ArrayList<String> files) {
+        String text = mView.getText();
+        post(text, files);
     }
 
     public void postSuccess() {

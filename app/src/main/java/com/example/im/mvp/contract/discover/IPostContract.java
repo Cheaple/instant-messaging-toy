@@ -15,7 +15,9 @@ public interface IPostContract {
     interface Presenter {
         void postMoment();
     }
+
     interface Model {
-        void postMoment(Discover discover);
+        void upload(String fileType, ArrayList<String> files);
+        void postMoment(String momentType, String text, ArrayList<String> media);
     }
 }

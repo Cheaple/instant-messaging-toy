@@ -2,7 +2,7 @@ package com.example.im.mvp.contract.settings;
 
 public interface ISettingsContract {
     interface View {
-        void setAvatar(String avater);
+        void setAvatar(String avatar);
         void setUsername(String username);
         void setNickname(String nickname);
         void gotoLoginActivity();

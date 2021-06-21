@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.im.R;
 import com.example.im.bean.AccountInfo;
 import com.example.im.bean.discover.Discover;
@@ -178,7 +179,8 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         Discover moment = discoverList.get(position);
         // Add the data to the view
         ImageView imageView = holder.discoverItemView.findViewById(R.id.avatar_icon);
-        imageView.setImageResource(moment.getAvatarIcon());
+        String avatarUrl = context.getString(R.string.server)+"/picture/" + moment.getAvatar();
+        Glide.with(context).load(avatarUrl).into(imageView);  // 设置联系人头像
         TextView textView;
         textView = holder.discoverItemView.findViewById(R.id.nickname_text);
         textView.setText(moment.getPublisher());
