@@ -181,6 +181,11 @@ public class ChattingModel implements IChattingContract.Model {
     }
 
     @Override
+    public void clearHistory(String username) {
+        // todo: 删除指定消息
+    }
+
+    @Override
     public void checkInfo(String username) {
         try {
             String url = "http://8.140.133.34:7200/user/search" + "?search=" + username;

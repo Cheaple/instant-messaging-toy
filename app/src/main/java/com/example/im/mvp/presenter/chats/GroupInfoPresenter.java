@@ -4,6 +4,7 @@ import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IGroupInfoContract;
 import com.example.im.mvp.model.chats.GroupInfoModel;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
@@ -13,16 +14,16 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
     private String groupID;
     private LinkedList<Contact> memberList;
 
-    public GroupInfoPresenter(IGroupInfoContract.View view, String groupID) {
+    public GroupInfoPresenter(IGroupInfoContract.View view, String groupID, ArrayList<Contact> memberList) {
         this.mModel = new GroupInfoModel(this);
         this.mView = view;
         this.groupID = groupID;
+        this.memberList = new LinkedList<>(memberList);
     }
 
     @Override
     public void showMemberList() {
-        mModel.loadMemberList(groupID);
-
+        mView.setMemberList(memberList);
     }
 
     public void loadSuccess(LinkedList<Contact> memberList) {

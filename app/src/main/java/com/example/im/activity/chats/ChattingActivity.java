@@ -129,6 +129,9 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
             }
             return true;
         }
+        /*else if (item.getItemId() == R.id.menu_clear_history) {
+            mPresenter.clearHistory();
+        }*/
         return false;
     }
 
@@ -239,6 +242,8 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     public void gotoGroupInfoActivity(String groupID) {
         Intent intent = new Intent(ChattingActivity.this, GroupInfoActivity.class);
         intent.putExtra("Group ID", groupID);  // 传递群聊ID
+        if (mPresenter.getMemberInfo() == null) return;
+        intent.putParcelableArrayListExtra("Group Member Info", mPresenter.getMemberInfo());
         startActivityForResult(intent, 1);
     }
 

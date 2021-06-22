@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.im.R;
+import com.example.im.activity.base.MainActivity;
 import com.example.im.activity.chats.ChattingActivity;
 import com.example.im.activity.discover.PostActivity;
 import com.example.im.adapter.contacts.ContactAdapter;
@@ -26,8 +27,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GroupCreatingActivity extends AppCompatActivity implements IGroupCreatingContract.View, OnItemClickListener, View.OnClickListener {
-    public final static int TYPE_CREATE = 1;  // 用于新建群聊
-    public final static int TYPE_INVITE = 1;  // 用于邀请联系人加入群聊
+    public final static int TYPE_CREATE = 300;  // 用于新建群聊
+    public final static int TYPE_INVITE = 301;  // 用于邀请联系人加入群聊
 
     private Context context;
     private GroupCreatingPresenter mPresenter;
@@ -50,7 +51,7 @@ public class GroupCreatingActivity extends AppCompatActivity implements IGroupCr
         if (type == TYPE_CREATE)
             mPresenter = new GroupCreatingPresenter(this, context);
         else if (type == TYPE_INVITE)
-            mPresenter = new GroupCreatingPresenter(this, context, intent.getIntExtra("Group ID", -1));
+            mPresenter = new GroupCreatingPresenter(this, context, intent.getStringExtra("Group ID"));
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_contacts_selecting);
         createButton = (Button) findViewById(R.id.button_create);
@@ -88,12 +89,25 @@ public class GroupCreatingActivity extends AppCompatActivity implements IGroupCr
     }
 
     @Override
-    public void gotoGroupChattingActivity(String groupID) {
+    public void gotoMainActivity() {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // 清除栈中的所有activity
+        startActivity(intent);
+    }
+
+    @Override
+    public void gotoGroupChattingActivity(String groupID, ArrayList<String> members) {
         Intent intent = new Intent(context, ChattingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // 结束当前activity
         intent.putExtra("Chat Type", Chat.CHAT_TYPE_GROUP);  // 传递会话类型
+        intent.putStringArrayListExtra("Group Members", members);  // 传递群聊成员
         intent.putExtra("Chat ID", groupID);  // 传递会话ID
         startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void gotoGroupInfoActivity() {
         finish();
     }
 

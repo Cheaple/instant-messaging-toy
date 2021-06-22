@@ -38,6 +38,9 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
     private static class MyHandler extends Handler {
         private WeakReference<GroupCreatingPresenter> mWeakReference;
 
+        public int invitedCnt = 0;
+        private int invitedTotal;
+
         public MyHandler(GroupCreatingPresenter presenter) {
             mWeakReference = new WeakReference<>(presenter);
         }
@@ -59,7 +62,8 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
                 case CREATE_FAILURE:
                     mPresenter.createFailure(msg.obj.toString());
                 case INVITE_SUCCESS:
-                    mPresenter.inviteSuccess(msg.obj.toString());
+                    if (++invitedCnt >= invitedTotal)  // 选中的全部好友都邀请完毕
+                        mPresenter.inviteSuccess();
                     break;
                 case INVITE_FAILURE:
                     mPresenter.inviteFailure(msg.obj.toString());
@@ -112,6 +116,7 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
 
     @Override
     public void createGroup(ArrayList<String> selectedContacts) {
+        mHandler.invitedTotal = selectedContacts.size();
         try {
             // 构建http请求的body
             JSONObject body = new JSONObject();
@@ -155,7 +160,44 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
     }
 
     @Override
-    public void inviteContacts(int groupID, ArrayList<String> selectedContacts) {
-        // TODO: 邀请联系人加入群聊
+    public void inviteContacts(String groupID, ArrayList<String> selectedContacts) {
+        for (int i = 0; i < selectedContacts.size(); ++i) {
+            try {
+                String url = "http://8.140.133.34:7200/chat/inviteUser?" + "groupId=" + groupID
+                        + "&invitedUserId=" + selectedContacts.get(i);
+                HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+                    @Override
+                    public void onSuccess(String response) {  // http请求成功
+                        Message msg = new Message();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.toString());
+                            if (jsonObject.getBoolean("success")) { // 创建成功
+                                msg.what = INVITE_SUCCESS;
+                                msg.obj = jsonObject.getString("chatGroupId");
+                            }
+                            else {  // 创建失败
+                                msg.what = INVITE_FAILURE;
+                                msg.obj = jsonObject.getString("msg");  // 失败原因
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        mHandler.sendMessage(msg);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {  // http请求失败
+                        Message msg = new Message();
+                        msg.what = INVITE_FAILURE;
+                        msg.obj = e.toString();
+                        mHandler.sendMessage(msg);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

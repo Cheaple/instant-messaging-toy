@@ -23,6 +23,7 @@ import com.example.im.listener.OnItemClickListener;
 import com.example.im.mvp.contract.chats.IGroupInfoContract;
 import com.example.im.mvp.presenter.chats.GroupInfoPresenter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,9 +41,10 @@ public class GroupInfoActivity extends AppCompatActivity implements IGroupInfoCo
         setContentView(R.layout.activity_group_info);
         Intent intent = getIntent();
         String groupId = intent.getStringExtra("Group ID");
+        ArrayList<Contact> memberList = intent.getParcelableArrayListExtra("Group Member Info");
 
         context = getApplicationContext();
-        mPresenter = new GroupInfoPresenter(this, groupId);
+        mPresenter = new GroupInfoPresenter(this, groupId, memberList);
 
         recyclerView = (RecyclerView)findViewById(R.id.recycle_view_group_members);
         deleteLayout = (LinearLayout)findViewById(R.id.layout_group_delete);

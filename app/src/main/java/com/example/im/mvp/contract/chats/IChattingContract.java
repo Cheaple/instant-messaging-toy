@@ -26,6 +26,8 @@ public interface IChattingContract {
         void sendVideo(String path);
         void sendLocation();
         void checkInfo();  // 查看好友信息
+        void clearHistory();
+        ArrayList<Contact> getMemberInfo();
     }
     interface Model {
         void loadMsgList(String id);
@@ -34,5 +36,6 @@ public interface IChattingContract {
         void send(String chatID, String content, int msgType);
         void sendLocation(String id);
         void upload(String fileType, String file);
+        void clearHistory(String id);
     }
 }

@@ -124,6 +124,16 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     }
 
     @Override
+    public void clearHistory() {
+        mModel.clearHistory(id);
+    }
+
+    @Override
+    public ArrayList<Contact> getMemberInfo() {
+        return memberList;
+    }
+
+    @Override
     public void checkInfo() {
         mModel.checkInfo(contactUsername);
     }

@@ -42,7 +42,7 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
         setContentView(R.layout.activity_contact_info);
         Intent intent = getIntent();
         int type = intent.getIntExtra("Type", Contact.CONTACT_TYPE_LIST);
-        Contact contact = (Contact) intent.getSerializableExtra("Contact");  // 获取所查看联系人的信息
+        Contact contact = (Contact) intent.getParcelableExtra("Contact");  // 获取所查看联系人的信息
 
         this.context = getApplicationContext();
         this.mPresenter = new InfoPresenter(this, contact);

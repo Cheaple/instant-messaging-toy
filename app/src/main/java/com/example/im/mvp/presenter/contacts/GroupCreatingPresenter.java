@@ -19,7 +19,8 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
     IGroupCreatingContract.View mView;
 
     private LinkedList<Contact> contactList;
-    private int groupID;  // Used when inviting contacts
+    private String groupID;  // Used when inviting contacts
+    ArrayList<String> members;  // // Used when inviting contacts
 
     public GroupCreatingPresenter(IGroupCreatingContract.View view, Context context) {
         this.context = context;
@@ -27,7 +28,7 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
         this.mView = view;
     }
 
-    public GroupCreatingPresenter(IGroupCreatingContract.View view, Context context, int groupID) {
+    public GroupCreatingPresenter(IGroupCreatingContract.View view, Context context, String groupID) {
         this.context = context;
         this.mModel = new GroupCreatingModel(this);
         this.mView = view;
@@ -49,13 +50,13 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
 
     @Override
     public void createGroup() {
-        ArrayList<String> memberList = mView.getSelectedContacts();
-        memberList.add(AccountInfo.getInstance().getId());
-        mModel.createGroup(memberList);
+        members = mView.getSelectedContacts();
+        members.add(AccountInfo.getInstance().getId());
+        mModel.createGroup(members);
     }
 
     public void createSuccess(String groupID) {
-        mView.gotoGroupChattingActivity(groupID);
+        mView.gotoGroupChattingActivity(groupID, members);
     }
     public void createFailure(String error) {
         mView.showText(error);
@@ -67,8 +68,9 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
         mModel.inviteContacts(groupID, mView.getSelectedContacts());
     }
 
-    public void inviteSuccess(String groupID) {
-
+    public void inviteSuccess() {
+        mView.showText("邀请成功");
+        mView.gotoMainActivity();
     }
     public void inviteFailure(String error) {
         mView.showText(error);

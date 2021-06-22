@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.im.R;
 import com.example.im.activity.chats.GroupInfoActivity;
 import com.example.im.bean.contacts.Contact;
@@ -37,7 +38,7 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         public MemberViewHolder(@NonNull View itemView) { super(itemView); }
         public MemberViewHolder(View itemView, GroupMemberAdapter adapter, OnItemClickListener listener) {
             super(itemView);
-            this.mAdapter =  adapter;
+            this.mAdapter = adapter;
             this.mListener = listener;
             imageView = (ImageView)itemView.findViewById(R.id.img_group_member);
             textView = (TextView)itemView.findViewById(R.id.text_group_member);
@@ -65,7 +66,10 @@ public class GroupMemberAdapter extends RecyclerView.Adapter<GroupMemberAdapter.
         }
         else {
             Contact contact = memberList.get(position);
-            //holder.imageView.setImageResource(contact.getAvatar());
+            ImageView imageView = holder.imageView;
+            String avatarUrl = context.getString(R.string.server)+"/picture/" + contact.getAvatar();
+            Glide.with(context).load(avatarUrl).into(imageView);  // 设置联系人头像
+
             holder.textView.setText(contact.getNickname());
         }
         holder.itemView.setTag(position);

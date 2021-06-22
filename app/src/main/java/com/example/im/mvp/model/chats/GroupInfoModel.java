@@ -57,7 +57,6 @@ public class GroupInfoModel implements IGroupInfoContract.Model {
         }
     }
 
-
     @Override
     public void loadMemberList(String id) {
         try {
