@@ -29,6 +29,7 @@ public class ChatsPresenter implements IChatsContract.Presenter {
     }
 
     public void loadSuccess(LinkedList<Chat> chatList) {
+        this.chatList = chatList;
         mView.setChatList(chatList);
     }
     public void loadFailure(String error) {

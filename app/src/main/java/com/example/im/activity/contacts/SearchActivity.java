@@ -99,12 +99,14 @@ public class SearchActivity extends AppCompatActivity implements ISearchContract
     @Override
     public void gotoInfoActivity(Contact contact, boolean isContact) {
         Intent intent = new Intent(context, InfoActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // 结束当前activity
         if (!isContact)  // 如果查找的用户不是当前用户的好友
             intent.putExtra("Type", Contact.CONTACT_TYPE_SEARCH);
         else  // 查找的用户是当前用户的好友
             intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
         intent.putExtra("Contact", contact);  // 传递联系人信息
-        startActivityForResult(intent, 1);
+        startActivity(intent);
+        finish();
     }
 
 

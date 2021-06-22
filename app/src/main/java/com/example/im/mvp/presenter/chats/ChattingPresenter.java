@@ -2,6 +2,7 @@ package com.example.im.mvp.presenter.chats;
 
 import android.content.Context;
 
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
@@ -16,13 +17,13 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     private IChattingContract.Model mModel;
     private IChattingContract.View mView;
 
-    private int type;
+    private String type;
     private String id;  // 群聊id
     private String contactUsername;  // 当会话为私人会话时，用来储存联系人用户名
     private LinkedList<Msg> msgList;
 
 
-    public ChattingPresenter(IChattingContract.View view, Context context, int type, String id) {
+    public ChattingPresenter(IChattingContract.View view, Context context, String type, String id) {
         this.context = context;
         this.mModel = new ChattingModel(this);
         this.mView = view;
@@ -31,7 +32,7 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     }
 
     public ChattingPresenter(IChattingContract.View mView, Context context,
-                             int type, String id, String contactUsername) {
+                             String  type, String id, String contactUsername) {
         this.context = context;
         this.mModel = new ChattingModel(this);
         this.mModel = mModel;
@@ -41,7 +42,7 @@ public class ChattingPresenter implements IChattingContract.Presenter {
         this.contactUsername = contactUsername;
     }
 
-    public int getType() {
+    public String  getType() {
         return type;
     }
 
@@ -64,7 +65,7 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     public void sendMsg() {
         String content = mView.getMsg();
         if (!"".equals(content)) {  // 如果输入框非空，则发送消息
-            Msg msg = new Msg(0, Msg.TYPE_MSG, content);
+            Msg msg = new Msg(AccountInfo.getInstance().getUsername(), Msg.TYPE_MSG, content);
             msgList.add(msg);
             mModel.sendMsg(id, content);
             mView.setMsgList();
@@ -74,7 +75,7 @@ public class ChattingPresenter implements IChattingContract.Presenter {
 
     @Override
     public void sendPicture(String path) {
-        Msg msg = new Msg(0, Msg.TYPE_PICTURE, path);
+        Msg msg = new Msg(AccountInfo.getInstance().getUsername(), Msg.TYPE_PICTURE, path);
         msgList.add(msg);
         mView.setMsgList();
         mModel.sendPicture(id, path);
@@ -82,7 +83,7 @@ public class ChattingPresenter implements IChattingContract.Presenter {
 
     @Override
     public void sendVideo(String path) {
-        Msg msg = new Msg(0, Msg.TYPE_VIDEO, path);
+        Msg msg = new Msg(AccountInfo.getInstance().getUsername(), Msg.TYPE_VIDEO, path);
         msgList.add(msg);
         mView.setMsgList();
         mModel.sendVideo(id, path);

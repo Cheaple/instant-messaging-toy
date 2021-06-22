@@ -15,14 +15,19 @@ public class Msg {
     public final static int TYPE_PICTURE = 101;
     public final static int TYPE_VIDEO = 102;
 
-    private int speaker;  // 0为自己，1为对方
+    private String speaker;
     private int type;
     private String content;
     //private Bitmap picture;
     private Uri picture;
     private Uri video;
 
-    public Msg(int speaker, int type, String content) {
+    public Msg(int type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+
+    public Msg(String speaker, int type, String content) {
         this.speaker = speaker;
         this.type = type;
         if (type == TYPE_MSG)
@@ -37,13 +42,13 @@ public class Msg {
         }
     }
 
-    public Msg(int speaker, int type, Uri video) {
+    public Msg(String speaker, int type, Uri video) {
         this.speaker = speaker;
         this.type = type;
         this.video = video;
     }
 
-    public int getSpeaker() {
+    public String getSpeaker() {
         return speaker;
     }
 

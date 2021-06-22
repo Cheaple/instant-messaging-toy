@@ -6,6 +6,7 @@ import android.os.Message;
 
 import com.example.im.R;
 import com.example.im.bean.chats.Chat;
+import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.listener.HttpCallbackListener;
 import com.example.im.mvp.contract.chats.IChatsContract;
@@ -15,6 +16,7 @@ import com.example.im.mvp.presenter.contacts.ContactsPresenter;
 import com.example.im.util.HttpUtil;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -45,7 +47,7 @@ public class ChatsModel implements IChatsContract.Model {
             ChatsPresenter mPresenter = mWeakReference.get();
             switch (msg.what) {
                 case LOAD_SUCCESS:
-                    //mPresenter.loadSuccess((LinkedList<Chat>) msg.obj);
+                    mPresenter.loadSuccess((LinkedList<Chat>) msg.obj);
                     break;
                 case LOAD_FAILURE:
                     mPresenter.loadFailure(msg.obj.toString());
@@ -59,24 +61,25 @@ public class ChatsModel implements IChatsContract.Model {
     @Override
     public void loadChatList() {
         try {
-            String url = "http://8.140.133.34:7200/chat/view";
+            String url = "http://8.140.133.34:7200/chat/getAll";
             HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
                     try {
-                        JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getBoolean("success")) { // 加载会话列表成功
-                            msg.what = LOAD_SUCCESS;
-                            Gson gson = new Gson();
-                            Chat[] chats = gson.fromJson(jsonObject.getString("chats"), Chat[].class);
-                            msg.obj = new LinkedList<>(Arrays.asList(chats));
-                            // TODO: 获取联系人头像
+                        msg.what = LOAD_SUCCESS;
+                        LinkedList<Chat> chatList = new LinkedList<>();
+
+                        // 解析会话列表
+                        JSONArray jsonArray = new JSONArray(response.toString());
+                        for (int i = 0; i < jsonArray.length(); ++i) {
+                            JSONObject chatJsonObject = jsonArray.getJSONObject(i);
+                            String id =  chatJsonObject.getString("groupId");
+                            String type = chatJsonObject.getString("groupType");
+                            String name = chatJsonObject.getString("groupName");
+                            chatList.add(new Chat(type, id, name));
                         }
-                        else {  // 加载失败
-                            msg.what = LOAD_FAILURE;
-                            msg.obj = jsonObject.getString("msg");  // 失败原因
-                        }
+                        msg.obj = chatList;
                     }
                     catch (Exception e) {
                         e.printStackTrace();

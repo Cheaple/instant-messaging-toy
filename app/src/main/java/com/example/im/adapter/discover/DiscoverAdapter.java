@@ -200,9 +200,11 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
 
         switch (holder.viewType) {
             case 5:  // 视频动态
+                System.out.println("Video");
                 VideoView videoView = holder.discoverItemView.findViewById(R.id.video_moment);
                 url = context.getString(R.string.server) + "/video/" + moment.getVideo();
-                videoView.setVideoPath(url);
+                videoView.setVideoURI(Uri.parse(url));
+                videoView.start();
                 break;
             case 4:
                 url = context.getString(R.string.server)+"/picture/" + moment.getPictures().get(3);

@@ -15,6 +15,7 @@ import com.example.im.mvp.presenter.chats.ChattingPresenter;
 import com.example.im.util.HttpUtil;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -73,17 +74,18 @@ public class ChattingModel implements IChattingContract.Model {
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
                     try {
-                        //JSONObject jsonObject = new JSONObject(response.toString());
-                        //if (jsonObject.getBoolean("success")) { // 加载历史消息成功
-                            msg.what = LOAD_SUCCESS;
-                            LinkedList<Msg> msgList = new LinkedList<>();
-                            // TODO: 获取历史消息
-                            msg.obj = new LinkedList<>(msgList);
-                        //}
-                        //else {  // 加载失败
-                        //    msg.what = FAILURE;
-                        //    msg.obj = jsonObject.getString("msg");  // 失败原因
-                        //}
+                        msg.what = LOAD_SUCCESS;
+                        LinkedList<Msg> msgList = new LinkedList<>();
+
+                        // TODO: 获取历史消息
+                        JSONArray msgJsonArray = new JSONArray(response.toString());
+                        for (int i = 0; i < msgJsonArray.length(); ++i) {
+                            JSONObject jsonObject = msgJsonArray.getJSONObject(i);
+                            String text = jsonObject.getString("text");
+                            String senderId = jsonObject.getString("senderId");
+                            msgList.add(new Msg(senderId, Msg.TYPE_MSG, text));
+                        }
+                        msg.obj = new LinkedList<>(msgList);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -119,7 +121,6 @@ public class ChattingModel implements IChattingContract.Model {
                             msg.what = CHECK_SUCCESS;
                             Gson gson = new Gson();
                             msg.obj = gson.fromJson(jsonObject.getString("user"), Contact.class);
-                            // TODO: 获取联系人头像
                         }
                         else {  // 修改失败
                             msg.what = FAILURE;

@@ -37,8 +37,10 @@ public class SearchModel implements ISearchContract.Model{
             SearchPresenter mPresenter = mWeakReference.get();
             switch (msg.what) {
                 case SEARCH_SUCCESS:
-                    // TODO: 判断该用户是否为当前用户的好友
-                    mPresenter.searchSuccess((Contact) msg.obj, false);
+                    if (msg.arg1 == 1)  // 该用户为当前用户的好友
+                        mPresenter.searchSuccess((Contact) msg.obj, true);
+                    else
+                        mPresenter.searchSuccess((Contact) msg.obj, false);
                     break;
                 case SEARCH_FAILURE:
                     mPresenter.searchFailure(msg.obj.toString());
@@ -68,7 +70,8 @@ public class SearchModel implements ISearchContract.Model{
                             msg.what = SEARCH_SUCCESS;
                             Gson gson = new Gson();
                             msg.obj = gson.fromJson(jsonObject.getString("user"), Contact.class);
-                            // TODO: 获取联系人头像
+                            if (jsonObject.getBoolean("isContact")) msg.arg1 = 1;
+                            else msg.arg1 = 0;
                         }
                         else {  // 修改失败
                             msg.what = SEARCH_FAILURE;

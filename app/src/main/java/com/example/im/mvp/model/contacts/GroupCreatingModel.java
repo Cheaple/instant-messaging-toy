@@ -48,7 +48,7 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
             GroupCreatingPresenter mPresenter = mWeakReference.get();
             switch (msg.what) {
                 case LOAD_SUCCESS:
-                    //mPresenter.loadSuccess((LinkedList<Contact>) msg.obj);
+                    mPresenter.loadSuccess((LinkedList<Contact>) msg.obj);
                     break;
                 case LOAD_FAILURE:
                     mPresenter.loadFailure(msg.obj.toString());
@@ -84,7 +84,6 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
                             Gson gson = new Gson();
                             Contact[] contacts = gson.fromJson(jsonObject.getString("contacts"), Contact[].class);
                             msg.obj = new LinkedList<>(Arrays.asList(contacts));
-                            // TODO: 获取联系人头像
                         }
                         else {  // 加载失败
                             msg.what = LOAD_FAILURE;

@@ -1,17 +1,23 @@
 package com.example.im.bean.chats;
 
 public class Chat {
-    public static final int CHAT_TYPE_SINGLE = 0x00001;  // 对话
-    public static final int CHAT_TYPE_GROUP = 0x00002;  // 群聊
+    public static final String CHAT_TYPE_SINGLE = "PRIVATE_CHAT";  // 对话
+    public static final String CHAT_TYPE_GROUP = "GROUP_CHAT";  // 群聊
 
-    private final int type;  // 类型：对话或群聊
+    private final String type;  // 类型：对话或群聊
     private final String id;  // id: 联系人id或群聊id
     private final String nickname;  // 昵称
-    private final String lastSpeak;  // 最后聊天内容
-    private final int avatarIcon;  // 头像
-    private final String lastSpeakTime;  // 最后联络时间
+    private String lastSpeak;  // 最后聊天内容
+    private int avatarIcon;  // 头像
+    private String lastSpeakTime;  // 最后联络时间
 
-    public Chat(int type, String id, String nickname, int avatarIcon, String lastSpeak, String lastSpeakTime) {
+    public Chat(String type, String id, String nickname) {
+        this.type = type;
+        this.id = id;
+        this.nickname = nickname;
+    }
+
+    public Chat(String type, String id, String nickname, int avatarIcon, String lastSpeak, String lastSpeakTime) {
         this.type = type;
         this.id = id;
         this.nickname = nickname;
@@ -20,7 +26,7 @@ public class Chat {
         this.lastSpeakTime = lastSpeakTime;
     }
 
-    public int getType() { return type; }
+    public String getType() { return type; }
 
     public String getId() {return id; }
 

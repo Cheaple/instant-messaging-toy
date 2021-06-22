@@ -65,12 +65,11 @@ public class ContactsModel implements IContactsContract.Model {
                     Message msg = new Message();
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getBoolean("success")) { // 加载好友列表成功
+                        if (jsonObject.getBoolean("success")) {  // 加载好友列表成功
                             msg.what = LOAD_SUCCESS;
                             Gson gson = new Gson();
                             Contact[] contacts = gson.fromJson(jsonObject.getString("contacts"), Contact[].class);
                             msg.obj = new LinkedList<>(Arrays.asList(contacts));
-                            // TODO: 获取联系人头像
                         }
                         else {  // 加载失败
                             msg.what = LOAD_FAILURE;

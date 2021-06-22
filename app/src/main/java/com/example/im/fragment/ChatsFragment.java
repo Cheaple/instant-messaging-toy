@@ -79,6 +79,7 @@ public class ChatsFragment extends Fragment implements IChatsContract.View, Adap
         // 点击事件：跳转至会话界面
         Intent intent = new Intent(context, ChattingActivity.class);
         intent.putExtra("Chat Type", mPresenter.getChat(position).getType());
+        intent.putExtra("Chat ID", mPresenter.getChat(position).getId());
         startActivityForResult(intent, 1);
     }
 

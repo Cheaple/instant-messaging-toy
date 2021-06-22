@@ -174,7 +174,6 @@ public class DiscoverModel implements IDiscoverContract.Model {
         params.put("text", content);
         try {
             String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/moment/reply", params);
-            //String url = "http://8.140.133.34:7200/moment/reply" + "?id=" + momentId + "&text=" + content;
             HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.im.R;
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.chats.Msg;
 
 import org.w3c.dom.Text;
@@ -61,7 +62,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Msg msg = msgList.get(position);
-        if (msg.getSpeaker() == 0) { // 发送消息
+        if (msg.getSpeaker() == AccountInfo.getInstance().getUsername()) { // 发送消息
             holder.leftLayout.setVisibility(View.GONE);  // 隐藏左消息栏
             holder.rightLayout.setVisibility(View.VISIBLE);  // 显示右消息栏
             switch (msg.getType()) {

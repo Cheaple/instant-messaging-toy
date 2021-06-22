@@ -61,7 +61,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
         Intent intent = getIntent();
-        int type = intent.getIntExtra("Chat Type", Chat.CHAT_TYPE_SINGLE);
+        String type = intent.getStringExtra("Chat Type");
         String id = intent.getStringExtra("Chat ID");
 
         context = getApplicationContext();
