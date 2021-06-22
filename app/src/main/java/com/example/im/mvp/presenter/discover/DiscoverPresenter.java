@@ -19,7 +19,7 @@ public class DiscoverPresenter implements IDiscoverContract.Presenter {
     IDiscoverContract.Model mModel;
     IDiscoverContract.View mView;
 
-    LinkedList<Discover> momentList;
+    LinkedList<Discover> momentList = new LinkedList<>();
 
     public DiscoverPresenter(IDiscoverContract.View view, Context context) {
         this.context = context;
@@ -53,7 +53,6 @@ public class DiscoverPresenter implements IDiscoverContract.Presenter {
     public void cancelSuccess() {
 
     }
-
 
     @Override
     public void makeComment(String content, int position) {

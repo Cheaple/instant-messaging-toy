@@ -79,7 +79,9 @@ public class ChatsModel implements IChatsContract.Model {
                                 String id = chatJsonObject.getString("id");
                                 String type = chatJsonObject.getString("groupType");
                                 String name = chatJsonObject.getString("groupName");
-                                chatList.add(new Chat(type, id, name));
+                                String[] members = new Gson().fromJson(
+                                        chatJsonObject.getString("memberIdList"), String[].class);
+                                chatList.add(new Chat(type, id, name, members));
                             }
                             msg.obj = chatList;
                         }

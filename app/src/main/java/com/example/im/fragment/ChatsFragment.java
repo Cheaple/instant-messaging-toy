@@ -81,10 +81,7 @@ public class ChatsFragment extends Fragment implements IChatsContract.View, Adap
         Intent intent = new Intent(context, ChattingActivity.class);
         intent.putExtra("Chat Type", chatType);
         intent.putExtra("Chat ID", mPresenter.getChat(position).getId());
-        if (chatType == Chat.CHAT_TYPE_SINGLE) {
-            //intent.putExtra("Chat Contact", )
-            // TODO: 解析对话的联系人
-        }
+        intent.putStringArrayListExtra("Group Members", mPresenter.getChat(position).getMemberIdList());
 
         startActivityForResult(intent, 1);
     }

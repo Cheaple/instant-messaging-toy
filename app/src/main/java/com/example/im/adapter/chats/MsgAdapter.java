@@ -20,15 +20,18 @@ import com.bumptech.glide.Glide;
 import com.example.im.R;
 import com.example.im.bean.AccountInfo;
 import com.example.im.bean.chats.Msg;
+import com.example.im.bean.contacts.Contact;
 
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolder> {
     private Context context;
     private LinkedList<Msg> msgList;
+    private ArrayList<Contact> memberList;
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         private MsgAdapter mAdapter;
@@ -65,11 +68,22 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Msg msg = msgList.get(position);
+
+        int memberInx;
+        for (int i = 0; i < memberList.size(); ++i)
+            if (memberList.get(i).getId().equals(msg.getSpeaker())) { // 从联系人列表中找到该消息的发送者
+                memberInx = i;
+
         String url;
         Uri uri;
         if (msg.getSpeaker().equals(AccountInfo.getInstance().getId())) { // 发送消息
             holder.leftLayout.setVisibility(View.GONE);  // 隐藏左消息栏
             holder.rightLayout.setVisibility(View.VISIBLE);  // 显示右消息栏
+
+            ImageView imageView = holder.itemView.findViewById(R.id.img_avatar_right);
+            String avatarUrl = context.getString(R.string.server) + "/picture/" + AccountInfo.getInstance().getAvatar();
+            Glide.with(context).load(avatarUrl).into(imageView);  // 设置右侧头像
+
             switch (msg.getType()) {
                 case Msg.TYPE_MSG:
                     holder.itemView.findViewById(R.id.img_picture_right).setVisibility(View.GONE);
@@ -81,7 +95,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
                 case Msg.TYPE_PICTURE:
                     holder.itemView.findViewById(R.id.text_msg_right).setVisibility(View.GONE);
                     holder.itemView.findViewById(R.id.video_right).setVisibility(View.GONE);
-                    ImageView imageView = holder.itemView.findViewById(R.id.img_picture_right);
+                    imageView = holder.itemView.findViewById(R.id.img_picture_right);
                     imageView.setVisibility(View.VISIBLE);
                     if (msg.isLocal()) {
                         uri = Uri.fromFile(new File(msg.getContent()));
@@ -112,6 +126,12 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
         else {  // 接受消息
             holder.leftLayout.setVisibility(View.VISIBLE);  // 显示左消息栏
             holder.rightLayout.setVisibility(View.GONE);  // 隐藏右消息栏
+
+            ImageView imageView = holder.itemView.findViewById(R.id.img_avatar_left);
+            String avatarUrl = context.getString(R.string.server) + "/picture/"
+                    + memberList.get(memberInx).getAvatar();
+            Glide.with(context).load(avatarUrl).into(imageView);  // 设置左侧头像
+
             switch (msg.getType()) {
                 case Msg.TYPE_MSG:
                     holder.itemView.findViewById(R.id.img_picture_left).setVisibility(View.GONE);
@@ -123,13 +143,12 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
                 case Msg.TYPE_PICTURE:
                     holder.itemView.findViewById(R.id.text_msg_left).setVisibility(View.GONE);
                     holder.itemView.findViewById(R.id.video_left).setVisibility(View.GONE);
-                    ImageView imageView = holder.itemView.findViewById(R.id.img_picture_left);
+                    imageView = holder.itemView.findViewById(R.id.img_picture_left);
                     imageView.setVisibility(View.VISIBLE);
                     if (msg.isLocal()) {
                         uri = Uri.fromFile(new File(msg.getContent()));
                         imageView.setImageURI(uri);
-                    }
-                    else {
+                    } else {
                         url = context.getString(R.string.server) + "/picture/" + msg.getContent();
                         Glide.with(context).load(url).into(imageView);  // 设置联系人头像
                     }
@@ -143,6 +162,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
                     //videoView.setMediaController(new MediaController(context));
                     videoView.start();
                     break;
+                }
             }
         }
     }
@@ -150,5 +170,9 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
     @Override
     public int getItemCount() {
         return msgList.size();
+    }
+
+    public void setMemberList(ArrayList<Contact> memberList) {
+        this.memberList = memberList;
     }
 }

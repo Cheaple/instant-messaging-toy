@@ -22,6 +22,8 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     private String id;  // 群聊id
     private String contactUsername;  // 当会话为私人会话时，用来储存联系人用户名
     private LinkedList<Msg> msgList = new LinkedList<>();
+    private ArrayList<Contact> memberList;
+
     private int msgType;
 
 
@@ -54,13 +56,28 @@ public class ChattingPresenter implements IChattingContract.Presenter {
 
     @Override
     public void showMsgList(){
-        System.out.println(id);
         mModel.loadMsgList(id);
     }
 
     public void loadSuccess(LinkedList<Msg> msgList) {
         this.msgList = msgList;
-        mView.setMsgList(msgList);
+        mView.setMsgList(msgList, memberList);
+    }
+
+    @Override
+    public void loadMemberInfo(ArrayList<String> members) {
+        mModel.loadMemberInfo(members);
+    }
+
+    public void loadSuccess(ArrayList<Contact> memberList) {
+        this.memberList = memberList;
+        if (type.equals("PRIVATE_CHAT")) {
+            if (!memberList.get(0).equals(AccountInfo.getInstance().getId()))
+                contactUsername = memberList.get(1).getUsername();
+            else
+                contactUsername = memberList.get(0).getUsername();
+        }  // 确定私人对话中会话对象的用户名
+        showMsgList();  // 当群成员信息导入完毕后，再导入消息列表，以在每条消息前显示头像
     }
 
     @Override

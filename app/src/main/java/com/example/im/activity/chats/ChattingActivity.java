@@ -63,6 +63,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         Intent intent = getIntent();
         String type = intent.getStringExtra("Chat Type");
         String id = intent.getStringExtra("Chat ID");
+        ArrayList<String> members = intent.getStringArrayListExtra("Group Members");
 
         context = getApplicationContext();
 
@@ -79,7 +80,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         sendImageView.setOnClickListener(this);
         moreImageView.setOnClickListener(this);
 
-        mPresenter.showMsgList();
+        mPresenter.loadMemberInfo(members);  // 先导入该群聊所有联系人的信息
     }
 
     @Override
@@ -144,8 +145,9 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     }
 
     @Override
-    public void setMsgList(List list) {
-        messageAdapter = new MsgAdapter((LinkedList<Msg>) list, context);
+    public void setMsgList(LinkedList<Msg> msgList, ArrayList<Contact> memberList) {
+        messageAdapter = new MsgAdapter(msgList, context);
+        messageAdapter.setMemberList(memberList);
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);  // 默认定位到底部，即最新信息处
@@ -188,7 +190,6 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     }
 
     private void takePhoto() {
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
     }

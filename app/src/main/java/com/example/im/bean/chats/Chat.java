@@ -1,5 +1,8 @@
 package com.example.im.bean.chats;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Chat {
     public static final String CHAT_TYPE_SINGLE = "PRIVATE_CHAT";  // 对话
     public static final String CHAT_TYPE_GROUP = "GROUP_CHAT";  // 群聊
@@ -11,10 +14,13 @@ public class Chat {
     private int avatarIcon;  // 头像
     private String lastSpeakTime;  // 最后联络时间
 
-    public Chat(String type, String id, String nickname) {
+    private ArrayList<String> memberIdList;
+
+    public Chat(String type, String id, String nickname, String[] members) {
         this.type = type;
         this.id = id;
         this.nickname = nickname;
+        this.memberIdList = new ArrayList<String>(Arrays.asList(members));
     }
 
     public Chat(String type, String id, String nickname, int avatarIcon, String lastSpeak, String lastSpeakTime) {
@@ -44,5 +50,9 @@ public class Chat {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public ArrayList<String> getMemberIdList() {
+        return memberIdList;
     }
 }

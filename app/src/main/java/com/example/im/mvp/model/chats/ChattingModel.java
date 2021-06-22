@@ -3,6 +3,7 @@ package com.example.im.mvp.model.chats;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
 
 import com.example.im.R;
 import com.example.im.bean.AccountInfo;
@@ -20,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,9 +29,10 @@ import java.util.List;
 public class ChattingModel implements IChattingContract.Model {
     private static final int FAILURE = 100;
     private static final int UPLOAD_SUCCESS = 101;
-    private static final int LOAD_SUCCESS = 1;
-    private static final int SEND_SUCCESS = 2;
-    private static final int CHECK_SUCCESS = 3;
+    private static final int LOAD_MSG_SUCCESS = 1;
+    private static final int LOAD_MEMBER_SUCCESS = 2;
+    private static final int SEND_SUCCESS = 3;
+    private static final int CHECK_SUCCESS = 4;
 
     private ChattingModel.MyHandler mHandler;
     public ChattingModel(ChattingPresenter presenter) {
@@ -51,15 +54,20 @@ public class ChattingModel implements IChattingContract.Model {
                 case UPLOAD_SUCCESS:
                     mPresenter.uploadSuccess((String) msg.obj);  // 传回文件名
                     break;
-                case LOAD_SUCCESS:
+                case LOAD_MSG_SUCCESS:
                     mPresenter.loadSuccess((LinkedList<Msg>) msg.obj);
+                    break;
+                case LOAD_MEMBER_SUCCESS:
+                    mPresenter.loadSuccess((ArrayList<Contact>) msg.obj);
                     break;
                 case SEND_SUCCESS:
                     mPresenter.sendSuccess();
                     break;
                 case CHECK_SUCCESS:
-                    // TODO: 判断该用户是否为当前用户的好友
-                    mPresenter.checkSuccess((Contact) msg.obj, false);
+                    if (msg.arg1 == 1)  // 该用户为当前用户的好友
+                        mPresenter.checkSuccess((Contact) msg.obj, true);
+                    else
+                        mPresenter.checkSuccess((Contact) msg.obj, false);
                     break;
                 case FAILURE:
                     mPresenter.chattingFailure(msg.obj.toString());
@@ -81,11 +89,10 @@ public class ChattingModel implements IChattingContract.Model {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         if (jsonObject.has("messages")) {  // 若有messages字段，则查找成功，但该字段可能为空
-                            msg.what = LOAD_SUCCESS;
+                            msg.what = LOAD_MSG_SUCCESS;
                             LinkedList<Msg> msgList = new LinkedList<>();
 
                             if (jsonObject.getBoolean("success")) {  // 若 messages字段非空，则解析之
-                                // TODO: 获取历史消息
                                 JSONArray msgJsonArray = jsonObject.getJSONArray("messages");
                                 for (int i = 0; i < msgJsonArray.length(); ++i) {
                                     JSONObject msgJsonObject = msgJsonArray.getJSONObject(i);
@@ -128,6 +135,50 @@ public class ChattingModel implements IChattingContract.Model {
         }
     }
 
+    @Override
+    public void loadMemberInfo(ArrayList<String> members) {
+        try {
+            // 构建http请求的body
+            JSONObject body = new JSONObject();
+            JSONArray memberList = new JSONArray(members);
+            body.put("users", memberList);  // 会话类型：群聊
+
+            String url = "http://8.140.133.34:7200/user/searchUsers";
+            HttpUtil.sendHttpRequest(url, body, false, new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success")) {  // 加载群成员成功
+                            msg.what = LOAD_MEMBER_SUCCESS;
+                            Gson gson = new Gson();
+                            Contact[] contacts = gson.fromJson(jsonObject.getString("users"), Contact[].class);
+                            msg.obj = new ArrayList(Arrays.asList(contacts));
+                        }
+                        else {  // 加载失败
+                            msg.what = FAILURE;
+                            msg.obj = jsonObject.getString("msg");  // 失败原因
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
+
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void checkInfo(String username) {
@@ -143,6 +194,8 @@ public class ChattingModel implements IChattingContract.Model {
                             msg.what = CHECK_SUCCESS;
                             Gson gson = new Gson();
                             msg.obj = gson.fromJson(jsonObject.getString("user"), Contact.class);
+                            if (jsonObject.getBoolean("isContact")) msg.arg1 = 1;
+                            else msg.arg1 = 0;
                         }
                         else {  // 修改失败
                             msg.what = FAILURE;
