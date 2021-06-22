@@ -77,9 +77,15 @@ public class ChatsFragment extends Fragment implements IChatsContract.View, Adap
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // 点击事件：跳转至会话界面
+        String chatType = mPresenter.getChat(position).getType();
         Intent intent = new Intent(context, ChattingActivity.class);
-        intent.putExtra("Chat Type", mPresenter.getChat(position).getType());
+        intent.putExtra("Chat Type", chatType);
         intent.putExtra("Chat ID", mPresenter.getChat(position).getId());
+        if (chatType == Chat.CHAT_TYPE_SINGLE) {
+            //intent.putExtra("Chat Contact", )
+            // TODO: 解析对话的联系人
+        }
+
         startActivityForResult(intent, 1);
     }
 

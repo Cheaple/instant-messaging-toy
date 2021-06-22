@@ -9,6 +9,7 @@ import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.model.chats.ChattingModel;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class ChattingPresenter implements IChattingContract.Presenter {
@@ -20,7 +21,8 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     private String type;
     private String id;  // 群聊id
     private String contactUsername;  // 当会话为私人会话时，用来储存联系人用户名
-    private LinkedList<Msg> msgList;
+    private LinkedList<Msg> msgList = new LinkedList<>();
+    private int msgType;
 
 
     public ChattingPresenter(IChattingContract.View view, Context context, String type, String id) {
@@ -32,7 +34,7 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     }
 
     public ChattingPresenter(IChattingContract.View mView, Context context,
-                             String  type, String id, String contactUsername) {
+                             String type, String id, String contactUsername) {
         this.context = context;
         this.mModel = new ChattingModel(this);
         this.mModel = mModel;
@@ -65,36 +67,44 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     public void sendMsg() {
         String content = mView.getMsg();
         if (!"".equals(content)) {  // 如果输入框非空，则发送消息
-            Msg msg = new Msg(AccountInfo.getInstance().getUsername(), Msg.TYPE_MSG, content);
+            msgType = Msg.TYPE_MSG;
+            Msg msg = new Msg(AccountInfo.getInstance().getId(), Msg.TYPE_MSG, content);
+            msg.setLocal(true);
             msgList.add(msg);
-            mModel.sendMsg(id, content);
-            mView.setMsgList();
+            mModel.send(id, content, Msg.TYPE_MSG);
+            mView.updateMsgList();
             mView.clearMsg();
         }
     }
 
     @Override
     public void sendPicture(String path) {
-        Msg msg = new Msg(AccountInfo.getInstance().getUsername(), Msg.TYPE_PICTURE, path);
+        msgType = Msg.TYPE_PICTURE;
+        Msg msg = new Msg(AccountInfo.getInstance().getId(), Msg.TYPE_PICTURE, path);
+        msg.setLocal(true);
         msgList.add(msg);
-        mView.setMsgList();
-        mModel.sendPicture(id, path);
+        mView.updateMsgList();
+        mModel.upload("PICTURE", path);
     }
 
     @Override
     public void sendVideo(String path) {
-        Msg msg = new Msg(AccountInfo.getInstance().getUsername(), Msg.TYPE_VIDEO, path);
+        msgType = Msg.TYPE_VIDEO;
+        Msg msg = new Msg(AccountInfo.getInstance().getId(), Msg.TYPE_VIDEO, path);
+        msg.setLocal(true);
         msgList.add(msg);
-        mView.setMsgList();
-        mModel.sendVideo(id, path);
+        mView.updateMsgList();
+        mModel.upload("VIDEO", path);
     }
 
     @Override
-    public void sendLocation() {
-
-    }
+    public void sendLocation() {}
 
     public void sendSuccess() {}
+
+    public void uploadSuccess(String file) {
+        mModel.send(id, file, msgType);
+    }
 
     @Override
     public void checkInfo() {

@@ -22,9 +22,9 @@ public interface IInfoContract {
     }
 
     interface Model {
-        void createChatting(String username, String target);
-        void clearChattingHistory(String username);
-        void add(String username);
-        void delete(String username);
+        void createChatting(String me, String target);
+        void clearChattingHistory(String id);
+        void add(String id);
+        void delete(String id);
     }
 }

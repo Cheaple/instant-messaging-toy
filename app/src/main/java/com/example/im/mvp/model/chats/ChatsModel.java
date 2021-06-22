@@ -67,19 +67,27 @@ public class ChatsModel implements IChatsContract.Model {
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
                     try {
-                        msg.what = LOAD_SUCCESS;
-                        LinkedList<Chat> chatList = new LinkedList<>();
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success")) {
+                            msg.what = LOAD_SUCCESS;
+                            LinkedList<Chat> chatList = new LinkedList<>();
 
-                        // 解析会话列表
-                        JSONArray jsonArray = new JSONArray(response.toString());
-                        for (int i = 0; i < jsonArray.length(); ++i) {
-                            JSONObject chatJsonObject = jsonArray.getJSONObject(i);
-                            String id =  chatJsonObject.getString("groupId");
-                            String type = chatJsonObject.getString("groupType");
-                            String name = chatJsonObject.getString("groupName");
-                            chatList.add(new Chat(type, id, name));
+                            // 解析会话列表
+                            JSONArray jsonArray = jsonObject.getJSONArray("chats");
+                            for (int i = 0; i < jsonArray.length(); ++i) {
+                                JSONObject chatJsonObject = jsonArray.getJSONObject(i);
+                                String id = chatJsonObject.getString("id");
+                                String type = chatJsonObject.getString("groupType");
+                                String name = chatJsonObject.getString("groupName");
+                                chatList.add(new Chat(type, id, name));
+                            }
+                            msg.obj = chatList;
                         }
-                        msg.obj = chatList;
+                        else {
+                            msg.what = LOAD_FAILURE;
+                            msg.obj = jsonObject.getString("msg");
+                            mHandler.sendMessage(msg);
+                        }
                     }
                     catch (Exception e) {
                         e.printStackTrace();

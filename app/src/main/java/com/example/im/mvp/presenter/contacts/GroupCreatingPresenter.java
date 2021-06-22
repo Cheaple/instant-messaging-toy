@@ -2,6 +2,7 @@ package com.example.im.mvp.presenter.contacts;
 
 import android.content.Context;
 
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.contacts.IContactsContract;
 import com.example.im.mvp.contract.contacts.IGroupCreatingContract;
@@ -48,7 +49,9 @@ public class GroupCreatingPresenter implements IGroupCreatingContract.Presenter 
 
     @Override
     public void createGroup() {
-        mModel.createGroup(mView.getSelectedContacts());
+        ArrayList<String> memberList = mView.getSelectedContacts();
+        memberList.add(AccountInfo.getInstance().getId());
+        mModel.createGroup(memberList);
     }
 
     public void createSuccess(String groupID) {

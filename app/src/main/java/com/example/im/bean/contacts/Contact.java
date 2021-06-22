@@ -28,7 +28,7 @@ public class Contact implements Serializable {
         this.username = username;
     }
 
-    public String getID() {
+    public String getId() {
         return id;
     }
 

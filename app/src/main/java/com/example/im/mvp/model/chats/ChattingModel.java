@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.example.im.R;
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
@@ -25,6 +26,7 @@ import java.util.List;
 
 public class ChattingModel implements IChattingContract.Model {
     private static final int FAILURE = 100;
+    private static final int UPLOAD_SUCCESS = 101;
     private static final int LOAD_SUCCESS = 1;
     private static final int SEND_SUCCESS = 2;
     private static final int CHECK_SUCCESS = 3;
@@ -46,6 +48,9 @@ public class ChattingModel implements IChattingContract.Model {
             super.handleMessage(msg);
             ChattingPresenter mPresenter = mWeakReference.get();
             switch (msg.what) {
+                case UPLOAD_SUCCESS:
+                    mPresenter.uploadSuccess((String) msg.obj);  // 传回文件名
+                    break;
                 case LOAD_SUCCESS:
                     mPresenter.loadSuccess((LinkedList<Msg>) msg.obj);
                     break;
@@ -74,18 +79,35 @@ public class ChattingModel implements IChattingContract.Model {
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
                     try {
-                        msg.what = LOAD_SUCCESS;
-                        LinkedList<Msg> msgList = new LinkedList<>();
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.has("messages")) {  // 若有messages字段，则查找成功，但该字段可能为空
+                            msg.what = LOAD_SUCCESS;
+                            LinkedList<Msg> msgList = new LinkedList<>();
 
-                        // TODO: 获取历史消息
-                        JSONArray msgJsonArray = new JSONArray(response.toString());
-                        for (int i = 0; i < msgJsonArray.length(); ++i) {
-                            JSONObject jsonObject = msgJsonArray.getJSONObject(i);
-                            String text = jsonObject.getString("text");
-                            String senderId = jsonObject.getString("senderId");
-                            msgList.add(new Msg(senderId, Msg.TYPE_MSG, text));
+                            if (jsonObject.getBoolean("success")) {  // 若 messages字段非空，则解析之
+                                // TODO: 获取历史消息
+                                JSONArray msgJsonArray = jsonObject.getJSONArray("messages");
+                                for (int i = 0; i < msgJsonArray.length(); ++i) {
+                                    JSONObject msgJsonObject = msgJsonArray.getJSONObject(i);
+                                    String senderId = msgJsonObject.getString("senderId");
+                                    if (!msgJsonObject.has("attachmentType")) {
+                                        String text = msgJsonObject.getString("text");
+                                        msgList.add(new Msg(senderId, Msg.TYPE_MSG, text));
+                                    }
+                                    else {
+                                        String type = msgJsonObject.getString("attachmentType");
+                                        String content = msgJsonObject.getString("attachmentName");
+                                        if ("PICTURE".equals(type)) {
+                                            msgList.add(new Msg(senderId, Msg.TYPE_PICTURE, content));
+                                        }
+                                        else if ("VIDEO".equals(type)) {
+                                            msgList.add(new Msg(senderId, Msg.TYPE_VIDEO, content));
+                                        }
+                                    }
+                                }
+                            }
+                            msg.obj = new LinkedList<>(msgList);
                         }
-                        msg.obj = new LinkedList<>(msgList);
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -148,19 +170,25 @@ public class ChattingModel implements IChattingContract.Model {
     }
 
     @Override
-    public void sendMsg(String chatId, String content) {
+    public void sendLocation(String id) {
+        // TODO：发送地理位置
+    }
+
+    @Override
+    public void upload(String fileType, String file) {
         try {
-            String url = "http://8.140.133.34:7200/chat/addMessage" + "?groupId=" + chatId + "&text=" + content;
-            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+            String url = "http://8.140.133.34:7200/upload";
+            HttpUtil.uploadFile(url, file, fileType, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getBoolean("success")) { // 加载历史消息成功
-                        msg.what = SEND_SUCCESS;
+                        if (jsonObject.getBoolean("success")) { // 上传成功
+                            msg.what = UPLOAD_SUCCESS;
+                            msg.obj = jsonObject.getString("filename");
                         }
-                        else {  // 加载失败
+                        else {  // 上传失败
                             msg.what = FAILURE;
                             msg.obj = jsonObject.getString("msg");  // 失败原因
                         }
@@ -185,17 +213,50 @@ public class ChattingModel implements IChattingContract.Model {
     }
 
     @Override
-    public void sendPicture(String id, String path) {
-        // TODO: 发送图片
-    }
+    public void send(String chatID, String content, int msgType) {
+        try {
+            String url = "http://8.140.133.34:7200/chat/addMessage" + "?groupId=" + chatID;
+            switch (msgType) {
+                case Msg.TYPE_MSG:
+                    url = url + "&text=" + content;
+                    break;
+                case Msg.TYPE_PICTURE:
+                    url = url + "&attachmentType=PICTURE" + "&attachmentName=" + content + "&text=" + "null";
+                    break;
+                case Msg.TYPE_VIDEO:
+                    url = url + "&attachmentType=VIDEO" + "&attachmentName=" + content + "&text=" + "null";
+                    break;
+            }
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success")) { // 发送成功
+                            msg.what = SEND_SUCCESS;
+                        }
+                        else {  // 发送失败
+                            msg.what = FAILURE;
+                            msg.obj = jsonObject.getString("msg");  // 失败原因
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
 
-    @Override
-    public void sendVideo(String id, String path) {
-        // TODO：发送视频
-    }
-
-    @Override
-    public void sendLocation(String id) {
-        // TODO：发送
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

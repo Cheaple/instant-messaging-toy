@@ -1,6 +1,7 @@
 package com.example.im.adapter.chats;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.im.R;
 import com.example.im.bean.AccountInfo;
 import com.example.im.bean.chats.Msg;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.LinkedList;
 
 public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolder> {
@@ -43,7 +46,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
             this.msgItemView = itemView.findViewById(R.id.msg);
             this.leftLayout = (ConstraintLayout)itemView.findViewById(R.id.layout_left);
             this.rightLayout = (ConstraintLayout)itemView.findViewById(R.id.layout_right);
-            this.leftTextView = (TextView)itemView.findViewById(R.id.msg_text_left);
+            this.leftTextView = (TextView)itemView.findViewById(R.id.text_msg_left);
         }
     }
     public MsgAdapter(LinkedList<Msg> msgList, Context context) {
@@ -62,7 +65,9 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         Msg msg = msgList.get(position);
-        if (msg.getSpeaker() == AccountInfo.getInstance().getUsername()) { // 发送消息
+        String url;
+        Uri uri;
+        if (msg.getSpeaker().equals(AccountInfo.getInstance().getId())) { // 发送消息
             holder.leftLayout.setVisibility(View.GONE);  // 隐藏左消息栏
             holder.rightLayout.setVisibility(View.VISIBLE);  // 显示右消息栏
             switch (msg.getType()) {
@@ -78,14 +83,27 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
                     holder.itemView.findViewById(R.id.video_right).setVisibility(View.GONE);
                     ImageView imageView = holder.itemView.findViewById(R.id.img_picture_right);
                     imageView.setVisibility(View.VISIBLE);
-                    imageView.setImageURI(msg.getPicture());
+                    if (msg.isLocal()) {
+                        uri = Uri.fromFile(new File(msg.getContent()));
+                        imageView.setImageURI(uri);
+                    }
+                    else {
+                        url = context.getString(R.string.server) + "/picture/" + msg.getContent();
+                        Glide.with(context).load(url).into(imageView);  // 设置联系人头像
+                    }
                     break;
                 case Msg.TYPE_VIDEO:
                     holder.itemView.findViewById(R.id.text_msg_right).setVisibility(View.GONE);
                     holder.itemView.findViewById(R.id.img_picture_right).setVisibility(View.GONE);
                     VideoView videoView = holder.itemView.findViewById(R.id.video_right);
                     videoView.setVisibility(View.VISIBLE);
-                    videoView.setVideoURI(msg.getVideo());
+                    if (msg.isLocal()) {
+                        uri = Uri.fromFile(new File(msg.getContent()));
+                        videoView.setVideoURI(uri);
+                    }
+                    else {
+
+                    }
                     //videoView.setMediaController(new MediaController(context));
                     videoView.start();
                     break;
@@ -94,6 +112,38 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.MessageViewHolde
         else {  // 接受消息
             holder.leftLayout.setVisibility(View.VISIBLE);  // 显示左消息栏
             holder.rightLayout.setVisibility(View.GONE);  // 隐藏右消息栏
+            switch (msg.getType()) {
+                case Msg.TYPE_MSG:
+                    holder.itemView.findViewById(R.id.img_picture_left).setVisibility(View.GONE);
+                    holder.itemView.findViewById(R.id.video_left).setVisibility(View.GONE);
+                    TextView textView = holder.itemView.findViewById(R.id.text_msg_left);
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(msg.getContent());
+                    break;
+                case Msg.TYPE_PICTURE:
+                    holder.itemView.findViewById(R.id.text_msg_left).setVisibility(View.GONE);
+                    holder.itemView.findViewById(R.id.video_left).setVisibility(View.GONE);
+                    ImageView imageView = holder.itemView.findViewById(R.id.img_picture_left);
+                    imageView.setVisibility(View.VISIBLE);
+                    if (msg.isLocal()) {
+                        uri = Uri.fromFile(new File(msg.getContent()));
+                        imageView.setImageURI(uri);
+                    }
+                    else {
+                        url = context.getString(R.string.server) + "/picture/" + msg.getContent();
+                        Glide.with(context).load(url).into(imageView);  // 设置联系人头像
+                    }
+                    break;
+                case Msg.TYPE_VIDEO:
+                    holder.itemView.findViewById(R.id.text_msg_left).setVisibility(View.GONE);
+                    holder.itemView.findViewById(R.id.img_picture_left).setVisibility(View.GONE);
+                    VideoView videoView = holder.itemView.findViewById(R.id.video_left);
+                    videoView.setVisibility(View.VISIBLE);
+                    videoView.setVideoURI(msg.getVideo());
+                    //videoView.setMediaController(new MediaController(context));
+                    videoView.start();
+                    break;
+            }
         }
     }
 

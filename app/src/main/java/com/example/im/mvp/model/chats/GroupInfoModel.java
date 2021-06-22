@@ -21,8 +21,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GroupInfoModel implements IGroupInfoContract.Model {
+    private static final int FAILURE = 100;
     private static final int LOAD_SUCCESS = 1;
-    private static final int LOAD_FAILURE = 2;
+    private static final int DELETE_SUCCESS = 2;
 
     private GroupInfoModel.MyHandler mHandler;
     public GroupInfoModel(GroupInfoPresenter presenter) {
@@ -42,10 +43,13 @@ public class GroupInfoModel implements IGroupInfoContract.Model {
             GroupInfoPresenter mPresenter = mWeakReference.get();
             switch (msg.what) {
                 case LOAD_SUCCESS:
-                    //mPresenter.loadSuccess((LinkedList<Chat>) msg.obj);
+                    //mPresenter.loadSuccess((LinkedList<Contact>) msg.obj);
                     break;
-                case LOAD_FAILURE:
-                    mPresenter.loadFailure(msg.obj.toString());
+                case DELETE_SUCCESS:
+                    mPresenter.deleteSuccess();
+                    break;
+                case FAILURE:
+                    mPresenter.groupInfoFailure(msg.obj.toString());
                     break;
                 default:
                     break;
@@ -66,13 +70,13 @@ public class GroupInfoModel implements IGroupInfoContract.Model {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         if (jsonObject.getBoolean("success")) { // 加载好友列表成功
                             msg.what = LOAD_SUCCESS;
-                            Gson gson = new Gson();
+                            /*Gson gson = new Gson();
                             Contact[] contacts = gson.fromJson(jsonObject.getString("contacts"), Contact[].class);
-                            msg.obj = new LinkedList<>(Arrays.asList(contacts));
-                            // TODO: 获取联系人头像
+                            msg.obj = new LinkedList<>(Arrays.asList(contacts));*/
+
                         }
                         else {  // 加载失败
-                            msg.what = LOAD_FAILURE;
+                            msg.what = FAILURE;
                             msg.obj = jsonObject.getString("msg");  // 失败原因
                         }
                     }
@@ -85,7 +89,7 @@ public class GroupInfoModel implements IGroupInfoContract.Model {
                 @Override
                 public void onFailure(Exception e) {  // http请求失败
                     Message msg = new Message();
-                    msg.what = LOAD_FAILURE;
+                    msg.what = FAILURE;
                     msg.obj = e.toString();
                     mHandler.sendMessage(msg);
                 }
@@ -97,6 +101,38 @@ public class GroupInfoModel implements IGroupInfoContract.Model {
 
     @Override
     public void delete(String id) {
-        // TODO: 退出群聊
+        try {
+            String url = "http://8.140.133.34:7200/chat/quit" + "?groupId=" + id;
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success")) { // 删除成功
+                            msg.what = DELETE_SUCCESS;
+                        }
+                        else {  // 删除失败
+                            msg.what = FAILURE;
+                            msg.obj = jsonObject.getString("msg");  // 失败原因
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
+
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

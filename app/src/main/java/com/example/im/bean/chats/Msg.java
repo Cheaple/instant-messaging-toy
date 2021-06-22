@@ -22,6 +22,8 @@ public class Msg {
     private Uri picture;
     private Uri video;
 
+    private boolean isLocal = false;
+
     public Msg(int type, String content) {
         this.type = type;
         this.content = content;
@@ -30,16 +32,7 @@ public class Msg {
     public Msg(String speaker, int type, String content) {
         this.speaker = speaker;
         this.type = type;
-        if (type == TYPE_MSG)
-            this.content = content;
-        else if (type == TYPE_PICTURE) {
-            File file = new File(content);
-            picture = Uri.fromFile(file);
-        }
-        else if (type == TYPE_VIDEO) {
-            File file = new File(content);
-            video = Uri.fromFile(file);
-        }
+        this.content = content;
     }
 
     public Msg(String speaker, int type, Uri video) {
@@ -66,5 +59,13 @@ public class Msg {
 
     public String getContent() {
         return content;
+    }
+
+    public boolean isLocal() {
+        return isLocal;
+    }
+
+    public void setLocal(boolean local) {
+        isLocal = local;
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class AccountInfo {
+    private String id;
     private String username;
     private String password;
     private String nickname = "Nickname";
@@ -48,6 +49,10 @@ public class AccountInfo {
             return false;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -64,6 +69,10 @@ public class AccountInfo {
         return avatar;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -72,8 +81,8 @@ public class AccountInfo {
         this.avatar = avatar;
     }
 
-    public void setAccount(String id, String password) {
-        this.username = id;
+    public void setAccount(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 }

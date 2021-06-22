@@ -117,7 +117,7 @@ public class GroupCreatingModel implements IGroupCreatingContract.Model {
             JSONObject body = new JSONObject();
             JSONArray memberList = new JSONArray(selectedContacts);
             body.put("groupType", "GROUP_CHAT");  // 会话类型：群聊
-            body.put("memberList", memberList);
+            body.put("memberIdList", memberList);
 
             String url = "http://8.140.133.34:7200/chat/create";
             HttpUtil.sendHttpRequest(url, body, false, new HttpCallbackListener() {  // 发起http请求

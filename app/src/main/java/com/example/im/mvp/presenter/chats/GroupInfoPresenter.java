@@ -29,9 +29,6 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
         this.memberList = memberList;
         mView.setMemberList(memberList);
     }
-    public void loadFailure(String error) {
-        mView.showText(error);
-    }
 
     @Override
     public Contact getMember(int position) {
@@ -48,4 +45,14 @@ public class GroupInfoPresenter implements IGroupInfoContract.Presenter {
         mModel.delete(groupID);
         mView.gotoChattingActivity();
     }
+
+    public void deleteSuccess() {
+        mView.showText("退出群聊成功");
+        mView.gotoMainActivity();
+    }
+
+    public void groupInfoFailure(String error) {
+        mView.showText(error);
+    }
+
 }

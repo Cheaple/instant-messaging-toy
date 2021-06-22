@@ -9,7 +9,8 @@ public interface IGroupInfoContract {
         void setMemberList(List list);  // 初始化成员列表
         void updateMemberList();  // 更新成员列表
         void gotoChattingActivity();  // 用于在退出群聊后回到主界面
-        public void gotoInfoActivity(Contact contact, boolean isContact);  // 用于查看群聊成员
+        void gotoInfoActivity(Contact contact, boolean isContact);  // 用于查看群聊成员
+        void gotoMainActivity();
         void showText(String error);
     }
     interface Presenter {

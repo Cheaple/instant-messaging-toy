@@ -3,12 +3,13 @@ package com.example.im.mvp.contract.chats;
 
 import com.example.im.bean.contacts.Contact;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IChattingContract {
     interface View {
         void setMsgList(List list);
-        void setMsgList();
+        void updateMsgList();
         String getMsg();
         void clearMsg();
         void gotoInfoActivity(Contact contact, boolean isContact);
@@ -26,9 +27,8 @@ public interface IChattingContract {
     interface Model {
         void loadMsgList(String id);
         void checkInfo(String username);
-        void sendMsg(String id, String content);
-        void sendPicture(String id, String path);
-        void sendVideo(String id, String path);
+        void send(String chatID, String content, int msgType);
         void sendLocation(String id);
+        void upload(String fileType, String file);
     }
 }

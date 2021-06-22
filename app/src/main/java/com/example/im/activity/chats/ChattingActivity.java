@@ -65,8 +65,9 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         String id = intent.getStringExtra("Chat ID");
 
         context = getApplicationContext();
+
         if (type == Chat.CHAT_TYPE_SINGLE)
-            mPresenter = new ChattingPresenter(this, context, type, id, intent.getStringExtra("Contact"));
+            mPresenter = new ChattingPresenter(this, context, type, id, intent.getStringExtra("Chat Contact"));
         else
             mPresenter = new ChattingPresenter(this, context, type, id);
 
@@ -119,7 +120,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     public boolean onOptionsItemSelected(MenuItem item) {
         // 点击事件：查看联系人信息或群聊信息
         if (item.getItemId() == R.id.menu_info) {
-            if (mPresenter.getType() == Chat.CHAT_TYPE_SINGLE) {
+            if (mPresenter.getType().equals(Chat.CHAT_TYPE_SINGLE)) {
                 mPresenter.checkInfo();
             }
             else {
@@ -147,6 +148,7 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
         messageAdapter = new MsgAdapter((LinkedList<Msg>) list, context);
         recyclerView.setAdapter(messageAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);  // 默认定位到底部，即最新信息处
     }
 
     private void showPopupMenu(View view) {
@@ -208,8 +210,9 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     }
 
     @Override
-    public void setMsgList() {
+    public void updateMsgList() {
         messageAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);  // 默认定位到底部，即最新信息处
     }
 
     @Override

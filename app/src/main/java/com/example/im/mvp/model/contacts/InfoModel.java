@@ -75,11 +75,9 @@ public class InfoModel implements IInfoContract.Model {
     }
 
     @Override
-    public void delete(String username) {
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("delete", username);
+    public void delete(String id) {
         try {
-            String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/delete", params);
+            String url = "http://8.140.133.34:7200/user/delete?" + "delete=" + id;
             HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
@@ -114,11 +112,11 @@ public class InfoModel implements IInfoContract.Model {
     }
 
     @Override
-    public void add(String username) {
+    public void add(String id) {
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("add", username);
+        params.put("add", id);
         try {
-            String url = HttpUtil.getUrlWithParams("http://8.140.133.34:7200/user/add", params);
+            String url = "http://8.140.133.34:7200/user/add?" + "add=" + id;
             HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
@@ -154,15 +152,15 @@ public class InfoModel implements IInfoContract.Model {
     }
 
     @Override
-    public void createChatting(String username, String target) {
+    public void createChatting(String me, String target) {
         try {
             // 构建http请求的body
             JSONObject body = new JSONObject();
             JSONArray memberList = new JSONArray();
-            memberList.put(username);
+            memberList.put(me);
             memberList.put(target);
             body.put("groupType", "PRIVATE_CHAT");  // 会话类型：私人会话
-            body.put("memberList", memberList);
+            body.put("memberIdList", memberList);
 
             String url = "http://8.140.133.34:7200/chat/create";
             HttpUtil.sendHttpRequest(url, body, false, new HttpCallbackListener() {  // 发起http请求

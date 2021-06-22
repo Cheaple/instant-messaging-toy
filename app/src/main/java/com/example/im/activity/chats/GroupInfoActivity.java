@@ -1,6 +1,8 @@
 package com.example.im.activity.chats;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.im.R;
+import com.example.im.activity.base.MainActivity;
 import com.example.im.activity.contacts.InfoActivity;
 import com.example.im.activity.contacts.GroupCreatingActivity;
 import com.example.im.adapter.chats.GroupMemberAdapter;
@@ -51,8 +54,15 @@ public class GroupInfoActivity extends AppCompatActivity implements IGroupInfoCo
     @Override
     public void onClick(View view) {
         // 点击事件：退出群聊
-        Toast.makeText(GroupInfoActivity.this, "Delete and Leave", Toast.LENGTH_SHORT).show();
-        mPresenter.delete();
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setMessage("Delete this group and the chat history with it");
+        builder2.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mPresenter.delete();
+            }
+        });
+        builder2.show();
     }
 
     @Override
@@ -103,6 +113,13 @@ public class GroupInfoActivity extends AppCompatActivity implements IGroupInfoCo
             intent.putExtra("Type", Contact.CONTACT_TYPE_LIST);
         intent.putExtra("Contact", contact);  // 传递联系人信息
         startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void gotoMainActivity() {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // 清除栈中的所有activity
+        startActivity(intent);
     }
 
     @Override

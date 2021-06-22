@@ -94,6 +94,7 @@ public class GroupCreatingActivity extends AppCompatActivity implements IGroupCr
         intent.putExtra("Chat Type", Chat.CHAT_TYPE_GROUP);  // 传递会话类型
         intent.putExtra("Chat ID", groupID);  // 传递会话ID
         startActivity(intent);
+        finish();
     }
 
     @Override

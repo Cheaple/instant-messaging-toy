@@ -90,9 +90,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        selectedContactList.add(contact.getUsername());
+                        selectedContactList.add(contact.getId());
                     } else {
-                        selectedContactList.remove(contact.getUsername());
+                        selectedContactList.remove(contact.getId());
                     }
                 }
             });
