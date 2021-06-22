@@ -78,14 +78,15 @@ public class PostModel implements IPostContract.Model {
                 System.out.println(files.toString());
                 JSONArray pictureList = new JSONArray(files);
                 body.put("pictures", pictureList);  // 用body传输图片数组
-                if ("".equals(text)) { // 若无文本
-                    url = url + "?momentType=" + "PICTURE";
-                    body.put("momentType", "PICTURE");
-                }
-                else {  // 若有文本
-                    url = url + "?momentType=" + "PICTURE_TEXT";
-                    body.put("momentType", "PICTURE_TEXT");
-                }
+                url = url + "?momentType=" + "PICTURE";
+                body.put("momentType", "PICTURE");
+            }
+            else {
+                System.out.println(files.toString());
+                JSONArray pictureList = new JSONArray(files);
+                body.put("pictures", pictureList);  // 用body传输图片数组
+                url = url + "?momentType=" + "PICTURE_TEXT" + "&text=" + text;
+                body.put("momentType", "PICTURE_TEXT");
             }
             HttpUtil.sendHttpRequest(url, body, false, new HttpCallbackListener() {  // 发起http请求
                 @Override

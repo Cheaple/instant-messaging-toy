@@ -11,6 +11,6 @@ public interface ISignUpContract {
         void login();
     }
     interface Model extends  ISignInContract.Model {
-        void login(String username, String password);
+        void register(String username, String password);
     }
 }

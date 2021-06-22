@@ -35,17 +35,23 @@ public class SignUpPresenter implements ISignUpContract.Presenter {
         }
         else {
             AccountInfo.getInstance().setAccount(username, password);
-            mModel.login(username, password);
+            mModel.register(username, password);
         }
     }
 
-    public void loginSuccess() {
-        mView.gotoMainActivity();
+    public void registerSuccess() {
         AccountInfo.getInstance().saveAccountInfo(context);
+        mModel.login(AccountInfo.getInstance().getUsername(), AccountInfo.getInstance().getPassword());
+    }
+
+    public void loginSuccess() {
+        AccountInfo.getInstance().saveAccountInfo(context);
+        mModel.loadInfo(AccountInfo.getInstance().getUsername());
     }
     public void loginFailure(String error) {
         mView.showText(error);
-        AccountInfo.getInstance().clearAccountInfo(context);}
+        AccountInfo.getInstance().clearAccountInfo(context);
+    }
 
     public void loadSuccess(Contact contact) {
         AccountInfo.getInstance().setNickname(contact.getNickname());  // 设置全局使用的昵称
@@ -57,8 +63,5 @@ public class SignUpPresenter implements ISignUpContract.Presenter {
     }
 
     @Override
-    public void autoLogin() {
-        if (AccountInfo.getInstance().ifLoggedIn(context))
-            mModel.login(AccountInfo.getInstance().getUsername(), AccountInfo.getInstance().getPassword());
-    }
+    public void autoLogin() {}
 }

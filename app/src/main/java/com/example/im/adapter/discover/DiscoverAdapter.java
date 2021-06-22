@@ -199,10 +199,10 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         textView.setText(moment.getTime());
 
         switch (holder.viewType) {
-            case 5:
+            case 5:  // 视频动态
                 VideoView videoView = holder.discoverItemView.findViewById(R.id.video_moment);
                 url = context.getString(R.string.server) + "/video/" + moment.getVideo();
-                videoView.setVideoURI(Uri.parse(url));
+                videoView.setVideoPath(url);
                 break;
             case 4:
                 url = context.getString(R.string.server)+"/picture/" + moment.getPictures().get(3);

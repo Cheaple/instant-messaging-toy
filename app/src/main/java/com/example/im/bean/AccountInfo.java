@@ -32,6 +32,8 @@ public class AccountInfo {
     // 清除自动登录的用户信息
     public void clearAccountInfo(Context context) {
         setAccount("", "");
+        setAvatar(null);
+        setNickname(null);
         saveAccountInfo(context);
     }
 

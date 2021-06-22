@@ -42,7 +42,7 @@ public class PostPresenter implements IPostContract.Presenter {
             files.add(selected.get(i).path);
         }
 
-
+        // 判断动态类型，上传相应文件
         String text = mView.getText();  // 动态文本
         if (ifImageSelected && ifVideoSelected) {
             mView.showText("不能同时发布图片和视频！");
@@ -50,11 +50,11 @@ public class PostPresenter implements IPostContract.Presenter {
         else if (ifImageSelected) {
             if ("".equals(text)) momentType = "PICTURE";
             else momentType = "PICTURE_TEXT";
-            mModel.upload(momentType, files);
+            mModel.upload("PICTURE", files);
         }
         else if (ifVideoSelected) {
             momentType = "VIDEO";
-            mModel.upload(momentType, files);
+            mModel.upload("VIDEO", files);
         }
         else if (!"".equals(text)){
             momentType = "TEXT";
@@ -62,13 +62,9 @@ public class PostPresenter implements IPostContract.Presenter {
         }
     }
 
-    public void post(String text, ArrayList<String> files) {
-        mModel.postMoment(momentType, text, files);
-    }
-
     public void uploadSuccess(ArrayList<String> files) {
         String text = mView.getText();
-        post(text, files);
+        mModel.postMoment(momentType, text, files);
     }
 
     public void postSuccess() {
