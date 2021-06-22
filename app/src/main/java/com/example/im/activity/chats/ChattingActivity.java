@@ -31,9 +31,6 @@ import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.presenter.chats.ChattingPresenter;
 import com.example.im.util.UriUtil;
-import com.oden.syd_camera.SydCameraActivity;
-import com.oden.syd_camera.SydVideoActivity;
-import com.oden.syd_camera.camera.CameraParaUtil;
 
 import java.io.File;
 import java.io.IOException;

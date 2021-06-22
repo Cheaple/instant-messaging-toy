@@ -48,7 +48,8 @@ public class PostPresenter implements IPostContract.Presenter {
             mView.showText("不能同时发布图片和视频！");
         }
         else if (ifImageSelected) {
-            momentType = "PICTURE";
+            if ("".equals(text)) momentType = "PICTURE";
+            else momentType = "PICTURE_TEXT";
             mModel.upload(momentType, files);
         }
         else if (ifVideoSelected) {
@@ -72,6 +73,7 @@ public class PostPresenter implements IPostContract.Presenter {
 
     public void postSuccess() {
         mView.showText("发布成功");
+        mView.gotoMainActivity();
     }
 
     public void postFailure(String error) {

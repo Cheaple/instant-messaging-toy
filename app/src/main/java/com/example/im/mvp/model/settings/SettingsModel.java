@@ -16,8 +16,9 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 public class SettingsModel implements ISettingsContract.Model {
-    private static final int CHANGE_SUCCESS = 1;
-    private static final int CHANGE_FAILURE = 2;
+    private static final int UPLOAD_SUCCESS = 1;
+    private static final int CHANGE_SUCCESS = 2;
+    private static final int FAILURE = 3;
 
     private SettingsModel.MyHandler mHandler;
     public SettingsModel(SettingsPresenter presenter) {
@@ -36,10 +37,12 @@ public class SettingsModel implements ISettingsContract.Model {
             super.handleMessage(msg);
             SettingsPresenter mPresenter = mWeakReference.get();
             switch (msg.what) {
+                case UPLOAD_SUCCESS:
+                    mPresenter.uploadSuccess((String) msg.obj);  // 上传成功，则更新头像
                 case CHANGE_SUCCESS:
                     mPresenter.changeSuccess();
                     break;
-                case CHANGE_FAILURE:
+                case FAILURE:
                     mPresenter.changeFailure(msg.obj.toString());
                     break;
                 default:
@@ -50,39 +53,7 @@ public class SettingsModel implements ISettingsContract.Model {
 
     @Override
     public void changeAvatar(String new_avatar) {
-        // TODO: 构建body，传输新头像图片
-        try {
-            String url = "http://8.140.133.34:7200/user/";
-            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
-                @Override
-                public void onSuccess(String response) {  // http请求成功
-                    Message msg = new Message();
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getBoolean("success"))  // 修改成功
-                            msg.what = CHANGE_SUCCESS;
-                        else {  // 修改失败
-                            msg.what = CHANGE_FAILURE;
-                            msg.obj = jsonObject.getString("msg");  // 失败原因
-                        }
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    mHandler.sendMessage(msg);
-                }
-
-                @Override
-                public void onFailure(Exception e) {  // http请求失败
-                    Message msg = new Message();
-                    msg.what = CHANGE_FAILURE;
-                    msg.obj = e.toString();
-                    mHandler.sendMessage(msg);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        change("avatar", "avatar", new_avatar);
     }
 
     @Override
@@ -117,7 +88,7 @@ public class SettingsModel implements ISettingsContract.Model {
                         if (jsonObject.getBoolean("success"))  // 修改成功
                             msg.what = CHANGE_SUCCESS;
                         else {  // 修改失败
-                            msg.what = CHANGE_FAILURE;
+                            msg.what = FAILURE;
                             msg.obj = jsonObject.getString("msg");  // 失败原因
                         }
                     }
@@ -130,7 +101,45 @@ public class SettingsModel implements ISettingsContract.Model {
                 @Override
                 public void onFailure(Exception e) {  // http请求失败
                     Message msg = new Message();
-                    msg.what = CHANGE_FAILURE;
+                    msg.what = FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void upload(String avatar) {
+        try {
+            String url = "http://8.140.133.34:7200/upload";
+            HttpUtil.uploadFile(url, avatar, "PICTURE", new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success")) { // 上传成功
+                            msg.what = UPLOAD_SUCCESS;
+                            msg.obj = jsonObject.getString("filename");
+                        }
+                        else {  // 上传失败
+                            msg.what = FAILURE;
+                            msg.obj = jsonObject.getString("msg");  // 失败原因
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
+
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = FAILURE;
                     msg.obj = e.toString();
                     mHandler.sendMessage(msg);
                 }

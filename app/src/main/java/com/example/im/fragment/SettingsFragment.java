@@ -132,8 +132,10 @@ public class SettingsFragment extends Fragment implements ISettingsContract.View
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PICTURE && resultCode == PickerConfig.RESULT_CODE) {
             ArrayList<Media> selected = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
-            String avatar = selected.get(0).path;
-            mPresenter.changeAvatar(avatar);
+            if (selected.size() > 0) {
+                String avatar = selected.get(0).path;
+                mPresenter.changeAvatar(avatar);
+            }
         }
     }
 

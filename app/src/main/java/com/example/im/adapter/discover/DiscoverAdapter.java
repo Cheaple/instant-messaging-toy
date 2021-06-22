@@ -1,6 +1,7 @@
 package com.example.im.adapter.discover;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
 import com.example.im.R;
 import com.example.im.bean.AccountInfo;
 import com.example.im.bean.discover.Discover;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+@GlideModule
 public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.DiscoverViewHolder> {
     private Context context;
     private OnItemClickListener mClickListener;
@@ -40,28 +43,26 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         public LinearLayout likesLayout;
         private TextView likesTextView;
 
-        public int imageCount;
+        public int viewType;
         public ArrayList<String> likeList;
         public boolean ifLiked = false;  // 当前用户是否给该动态点赞
         public LinkedList<Reply> commentList = new LinkedList<>();
         public CommentAdapter commentAdapter;
 
 
-
-
-        public DiscoverViewHolder(@NonNull View itemView, int imageCount) {
+        public DiscoverViewHolder(@NonNull View itemView, int viewType) {
             super(itemView);
-            this.imageCount = imageCount;
+            this.viewType = viewType;
         }
-        public DiscoverViewHolder(View itemView, int imageCount, DiscoverAdapter adapter, OnItemClickListener listener) {
+
+        public DiscoverViewHolder(View itemView, int viewType, DiscoverAdapter adapter, OnItemClickListener listener) {
             super(itemView);
             this.mAdapter = adapter;
             this.mListener = listener;
 
-            // Get the layout
-            this.imageCount = imageCount;
-            switch (imageCount) {
-                case 100:  // Video
+            this.viewType = viewType;
+            switch (viewType) {
+                case 5:  // Video
                     this.discoverItemView = itemView.findViewById(R.id.moment_type_video);
                     break;
                 case 1:
@@ -112,11 +113,8 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             if (likeList.size() > 0) {
                 likesLayout.setVisibility(View.VISIBLE);
                 likesTextView.setText(likes_string);
-            }
-            else  // 若无赞，则隐藏点赞条
+            } else  // 若无赞，则隐藏点赞条
                 likesLayout.setVisibility(View.GONE);
-
-
         }
 
         public void giveLike() {
@@ -135,6 +133,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             mListener.onItemClick(v, (int) v.getTag());
         }
     }
+
     public DiscoverAdapter(LinkedList<Discover> discoverList, Context context) {
         this.discoverList = discoverList;
         this.context = context;
@@ -142,9 +141,14 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
 
     @Override
     public int getItemViewType(int position) {
-        if (this.discoverList.get(position).getMomentType().equals("MOMENT_VIDEO"))
+        if (this.discoverList.get(position).getMomentType().equals("TEXT"))
             return 0;
-        return this.discoverList.get(position).getImageCount();
+        else if (this.discoverList.get(position).getMomentType().equals("VIDEO"))
+            return 5;
+        else if (discoverList.get(position).getPicturesCnt() < 4)
+            return  discoverList.get(position).getPicturesCnt();
+        else
+            return 4;
     }
 
     @NonNull
@@ -152,9 +156,6 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
     public DiscoverAdapter.DiscoverViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View mItemView;
         switch (viewType) {
-            case 0:
-                mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_video, parent, false);
-                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 100, this, mClickListener);
             case 1:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type1, parent, false);
                 return new DiscoverAdapter.DiscoverViewHolder(mItemView, 1, this, mClickListener);
@@ -167,6 +168,9 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             case 4:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type4, parent, false);
                 return new DiscoverAdapter.DiscoverViewHolder(mItemView, 4, this, mClickListener);
+            case 5:
+                mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_video, parent, false);
+                return new DiscoverAdapter.DiscoverViewHolder(mItemView, 5, this, mClickListener);
             default:
                 mItemView = LayoutInflater.from(context).inflate(R.layout.item_recycle_discover_type0, parent, false);
                 return new DiscoverAdapter.DiscoverViewHolder(mItemView, 0, this, mClickListener);
@@ -179,49 +183,43 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
         Discover moment = discoverList.get(position);
         // Add the data to the view
         ImageView imageView = holder.discoverItemView.findViewById(R.id.avatar_icon);
-        String avatarUrl = context.getString(R.string.server)+"/picture/" + moment.getAvatar();
-        Glide.with(context).load(avatarUrl).into(imageView);  // 设置联系人头像
+        String url = context.getString(R.string.server)+"/picture/" + moment.getAvatar();
+        Glide.with(context).load(url).into(imageView);  // 设置联系人头像
         TextView textView;
         textView = holder.discoverItemView.findViewById(R.id.nickname_text);
         textView.setText(moment.getPublisher());
+
         textView = holder.discoverItemView.findViewById(R.id.moment_text);
-        textView.setText(moment.getText());
+        if (moment.getText() != null)  // 若存在文本
+            textView.setText(moment.getText());  // 则显示之
+        else
+            textView.setVisibility(View.GONE);  // 否则隐藏文本栏
+
         textView = holder.discoverItemView.findViewById(R.id.published_time);
         textView.setText(moment.getTime());
 
-        // 设置动态图片
-        switch (holder.imageCount) {
-            case 100:
+        switch (holder.viewType) {
+            case 5:
                 VideoView videoView = holder.discoverItemView.findViewById(R.id.video_moment);
-                // TODO: 播放视频
-                break;
-            case 1:
-                imageView = holder.discoverItemView.findViewById(R.id.picture1);
-                imageView.setImageResource(moment.getImages().get(0));
-                break;
-            case 2:
-                imageView = holder.discoverItemView.findViewById(R.id.picture1);
-                imageView.setImageResource(moment.getImages().get(0));
-                imageView = holder.discoverItemView.findViewById(R.id.picture2);
-                imageView.setImageResource(moment.getImages().get(1));
-                break;
-            case 3:
-                imageView = holder.discoverItemView.findViewById(R.id.picture1);
-                imageView.setImageResource(moment.getImages().get(0));
-                imageView = holder.discoverItemView.findViewById(R.id.picture2);
-                imageView.setImageResource(moment.getImages().get(1));
-                imageView = holder.discoverItemView.findViewById(R.id.picture3);
-                imageView.setImageResource(moment.getImages().get(2));
+                url = context.getString(R.string.server) + "/video/" + moment.getVideo();
+                videoView.setVideoURI(Uri.parse(url));
                 break;
             case 4:
-                imageView = holder.discoverItemView.findViewById(R.id.picture1);
-                imageView.setImageResource(moment.getImages().get(0));
-                imageView = holder.discoverItemView.findViewById(R.id.picture2);
-                imageView.setImageResource(moment.getImages().get(1));
-                imageView = holder.discoverItemView.findViewById(R.id.picture3);
-                imageView.setImageResource(moment.getImages().get(2));
+                url = context.getString(R.string.server)+"/picture/" + moment.getPictures().get(3);
                 imageView = holder.discoverItemView.findViewById(R.id.picture4);
-                imageView.setImageResource(moment.getImages().get(3));
+                Glide.with(context).load(url).into(imageView);  // 设置联系人头像
+            case 3:
+                url = context.getString(R.string.server)+"/picture/" + moment.getPictures().get(2);
+                imageView = holder.discoverItemView.findViewById(R.id.picture3);
+                Glide.with(context).load(url).into(imageView);  // 设置联系人头像
+            case 2:
+                url = context.getString(R.string.server)+"/picture/" + moment.getPictures().get(1);
+                imageView = holder.discoverItemView.findViewById(R.id.picture2);
+                Glide.with(context).load(url).into(imageView);  // 设置联系人头像
+            case 1:
+                url = context.getString(R.string.server)+"/picture/" + moment.getPictures().get(0);
+                imageView = holder.discoverItemView.findViewById(R.id.picture1);
+                Glide.with(context).load(url).into(imageView);  // 设置联系人头像
                 break;
         }
 

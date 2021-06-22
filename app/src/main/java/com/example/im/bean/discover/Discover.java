@@ -10,24 +10,12 @@ public class Discover {
     private String momentType;  // 动态类型
     private String text;  // 文字
     private String time;  // 发布时间
-    private ArrayList<Integer> images;  // 图片
+    private ArrayList<String> pictures;  // 图片
+    private String video;  // 视频
     private int imageCount = 0;  // 图片数量
     private ArrayList<String> thumbs;  // 点赞
     private LinkedList<Reply> replies;  // 评论
 
-    public Discover(String id, String avatar, String publisher, String momentType, String text, String time,
-                    ArrayList<Integer> images, int imageCount, ArrayList<String> thumbs, LinkedList<Reply> replies) {
-        this.id = id;
-        this.avatar = avatar;
-        this.publisher = publisher;
-        this.momentType = momentType;
-        this.text = text;
-        this.time = time;
-        this.images = images;
-        this.imageCount = imageCount;
-        this.thumbs = thumbs;
-        this.replies = replies;
-    }
 
     public String getId() {
         return id;
@@ -77,20 +65,20 @@ public class Discover {
         this.time = time;
     }
 
-    public ArrayList<Integer> getImages() {
-        return images;
+    public ArrayList<String> getPictures() {
+        return pictures;
     }
 
-    public void setImages(ArrayList<Integer> images) {
-        this.images = images;
+    public void setPictures(ArrayList<String> pictures) {
+        this.pictures = pictures;
     }
 
-    public int getImageCount() {
-        return imageCount;
+    public int getPicturesCnt() {
+        return pictures.size();
     }
 
-    public void setImageCount(int imageCount) {
-        this.imageCount = imageCount;
+    public String getVideo() {
+        return video;
     }
 
     public ArrayList<String> getThumbs() {
@@ -113,10 +101,14 @@ public class Discover {
     public String toString() {
         return "Discover{" +
                 "id='" + id + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", momentType='" + momentType + '\'' +
                 ", text='" + text + '\'' +
                 ", time='" + time + '\'' +
+                ", pictures=" + pictures +
+                ", video='" + video + '\'' +
+                ", imageCount=" + imageCount +
                 ", thumbs=" + thumbs +
                 ", replies=" + replies +
                 '}';

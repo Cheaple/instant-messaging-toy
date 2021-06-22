@@ -66,25 +66,28 @@ public class PostModel implements IPostContract.Model {
     @Override
     public void postMoment(String momentType, String text, ArrayList<String> files) {
         try {
-            JSONObject body;
-            String url = "http://8.140.133.34:7200/moment/publish?";
+            JSONObject body = new JSONObject();
+            String url = "http://8.140.133.34:7200/moment/publish";
             if (momentType == "TEXT") {
-                url = url + "momentType=" + "TEXT" + "&text=" + text;
+                url = url + "?momentType=" + "TEXT" + "&text=" + text;
             }
             else if (momentType == "VIDEO") {
-                url = url + "momentType=" + "VIDEO" + "&video=" + files.get(0);
+                url = url + "?momentType=" + "VIDEO" + "&video=" + files.get(0);
             }
             else if (momentType == "PICTURE") {
-                body = new JSONObject();
+                System.out.println(files.toString());
                 JSONArray pictureList = new JSONArray(files);
                 body.put("pictures", pictureList);  // 用body传输图片数组
-                if ("".equals(text))  // 若无文本
-                    url = url + "momentType=" + "PICTURE";
-                else  // 若有文本
-                    url = url + "momentType=" + "PICTURE_TEXT";
+                if ("".equals(text)) { // 若无文本
+                    url = url + "?momentType=" + "PICTURE";
+                    body.put("momentType", "PICTURE");
+                }
+                else {  // 若有文本
+                    url = url + "?momentType=" + "PICTURE_TEXT";
+                    body.put("momentType", "PICTURE_TEXT");
+                }
             }
-
-            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+            HttpUtil.sendHttpRequest(url, body, false, new HttpCallbackListener() {  // 发起http请求
                 @Override
                 public void onSuccess(String response) {  // http请求成功
                     Message msg = new Message();
@@ -92,7 +95,6 @@ public class PostModel implements IPostContract.Model {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         if (jsonObject.getBoolean("success")) { // 发布成功
                             msg.what = UPLOAD_SUCCESS;
-                            msg.obj = jsonObject.getString("filename");
                         }
                         else {  // 发布失败
                             msg.what = FAILURE;

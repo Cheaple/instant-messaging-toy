@@ -9,6 +9,7 @@ import com.example.im.mvp.contract.settings.ISettingsContract;
 import com.example.im.mvp.model.contacts.GroupCreatingModel;
 import com.example.im.mvp.model.settings.SettingsModel;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class SettingsPresenter implements ISettingsContract.Presenter {
@@ -20,6 +21,7 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     private String username;
     private String password;
     private String nickname;
+    private String avatar;
 
     public SettingsPresenter(ISettingsContract.View view, Context context) {
         this.context = context;
@@ -28,6 +30,7 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
         this.username = AccountInfo.getInstance().getUsername();
         this.password = AccountInfo.getInstance().getPassword();
         this.nickname = AccountInfo.getInstance().getNickname();
+        this.avatar = AccountInfo.getInstance().getAvatar();
         AccountInfo.getInstance().saveAccountInfo(context);
     }
 
@@ -35,12 +38,18 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
     public void showInfo() {
         mView.setUsername(username);
         mView.setNickname(nickname);
-        mView.setAvatar(AccountInfo.getInstance().getAvatar());
+        mView.setAvatar(avatar);
     }
 
     @Override
-    public void changeAvatar(String avatar) {
+    public void changeAvatar(String new_avatar) {
+        mModel.upload(new_avatar);
+    }
+
+    public void uploadSuccess(String avatar) {
         mModel.changeAvatar(avatar);
+        this.avatar = avatar;
+        mView.setAvatar(avatar);
     }
 
     @Override
@@ -90,11 +99,13 @@ public class SettingsPresenter implements ISettingsContract.Presenter {
         AccountInfo.getInstance().setNickname(nickname);
         AccountInfo.getInstance().setAccount(username, password);
         AccountInfo.getInstance().saveAccountInfo(context);  // 保存新用户名或新密码
+        AccountInfo.getInstance().setAvatar(avatar);
     }
     public void changeFailure(String error) {
         mView.showText(error);
         this.username = AccountInfo.getInstance().getUsername();  // 恢复原用户名
         this.password = AccountInfo.getInstance().getPassword();  // 恢复原密码
+        this.avatar = AccountInfo.getInstance().getAvatar();  // 恢复原密码
     }
 
     @Override

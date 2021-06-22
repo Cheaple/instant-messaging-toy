@@ -41,9 +41,8 @@ dependencies {
     annotationProcessor("com.jakewharton:butterknife-compiler:10.2.1")
 
     implementation("com.dmcBig:mediapicker:+")
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:glide:3.3.0'
 
-    compile 'com.github.autume:syd-camera:v1.0.0'
     compile 'com.google.code.gson:gson:2.8.6'
 }
 

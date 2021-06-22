@@ -95,14 +95,13 @@ public class DiscoverModel implements IDiscoverContract.Model {
                             Collections.sort(momentList, new Comparator<Discover>() {
                                 @Override
                                 public int compare(Discover d1, Discover d2) {
-                                    if (d1.getTime().compareTo(d2.getTime())>0) return -1;
+                                    if (d1.getTime().compareTo(d2.getTime()) > 0) return -1;
                                     return 1;
                                 }
                             });
 
                             msg.what = LOAD_SUCCESS;
                             msg.obj = momentList;
-                            // TODO: 获取头像、图片和视频
                         }
                         else {  // 加载失败
                             msg.what = FAILURE;

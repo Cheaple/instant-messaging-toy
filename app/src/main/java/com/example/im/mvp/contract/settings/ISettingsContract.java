@@ -10,7 +10,7 @@ public interface ISettingsContract {
     }
     interface  Presenter {
         void showInfo();
-        void changeAvatar(String avatar);
+        void changeAvatar(String avatar);  // 新头像上传成功后
         void changeNickname(String nickname);
         void changeUsername(String Username);
         void changeRegion(String region);
@@ -19,6 +19,7 @@ public interface ISettingsContract {
     }
     interface Model {
         void changeAvatar(String new_avatar);
+        void upload(String file);
         void changeNickname(String new_nickname);
         void changeUsername(String new_username);
         void changeRegion(String new_region);

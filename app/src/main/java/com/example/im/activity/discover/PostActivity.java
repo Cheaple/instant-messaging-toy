@@ -58,7 +58,6 @@ public class PostActivity extends AppCompatActivity implements IPostContract.Vie
 
     @Override
     public void onClick(View view) {
-        Toast.makeText(PostActivity.this, "Post", Toast.LENGTH_SHORT).show();
         mPresenter.postMoment();
     }
 
