@@ -13,10 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <com.example.im.view.SquareImageView
             android:id="@+id/img_avatar_left"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:scaleType="centerCrop"
             android:layout_gravity="left"
             android:layout_marginStart="4dp"
             android:src="@drawable/avatar2"
@@ -91,10 +92,11 @@
             app:layout_constraintEnd_toStartOf="@+id/img_avatar_right"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <com.example.im.view.SquareImageView
             android:id="@+id/img_avatar_right"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:scaleType="centerCrop"
             android:layout_marginEnd="4dp"
             android:src="@drawable/avatar2"
             app:layout_constraintEnd_toEndOf="parent"

@@ -25,8 +25,8 @@ public interface IChattingContract {
         void sendPicture(String path);
         void sendVideo(String path);
         void sendLocation();
+        void deleteMsg(int position);
         void checkInfo();  // 查看好友信息
-        void clearHistory();
         ArrayList<Contact> getMemberInfo();
     }
     interface Model {
@@ -35,7 +35,7 @@ public interface IChattingContract {
         void checkInfo(String username);
         void send(String chatID, String content, int msgType);
         void sendLocation(String id);
+        void deleteMsg(String chatId, String msgId);
         void upload(String fileType, String file);
-        void clearHistory(String id);
     }
 }

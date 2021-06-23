@@ -90,6 +90,11 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             commentImageView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            mListener.onItemClick(v, (int) v.getTag());
+        }
+
         public void setLikeList(ArrayList<String> likeList) {
             likeList.remove(null);  // 若点赞者不是当前用户的好友，则忽略之
             this.likeList = likeList;
@@ -127,10 +132,6 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Discov
             likeList.remove(AccountInfo.getInstance().getNickname());
             ifLiked = false;
             updateLikes();
-        }
-
-        public void onClick(View v) {
-            mListener.onItemClick(v, (int) v.getTag());
         }
     }
 

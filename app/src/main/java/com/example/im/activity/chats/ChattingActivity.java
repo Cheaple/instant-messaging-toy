@@ -1,10 +1,13 @@
 package com.example.im.activity.chats;
 
+import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,17 +31,22 @@ import com.example.im.adapter.chats.MsgAdapter;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.chats.Msg;
 import com.example.im.bean.contacts.Contact;
+import com.example.im.listener.OnItemLongClickListener;
+import com.example.im.listener.OnLoginListener;
 import com.example.im.mvp.contract.chats.IChattingContract;
 import com.example.im.mvp.presenter.chats.ChattingPresenter;
 import com.example.im.util.UriUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
-public class ChattingActivity extends AppCompatActivity implements IChattingContract.View, View.OnClickListener {
+public class ChattingActivity extends AppCompatActivity implements IChattingContract.View, View.OnClickListener, OnItemLongClickListener {
     private static final int REQUEST_PICTURE = 100;
     private static final int REQUEST_CAMERA = 101;
     private static final int REQUEST_VIDEO = 102;
@@ -55,6 +63,8 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
     private EditText inputText;
     private ImageView sendImageView;
     private ImageView moreImageView;
+
+    Uri pictureUri;  // 用于保存调用相机拍摄的图片
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,15 +109,17 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
                 }
                 break;
             case REQUEST_CAMERA:
-                Uri uri = data.getData();
-                showText(uri.getPath());
-                //mPresenter.sendPicture(UriUtil.getFileAbsolutePath(context, uri));
+                if (resultCode != Activity.RESULT_OK) return;
+                mPresenter.sendPicture(UriUtil.getFileAbsolutePath(context, pictureUri));
+                System.out.println(UriUtil.getFileAbsolutePath(context, pictureUri));
                 break;
             case REQUEST_VIDEO:
-                Uri uri2 = data.getData();
-                mPresenter.sendVideo(UriUtil.getFileAbsolutePath(context, uri2));
+                if (resultCode != PickerConfig.RESULT_CODE) return;
+                Uri uri = data.getData();
+                mPresenter.sendVideo(UriUtil.getFileAbsolutePath(context, uri));
                 break;
             case REQUEST_RECORD:
+
                 break;
         }
     }
@@ -129,9 +141,6 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
             }
             return true;
         }
-        /*else if (item.getItemId() == R.id.menu_clear_history) {
-            mPresenter.clearHistory();
-        }*/
         return false;
     }
 
@@ -144,16 +153,21 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
             case R.id.img_more:
                 showPopupMenu(view);
         }
-
     }
 
     @Override
-    public void setMsgList(LinkedList<Msg> msgList, ArrayList<Contact> memberList) {
-        messageAdapter = new MsgAdapter(msgList, context);
-        messageAdapter.setMemberList(memberList);
-        recyclerView.setAdapter(messageAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);  // 默认定位到底部，即最新信息处
+    public void onItemLongClick(View view, int position) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.message_delete_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            // 长按点击事件：删除消息
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                mPresenter.deleteMsg(position);
+                return true;
+            }
+        });
+        popupMenu.show();
     }
 
     private void showPopupMenu(View view) {
@@ -173,7 +187,8 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
                         takeVideo();
                         break;
                     case R.id.menu_record:
-
+                        takeRecord();
+                        break;
                     case R.id.menu_location:
                         getLocation();
                         break;
@@ -194,28 +209,45 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
 
     private void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "My Photo");  //使用内容提供者，设置照片保存的Uri
+        pictureUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        System.out.println(pictureUri.getPath());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
     private void takeVideo() {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);  //限制时长s
-        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 30*1024*1024);  // 限制大小
+        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 30 * 1024 * 1024);  // 限制大小
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);  //设置质量
         startActivityForResult(intent, REQUEST_VIDEO);
     }
 
     private void takeRecord() {
-
+        Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+        startActivityForResult(intent, REQUEST_RECORD);
     }
 
     private void getLocation() {
+    }
 
+
+    @Override
+    public void setMsgList(LinkedList<Msg> msgList, ArrayList<Contact> memberList) {
+        messageAdapter = new MsgAdapter(msgList, context);
+        messageAdapter.setMemberList(memberList);
+        messageAdapter.setOnItemLongClickListener(this);  // 设置消息的长按监听
+        recyclerView.setAdapter(messageAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.scrollToPosition(messageAdapter.getItemCount()-1);  // 默认定位到底部，即最新信息处
     }
 
     @Override
     public void updateMsgList() {
         messageAdapter.notifyDataSetChanged();
+        messageAdapter.setOnItemLongClickListener(this);
         recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);  // 默认定位到底部，即最新信息处
     }
 

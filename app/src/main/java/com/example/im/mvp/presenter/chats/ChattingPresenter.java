@@ -23,7 +23,6 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     private String contactUsername;  // 当会话为私人会话时，用来储存联系人用户名
     private LinkedList<Msg> msgList = new LinkedList<>();
     private ArrayList<Contact> memberList;
-
     private int msgType;
 
 
@@ -117,15 +116,24 @@ public class ChattingPresenter implements IChattingContract.Presenter {
     @Override
     public void sendLocation() {}
 
-    public void sendSuccess() {}
+    public void sendSuccess() {
+        showMsgList();  // 发送消息成功后，刷新列表
+    }
 
     public void uploadSuccess(String file) {
         mModel.send(id, file, msgType);
     }
 
+
     @Override
-    public void clearHistory() {
-        mModel.clearHistory(id);
+    public void deleteMsg(int position) {
+        mModel.deleteMsg(id, msgList.get(position).getId());
+        msgList.remove(position);
+        mView.updateMsgList();
+    }
+
+    public void deleteSuccess() {
+        mView.showText("消息删除成功");
     }
 
     @Override

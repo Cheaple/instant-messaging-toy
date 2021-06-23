@@ -10,6 +10,7 @@ import com.example.im.fragment.DiscoverFragment;
 import com.example.im.fragment.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -28,12 +29,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+
+
         Fragment chatsFragment = new ChatsFragment();
         Fragment contactsFragment = new ContactsFragment();
         Fragment discoverFragment = new DiscoverFragment();
         Fragment settingsFragment = new SettingsFragment();
 
-        setCurrentFragment(chatsFragment); // 初始的Fragment为chatsFragment
+        switch (intent.getIntExtra("Fragment", 0)) {
+            case 1:
+                setCurrentFragment(contactsFragment);
+                break;
+            case 2:
+                setCurrentFragment(discoverFragment);
+                break;
+            case 3:
+                setCurrentFragment(settingsFragment);
+                break;
+            default:
+                setCurrentFragment(chatsFragment);
+                break;
+        }
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
                     switch (item.getItemId()) {

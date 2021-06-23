@@ -15,6 +15,7 @@ public class Msg {
     public final static int TYPE_PICTURE = 101;
     public final static int TYPE_VIDEO = 102;
 
+    private String id;
     private String speaker;
     private int type;
     private String content;
@@ -29,7 +30,15 @@ public class Msg {
         this.content = content;
     }
 
+    public Msg(String id, String speaker, int type, String content) {
+        this.id = id;
+        this.speaker = speaker;
+        this.type = type;
+        this.content = content;
+    }
+
     public Msg(String speaker, int type, String content) {
+        this.id = id;
         this.speaker = speaker;
         this.type = type;
         this.content = content;
@@ -39,6 +48,10 @@ public class Msg {
         this.speaker = speaker;
         this.type = type;
         this.video = video;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getSpeaker() {

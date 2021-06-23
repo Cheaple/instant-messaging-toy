@@ -19,6 +19,7 @@ import com.dmcbig.mediapicker.PickerActivity;
 import com.dmcbig.mediapicker.PickerConfig;
 import com.dmcbig.mediapicker.entity.Media;
 import com.example.im.R;
+import com.example.im.activity.base.MainActivity;
 import com.example.im.adapter.discover.DiscoverAdapter;
 import com.example.im.adapter.discover.ImageAdapter;
 import com.example.im.mvp.contract.discover.IPostContract;
@@ -101,7 +102,10 @@ public class PostActivity extends AppCompatActivity implements IPostContract.Vie
 
     @Override
     public void gotoMainActivity() {
-        finish();
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // 清除栈中的所有activity
+        intent.putExtra("Fragment", 2);
+        startActivity(intent);
     }
 
     @Override

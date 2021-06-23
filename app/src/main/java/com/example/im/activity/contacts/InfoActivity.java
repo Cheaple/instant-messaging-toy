@@ -18,10 +18,13 @@ import com.example.im.R;
 import com.example.im.activity.base.LoginActivity;
 import com.example.im.activity.base.MainActivity;
 import com.example.im.activity.chats.ChattingActivity;
+import com.example.im.bean.AccountInfo;
 import com.example.im.bean.chats.Chat;
 import com.example.im.bean.contacts.Contact;
 import com.example.im.mvp.contract.contacts.IInfoContract;
 import com.example.im.mvp.presenter.contacts.InfoPresenter;
+
+import java.util.ArrayList;
 
 public class InfoActivity extends AppCompatActivity implements IInfoContract.View, View.OnClickListener {
     private Context context;
@@ -151,9 +154,14 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
 
     @Override
     public void gotoChattingActivity(Contact contact, String chatId) {
+        ArrayList<String> members = new ArrayList<>();
+        members.add(contact.getId());
+        members.add(AccountInfo.getInstance().getId());
+
         Intent intent = new Intent(context, ChattingActivity.class);
         intent.putExtra("Chat Type", Chat.CHAT_TYPE_SINGLE);  // 传递会话类型
         intent.putExtra("Chat ID", chatId);  // 传递会话ID
+        intent.putStringArrayListExtra("Group Members", members);  // 传递群聊成员
         intent.putExtra("Contact", contact.getUsername());  // 传递联系人信息
         startActivity(intent);
     }

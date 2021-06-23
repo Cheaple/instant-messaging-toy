@@ -33,6 +33,7 @@ public class ChattingModel implements IChattingContract.Model {
     private static final int LOAD_MEMBER_SUCCESS = 2;
     private static final int SEND_SUCCESS = 3;
     private static final int CHECK_SUCCESS = 4;
+    private static final int DELETE_SUCCESS = 5;
 
     private ChattingModel.MyHandler mHandler;
     public ChattingModel(ChattingPresenter presenter) {
@@ -69,6 +70,8 @@ public class ChattingModel implements IChattingContract.Model {
                     else
                         mPresenter.checkSuccess((Contact) msg.obj, false);
                     break;
+                case DELETE_SUCCESS:
+                    mPresenter.deleteSuccess();
                 case FAILURE:
                     mPresenter.chattingFailure(msg.obj.toString());
                     break;
@@ -96,19 +99,20 @@ public class ChattingModel implements IChattingContract.Model {
                                 JSONArray msgJsonArray = jsonObject.getJSONArray("messages");
                                 for (int i = 0; i < msgJsonArray.length(); ++i) {
                                     JSONObject msgJsonObject = msgJsonArray.getJSONObject(i);
+                                    String id = msgJsonObject.getString("id");
                                     String senderId = msgJsonObject.getString("senderId");
                                     if (!msgJsonObject.has("attachmentType")) {
                                         String text = msgJsonObject.getString("text");
-                                        msgList.add(new Msg(senderId, Msg.TYPE_MSG, text));
+                                        msgList.add(new Msg(id, senderId, Msg.TYPE_MSG, text));
                                     }
                                     else {
                                         String type = msgJsonObject.getString("attachmentType");
                                         String content = msgJsonObject.getString("attachmentName");
                                         if ("PICTURE".equals(type)) {
-                                            msgList.add(new Msg(senderId, Msg.TYPE_PICTURE, content));
+                                            msgList.add(new Msg(id, senderId, Msg.TYPE_PICTURE, content));
                                         }
                                         else if ("VIDEO".equals(type)) {
-                                            msgList.add(new Msg(senderId, Msg.TYPE_VIDEO, content));
+                                            msgList.add(new Msg(id, senderId, Msg.TYPE_VIDEO, content));
                                         }
                                     }
                                 }
@@ -181,8 +185,36 @@ public class ChattingModel implements IChattingContract.Model {
     }
 
     @Override
-    public void clearHistory(String username) {
-        // todo: 删除指定消息
+    public void deleteMsg(String chatId, String msgId) {
+        try {
+            String url = "http://8.140.133.34:7200/chat/deleteMessage" + "?groupId=" + chatId + "&messageId=" + msgId;
+            HttpUtil.sendHttpRequest(url, null, false, new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.has("messages")) {  // 若有messages字段，则查找成功，但该字段可能为空
+                            msg.what = LOAD_MSG_SUCCESS;
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
+
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
