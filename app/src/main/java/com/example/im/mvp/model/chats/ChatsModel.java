@@ -27,7 +27,8 @@ import java.util.List;
 
 public class ChatsModel implements IChatsContract.Model {
     private static final int LOAD_SUCCESS = 1;
-    private static final int LOAD_FAILURE = 2;
+    private static final int LOAD_CONTACT_SUCCESS = 2;
+    private static final int LOAD_FAILURE = 100;
 
     private ChatsModel.MyHandler mHandler;
     public ChatsModel(ChatsPresenter presenter) {
@@ -48,6 +49,9 @@ public class ChatsModel implements IChatsContract.Model {
             switch (msg.what) {
                 case LOAD_SUCCESS:
                     mPresenter.loadSuccess((LinkedList<Chat>) msg.obj);
+                    break;
+                case LOAD_CONTACT_SUCCESS:
+                    mPresenter.loadContactSuccess((LinkedList<Contact>) msg.obj);
                     break;
                 case LOAD_FAILURE:
                     mPresenter.loadFailure(msg.obj.toString());
@@ -109,5 +113,50 @@ public class ChatsModel implements IChatsContract.Model {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void loadContactInfo(ArrayList<String> contacts) {
+        try {
+            // 构建http请求的body
+            JSONObject body = new JSONObject();
+            JSONArray memberList = new JSONArray(contacts);
+            body.put("users", memberList);  // 会话类型：群聊
+
+            String url = "http://8.140.133.34:7200/user/searchUsers";
+            HttpUtil.sendHttpRequest(url, body, false, new HttpCallbackListener() {  // 发起http请求
+                @Override
+                public void onSuccess(String response) {  // http请求成功
+                    Message msg = new Message();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getBoolean("success")) {  // 加载群成员成功
+                            msg.what = LOAD_CONTACT_SUCCESS;
+                            Gson gson = new Gson();
+                            Contact[] contacts = gson.fromJson(jsonObject.getString("users"), Contact[].class);
+                            msg.obj = new LinkedList(Arrays.asList(contacts));
+                        }
+                        else {  // 加载失败
+                            msg.what = LOAD_FAILURE;
+                            msg.obj = jsonObject.getString("msg");  // 失败原因
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendMessage(msg);
+                }
+
+                @Override
+                public void onFailure(Exception e) {  // http请求失败
+                    Message msg = new Message();
+                    msg.what = LOAD_FAILURE;
+                    msg.obj = e.toString();
+                    mHandler.sendMessage(msg);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

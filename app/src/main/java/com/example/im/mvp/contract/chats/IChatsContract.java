@@ -2,6 +2,7 @@ package com.example.im.mvp.contract.chats;
 
 import com.example.im.bean.chats.Chat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IChatsContract {
@@ -16,5 +17,6 @@ public interface IChatsContract {
     }
     interface Model {
         void loadChatList();
+        void loadContactInfo(ArrayList<String> contacts);
     }
 }

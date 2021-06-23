@@ -6,14 +6,18 @@
 
     <ImageView
         android:id="@+id/avatar_icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/avatar1" />
+        android:src="@drawable/ic_group" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
         android:orientation="vertical">
 
         <LinearLayout

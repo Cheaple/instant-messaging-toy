@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.im.R;
 import com.example.im.bean.chats.Chat;
 
@@ -48,7 +49,11 @@ public class ChatAdapter extends BaseAdapter {
         
         // 修改View中各个控件的属性，使之显示对应位置Chat的内容
         ImageView imageView = convertView.findViewById(R.id.avatar_icon);
-        imageView.setImageResource(chat.getAvatarIcon());
+        if (chat.getAvatarIcon() != null) {
+            String avatarUrl = context.getString(R.string.server) + "/picture/" + chat.getAvatarIcon();
+            Glide.with(context).load(avatarUrl).into(imageView);  // 设置联系人头像
+        }
+
         TextView textView;
         textView = convertView.findViewById(R.id.nickname_text);
         textView.setText(chat.getNickname());
@@ -58,4 +63,6 @@ public class ChatAdapter extends BaseAdapter {
         textView.setText(chat.getLastSpeak());
         return convertView;
     }
+
+
 }
