@@ -140,6 +140,7 @@ public class InfoActivity extends AppCompatActivity implements IInfoContract.Vie
     public void gotoMainActivity() {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // 清除栈中的所有activity
+        intent.putExtra("Fragment", 1);
         startActivity(intent);
     }
 

@@ -110,16 +110,15 @@ public class ChattingActivity extends AppCompatActivity implements IChattingCont
                 break;
             case REQUEST_CAMERA:
                 if (resultCode != Activity.RESULT_OK) return;
-                mPresenter.sendPicture(UriUtil.getFileAbsolutePath(context, pictureUri));
-                System.out.println(UriUtil.getFileAbsolutePath(context, pictureUri));
+                //mPresenter.sendPicture(UriUtil.getFileAbsolutePath(context, pictureUri));
                 break;
             case REQUEST_VIDEO:
                 if (resultCode != PickerConfig.RESULT_CODE) return;
                 Uri uri = data.getData();
-                mPresenter.sendVideo(UriUtil.getFileAbsolutePath(context, uri));
+                //mPresenter.sendVideo(UriUtil.getFileAbsolutePath(context, uri));
                 break;
             case REQUEST_RECORD:
-
+                // TODO: 音频功能
                 break;
         }
     }

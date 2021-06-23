@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.annotation.GlideModule;
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.example.im.R;
 import com.example.im.bean.AccountInfo;
 import com.example.im.bean.discover.Discover;
@@ -24,7 +26,6 @@ import com.example.im.bean.discover.Reply;
 import com.example.im.listener.OnItemClickListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 @GlideModule

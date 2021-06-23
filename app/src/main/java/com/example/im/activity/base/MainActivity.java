@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         Fragment discoverFragment = new DiscoverFragment();
         Fragment settingsFragment = new SettingsFragment();
 
-        switch (intent.getIntExtra("Fragment", 0)) {
+        int position = intent.getIntExtra("Fragment", 0);
+        switch (position) {
             case 1:
                 setCurrentFragment(contactsFragment);
                 break;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 setCurrentFragment(chatsFragment);
                 break;
         }
-
+        bottomNavigationView.setSelectedItemId(bottomNavigationView.getMenu().getItem(position).getItemId());
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
                     switch (item.getItemId()) {

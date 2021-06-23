@@ -82,7 +82,6 @@ public class ChatsFragment extends Fragment implements IChatsContract.View, Adap
         intent.putExtra("Chat Type", chatType);
         intent.putExtra("Chat ID", mPresenter.getChat(position).getId());
         intent.putStringArrayListExtra("Group Members", mPresenter.getChat(position).getMemberIdList());
-
         startActivityForResult(intent, 1);
     }
 

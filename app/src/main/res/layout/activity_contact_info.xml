@@ -98,6 +98,7 @@
             android:id="@+id/layout_clear_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
             <View
                 android:layout_width="match_parent"

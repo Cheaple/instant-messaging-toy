@@ -23,6 +23,7 @@ public class Chat {
         this.avatarIcon = avatarIcon;
         this.lastSpeak = chat.lastSpeak;
         this.lastSpeakTime = chat.lastSpeakTime;
+        this.memberIdList = chat.memberIdList;
     }
 
     public Chat(String type, String id, String nickname, String[] members) {
